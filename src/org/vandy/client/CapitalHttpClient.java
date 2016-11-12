@@ -317,16 +317,18 @@ public class CapitalHttpClient {
 			StringBuffer result = new StringBuffer();
 			String line = "";
 			while ((line = rd.readLine()) != null) {
+				int i, j;
+				for(i = 0; i < line.length(); i++)
+					if(line.substring(i, i+4).equals("type"))
+					{
+						i += 7;
+						break;
+					}
+				for(j = 0; j < type.length() && line.toCharArray()[i] == type.toCharArray()[j]; i++, j++){}
+				if(j < type.length() && type.length() != 0)
+					exit = true;
 				result.append(line);
-				if(counter == 1)
-				{
-					int i;
-					for(i = 0; line.toCharArray()[i] == type.toCharArray()[i] &&
-							i <= line.length(); i++);
-					if(i != line.length() || type.length() == 0)
-						exit = true;
-				}
-				counter++;	//May need fixing once post works
+				
 			}
 			if(!exit)
 			{
@@ -334,7 +336,6 @@ public class CapitalHttpClient {
 				printed = true;
 			}
 			exit = false;
-			counter = 0;
 //			response = client.execute(request);
 //			System.out.println("Response Code : " +
 //					response.getStatusLine().getStatusCode());
@@ -422,36 +423,4 @@ public class CapitalHttpClient {
 		if(!printed)
 			System.out.println("Account not found.");
 	}
-
-	public static String[] getAllCustomers() throws Exception {
-		String url = "http://api.reimaginebanking.com/customers/?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		request.addHeader("Accept", "application/json");
-		HttpResponse response = client.execute(request);
-		
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " +
-                                    response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-                        new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println(result.toString());
-		
-		JSONArray arr = new JSONArray(result.toString());
-		String[] customerIds = new String[arr.length()];
-		for (int i = 0; i<arr.length(); i++) {
-			customerIds[i] = arr.getJSONObject(i).getString("_id");
-		}
-		
-		return customerIds;
-
-	}
-	
 }
