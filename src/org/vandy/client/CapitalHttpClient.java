@@ -22,11 +22,11 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		postAccount2("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
+		postAccount("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
 		getAccounts("Savings");
 	}
 	
-	public static void postAccount2 (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
+	public static void postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
 		String testCustID = "5826c30d360f81f104547758";
 		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
@@ -66,46 +66,6 @@ public class CapitalHttpClient {
 		System.out.println(result.toString());
 	}
 	
-	public static void postAccount(String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
-		String testCustID = "5826c30d360f81f104547758";
-		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
-		HttpPost post = new HttpPost(url);
-		HttpClient client = HttpClients.createDefault();
-		
-		//add headers
-		//post.addHeader("Content-Type", "application/json");
-		post.addHeader("Accept", "application/json");
-
-		//add data
-		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-		urlParameters.add(new BasicNameValuePair("type", type));
-		urlParameters.add(new BasicNameValuePair("nickname", nickname));
-		urlParameters.add(new BasicNameValuePair("rewards", Integer.toString(rewards)));
-		urlParameters.add(new BasicNameValuePair("balance", Integer.toString(balance)));
-		urlParameters.add(new BasicNameValuePair("account_number", acctNum));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(urlParameters, Consts.UTF_8);
-		post.setEntity(entity);
-		
-		//post
-		HttpResponse response = client.execute(post);
-		
-		//test output
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-                                    response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-                        new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		System.out.println(result.toString());
-	}
 	
 	//public void postCustomer(String first, String last, ){
 		
