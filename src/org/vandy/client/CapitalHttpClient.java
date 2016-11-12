@@ -25,6 +25,7 @@ public class CapitalHttpClient {
 		String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
 		System.out.println("BillID: " + postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 1, 100.00));
 		System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
+		System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
 		//getAccounts("Savings");
 	}
 	
@@ -238,6 +239,58 @@ public class CapitalHttpClient {
 		return id;
 	}
 	
+	public static String postPurchase(String acctID, String merchID, String medium,
+										String purchaseDate, double amt, String desc) throws Exception {
+		
+		String url = "http://api.reimaginebanking.com/accounts/" + acctID + "/deposits?key=" + apiKey;
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+	    juo.put("merchant_id", merchID);
+	    juo.put("medium", medium);
+	    if(purchaseDate != "") 
+	    	juo.put("purchase_date", purchaseDate);
+	    juo.put("amount", amt);
+	    if(desc != "")
+	    	juo.put("description", desc);
+
+	    StringEntity entityForPost = new StringEntity(juo.toString());
+	    post.setHeader("content-type", "application/json");
+	    post.setHeader("accept", "application/json");
+	    post.setEntity(entityForPost);
+	    
+	    HttpResponse response = client.execute(post);
+	    
+	    System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + post.getEntity());
+		System.out.println("Response Code : " +
+                                    response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+
+		//get purchase ID
+		System.out.println(result);
+		String[] parts = result.toString().split(",");
+		String id = "";
+		for(String s : parts) {
+			if(s.indexOf("d") == 3) {
+				String[] parts2 = s.split("\"");
+				for(String s2 : parts2){
+					if(s2.length() > 3) { //found id
+						id = s2;
+					}
+				}
+			}
+		}
+		return id;
+	}
 	public static void getAccounts(String type) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
 		HttpClient client = HttpClients.createDefault();
