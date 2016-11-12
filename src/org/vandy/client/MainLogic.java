@@ -17,5 +17,10 @@ public class MainLogic extends LogicGui
 	{
 		return new MainGui(this.logic.getApplication());
 	}
+	
+	public void update()
+	{
+		
+	}
 
 }
