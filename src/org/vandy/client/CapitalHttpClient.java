@@ -6,12 +6,15 @@ import java.util.*;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.*;
 
 public class CapitalHttpClient {
 	
@@ -19,8 +22,49 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		postAccount("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
+		postAccount2("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
 		getAccounts("Savings");
+	}
+	
+	public static void postAccount2 (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
+		String testCustID = "5826c30d360f81f104547758";
+		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+	    juo.put("type", type);
+	    juo.put("nickname", nickname);
+	    juo.put("rewards", rewards);
+	    juo.put("balance", balance);
+	    juo.put("account_number", acctNum);
+
+
+	    StringEntity entityForPost = new StringEntity(juo.toString());
+	    post.setHeader("content-type", "application/json");
+	    post.setHeader("accept", "application/json");
+	    post.setEntity(entityForPost);
+	    
+
+	    HttpResponse response = client.execute(post);
+
+	    //StatusLine status = hres.getStatusLine(); 
+	    //System.out.println(status);
+	    
+	    System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + post.getEntity());
+		System.out.println("Response Code : " +
+                                    response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+
+		System.out.println(result.toString());
 	}
 	
 	public static void postAccount(String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
