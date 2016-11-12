@@ -18,15 +18,17 @@ public class CapitalHttpClient {
 
 	private final String USER_AGENT = "Mozilla/5.0";
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
+	private final static String testAcct = "5827661c360f81f104547b84";
 
 	public static void main(String[] args) throws Exception {
-		String custId = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
-		String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
-		//System.out.println("BillID: " + postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 1, 100.00));
+		//String custId = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
+		//String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
+		String billId = postBill(testAcct, "recurring", "Comcast", "Internet", "1/16/16", 11, 100.00);
 		//System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
 		//System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
 		//getAccounts("Savings");
-		System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
+		//System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
+		System.out.println(getBillByID(billId, "recurring_date"));
 	}
 
 	public static String postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
@@ -552,8 +554,35 @@ public class CapitalHttpClient {
 	}
 	
 	public static String getBillByID(String id, String parameter) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/bills/"+id+"?key="+apiKey);
 		
-		return "";
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("status")) {
+			return obj.getString("status");
+		}
+		if (parameter.equals("payee")) {
+			return obj.getString("payee");
+		}
+		if (parameter.equals("nickname")) {
+			return obj.getString("nickname");
+		}
+		if (parameter.equals("creation_date")) {
+			return obj.getString("creation_date");
+		}
+		if (parameter.equals("payment_date")) {
+			return obj.getString("payment_date");
+		}
+		if (parameter.equals("recurring_date")) {
+			return Integer.toString(obj.getInt("recurring_date"));
+		}
+		if (parameter.equals("upcoming_payment_date")) {
+			return obj.getString("upcoming_payment_date");
+		}
+		if (parameter.equals("account_id")) {
+			return obj.getString("account_id");
+		}
+		
+		return "error";
 	}
 	
 	public static String[] getPurchasesByPayer(String payer_id) throws Exception {
