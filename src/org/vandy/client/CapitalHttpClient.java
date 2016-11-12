@@ -21,8 +21,10 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		String id = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
-		System.out.println(postAccount(id, "Credit Card", "Test", 100, 15000, "1234567890987654"));
+		String custId = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
+		String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
+		System.out.println("BillID: " + postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 1, 100.00));
+		System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
 		//getAccounts("Savings");
 	}
 	
@@ -76,7 +78,7 @@ public class CapitalHttpClient {
 		return id;
 	}
 
-	public String postBill(String acctID, String status, String payee, String nickname, String payDate,
+	public static String postBill(String acctID, String status, String payee, String nickname, String payDate,
 							int reccurDate, double payAmount) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts/" + acctID + "/bills?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
@@ -89,7 +91,7 @@ public class CapitalHttpClient {
 	    if(payDate != "")
 	    	juo.put("payment_date", payDate);
 	    if(reccurDate > 0 && reccurDate <= 31) //change laters
-	    	juo.put("reccuring_date", reccurDate);
+	    	juo.put("recurring_date", reccurDate);
 	    juo.put("payment_amount", payAmount);
 
 	    StringEntity entityForPost = new StringEntity(juo.toString());
@@ -127,6 +129,7 @@ public class CapitalHttpClient {
 		}
 		return id;
 	}
+	
 	//posts customer data provided in parameters. Returns customer's ID.
 	public static String postCustomer(String first, String last, String streetNum, String streetName,
 							 String city, String state, String zip) throws Exception{
@@ -174,6 +177,56 @@ public class CapitalHttpClient {
 		String id = "";
 		for(String s : parts) {
 			if(s.indexOf("i") == 2) {
+				String[] parts2 = s.split("\"");
+				for(String s2 : parts2){
+					if(s2.length() > 3) { //found id
+						id = s2;
+					}
+				}
+			}
+		}
+		return id;
+	}
+	
+	public static String postDeposit(String acctID, String medium, String transDate, double amt, String desc) throws Exception {
+		String url = "http://api.reimaginebanking.com/accounts/" + acctID + "/deposits?key=" + apiKey;
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+	    juo.put("medium", medium);
+	    if(transDate != "") 
+	    	juo.put("transaction_date", transDate);
+	    juo.put("amount", amt);
+	    if(desc != "")
+	    	juo.put("description", desc);
+
+	    StringEntity entityForPost = new StringEntity(juo.toString());
+	    post.setHeader("content-type", "application/json");
+	    post.setHeader("accept", "application/json");
+	    post.setEntity(entityForPost);
+	    
+	    HttpResponse response = client.execute(post);
+	    
+	    System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + post.getEntity());
+		System.out.println("Response Code : " +
+                                    response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+
+		//get deposit ID
+		System.out.println(result);
+		String[] parts = result.toString().split(",");
+		String id = "";
+		for(String s : parts) {
+			if(s.indexOf("d") == 3) {
 				String[] parts2 = s.split("\"");
 				for(String s2 : parts2){
 					if(s2.length() > 3) { //found id
