@@ -23,7 +23,7 @@ public class CapitalHttpClient {
 	public static void main(String[] args) throws Exception {
 		//postAccount("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
 		postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
-		getAccounts("Savings");
+		//getAccounts("Savings");
 	}
 	
 	public static void postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
@@ -64,7 +64,7 @@ public class CapitalHttpClient {
 	}
 	
 	
-	public static void postCustomer(String first, String last, String streetNum, String streetName,
+	public static String postCustomer(String first, String last, String streetNum, String streetName,
 							 String city, String state, String zip) throws Exception{
 		String url = "http://api.reimaginebanking.com/customers?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
@@ -103,8 +103,22 @@ public class CapitalHttpClient {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
-
-		System.out.println(result.toString());
+		String[] parts = result.toString().split(",");
+		//System.out.println(result.toString());
+		
+		//find customer ID
+		String id = "";
+		for(String s : parts) {
+			if(s.indexOf("i") == 2) {
+				String[] parts2 = s.split("\"");
+				for(String s2 : parts2){
+					if(s2.length() > 3) { //found id
+						id = s2;
+					}
+				}
+			}
+		}
+		return id;
 	}
 	
 	public static void getAccounts(String type) throws Exception {
