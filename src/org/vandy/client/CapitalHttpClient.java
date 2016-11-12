@@ -598,6 +598,47 @@ public class CapitalHttpClient {
 		}
 		
 		return purchaseIDs;
+	}	
+	
+	public static String[] getDeposits(String acctId) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+acctId+"/deposits?key="+apiKey);
+		
+		JSONArray arr = new JSONArray(result.toString());
+		String[] depIds = new String[arr.length()];
+		
+		for (int i = 0; i<arr.length(); i++) {
+			depIds[i] = arr.getJSONObject(i).getString("_id");
+		}
+		
+		return depIds;
 	}
 	
+	public static String getDepositsByID(String depId, String parameter) throws Exception {
+StringBuffer result = buffer("http://api.reimaginebanking.com/deposits/"+depId+"?key="+apiKey);
+		
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("type")) {
+			return obj.getString("type");
+		}
+		if (parameter.equals("transaction_date")) {
+			return obj.getString("transaction_date");
+		}
+		if (parameter.equals("status")) {
+			return obj.getString("status");
+		}
+		if (parameter.equals("payee_id")) {
+			return obj.getString("payee_id");
+		}
+		if (parameter.equals("medium")) {
+			return obj.getString("medium");
+		}
+		if (parameter.equals("amount")) {
+			return Double.toString(obj.getDouble("amount"));
+		}
+		if (parameter.equals("description")) {
+			return obj.getString("description");
+		}
+		
+		return "error";
+	}
 }
