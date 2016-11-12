@@ -59,7 +59,7 @@ public class CapitalHttpClient {
 			result.append(line);
 		}
 		
-		//test
+		//tests
 		System.out.println(result.toString());
 		
 		return 1;
