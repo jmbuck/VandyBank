@@ -88,7 +88,7 @@ public class CapitalHttpClient {
 	    	juo.put("nickname", nickname);
 	    if(payDate != "")
 	    	juo.put("payment_date", payDate);
-	    if(reccurDate > 0 && reccurDate <= 31) //change later
+	    if(reccurDate > 0 && reccurDate <= 31) //change laters
 	    	juo.put("reccuring_date", reccurDate);
 	    juo.put("payment_amount", payAmount);
 
