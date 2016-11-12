@@ -20,7 +20,7 @@ public class VandyApp extends App
 	@Override
 	public long createWindow()
 	{
-		return this.createWindow(1280, 720, "Vandy", 0);
+		return this.createWindow(1080, 640, "Vandy", 0);
 	}
 
 	@Override
