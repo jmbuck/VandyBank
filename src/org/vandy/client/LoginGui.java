@@ -1,20 +1,25 @@
 package org.vandy.client;
 
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+
 import java.io.File;
 
+import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.polaris.engine.App;
 import com.polaris.engine.Gui;
+import com.polaris.engine.render.Draw;
 import com.polaris.engine.render.Font;
-import com.polaris.engine.render.Shader;
-import com.polaris.engine.render.VBO;
 
 public class LoginGui extends Gui
 {
 
 	private Font playRegular;
-	private VBO render;
+	private float nextScreenAlpha = 1;
 	
 	public LoginGui(App app) 
 	{
@@ -30,21 +35,68 @@ public class LoginGui extends Gui
 	public void init()
 	{
 		playRegular = Font.createFont(new File("Play-Regular.ttf"), 64);
-		GL11.glClearColor(1, 1, 1, 1);
-		render = playRegular.draw("TEST", 100, 100, 0);
 	}
 	
 	@Override
 	public void render(double delta)
 	{
-		application.gl2d();
-		//GL11.glColor4d(1, 1, 1, 1);
+		super.render(delta);
+		GL11.glEnable(GL11.GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glColor4f(.7f, .7f, 1, 1f);
+		Draw.rect(0, 0, 1920, 1080, -100);
+		GL11.glEnd();
+		
+		drawLoader();
+		
+		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+		Draw.circle(1920 / 2, 1280 / 2, -99, 2200, 100, new Vector4f(1f, 1f, 1f, 0f), new Vector4f(1f, .5f, .5f, .2f));
+		GL11.glEnd();
+		
+		GL11.glColor4f(.3f, .3f, .3f, (float) Math.abs(ticksExisted % 12 - 6) / 3f);
 		playRegular.bind();
-		Shader.POS_TEXTURE.bind();
-		render.bind();
-		render.setupDrawEnable();
-		render.draw();
-		Shader.POS_TEXTURE.unbind();
+		playRegular.draw("LOADING", 1920 / 2 - playRegular.getWidth("LOADING") / 2, 1280 / 2 + 100, 1);
+		playRegular.unbind();
+		
+		if(application.getInput().getKey(GLFW.GLFW_KEY_ESCAPE).isPressed())
+		{
+			application.close();
+		}
+	}
+	
+	private void drawLoader()
+	{
+		float verticalTimer = (float) Math.abs(ticksExisted % 2 - 1);
+		float horizontalTimer = 1 - verticalTimer;
+		float multiplier = 5/2;
+		
+		verticalTimer *= 20;
+		horizontalTimer *= 20;
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(1920 / 2, 1280 / 2, 2);
+		GL11.glRotated(ticksExisted * 36, 0, 0, 1);
+		GL11.glColor4f(.5f, .5f, .5f, 1f * nextScreenAlpha);
+		GL11.glBegin(GL11.GL_TRIANGLES);
+		GL11.glVertex3f(0, 0, 0);
+		GL11.glVertex3f(verticalTimer / multiplier, - multiplier * verticalTimer, 0);
+		GL11.glVertex3f(-verticalTimer / multiplier, - multiplier * verticalTimer, 0);
+		
+		GL11.glVertex3f(0, 0, 0);
+		GL11.glVertex3f(verticalTimer / multiplier, multiplier * verticalTimer, 0);
+		GL11.glVertex3f(-verticalTimer / multiplier, multiplier * verticalTimer, 0);
+		
+		GL11.glVertex3f(0, 0, 0);
+		GL11.glVertex3f(horizontalTimer * multiplier, horizontalTimer / multiplier, 0);
+		GL11.glVertex3f(horizontalTimer * multiplier, - horizontalTimer / multiplier, 0);
+		
+		GL11.glVertex3f(0, 0, 0);
+		GL11.glVertex3f(-horizontalTimer * multiplier, horizontalTimer / multiplier, 0);
+		GL11.glVertex3f(-horizontalTimer * multiplier, - horizontalTimer / multiplier, 0);
+		GL11.glEnd();
+		
+		GL11.glPopMatrix();
 	}
 
 }
