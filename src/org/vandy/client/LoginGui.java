@@ -6,16 +6,14 @@ import static org.lwjgl.opengl.GL11.glBlendFunc;
 
 import java.io.File;
 
-import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.polaris.engine.App;
-import com.polaris.engine.Gui;
 import com.polaris.engine.render.Draw;
 import com.polaris.engine.render.Font;
 
-public class LoginGui extends Gui
+public class LoginGui extends GuiScreen
 {
 
 	private Font playRegular;
@@ -24,11 +22,6 @@ public class LoginGui extends Gui
 	public LoginGui(App app) 
 	{
 		super(app);
-	}
-	
-	public LoginGui(App app, double ticksExisted)
-	{
-		super(app, ticksExisted);
 	}
 	
 	@Override

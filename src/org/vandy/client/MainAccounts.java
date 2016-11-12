@@ -1,9 +1,9 @@
 package org.vandy.client;
 
-public class MainStart extends MainState
+public class MainAccounts extends MainState
 {
 
-	public MainStart(MainGui gui)
+	public MainAccounts(MainGui gui)
 	{
 		super(gui);
 	}
