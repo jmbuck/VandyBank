@@ -23,10 +23,11 @@ public class CapitalHttpClient {
 	public static void main(String[] args) throws Exception {
 		String custId = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
 		String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
-		System.out.println("BillID: " + postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 1, 100.00));
-		System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
-		System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
+		//System.out.println("BillID: " + postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 1, 100.00));
+		//System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
+		//System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
 		//getAccounts("Savings");
+		System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
 	}
 	
 	public static String postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
@@ -238,7 +239,57 @@ public class CapitalHttpClient {
 		}
 		return id;
 	}
-	
+
+	public static String postWithdrawal(String acctID, String medium, String transDate, double amt, String desc) throws Exception {
+		String url = "http://api.reimaginebanking.com/accounts/" + acctID + "/withdrawals?key=" + apiKey;
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+	    juo.put("medium", medium);
+	    if(transDate != "") 
+	    	juo.put("transaction_date", transDate);
+	    juo.put("amount", amt);
+	    if(desc != "")
+	    	juo.put("description", desc);
+
+	    StringEntity entityForPost = new StringEntity(juo.toString());
+	    post.setHeader("content-type", "application/json");
+	    post.setHeader("accept", "application/json");
+	    post.setEntity(entityForPost);
+	    
+	    HttpResponse response = client.execute(post);
+	    
+	    System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Post parameters : " + post.getEntity());
+		System.out.println("Response Code : " +
+                                    response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+
+		//get withdrawal ID
+		System.out.println(result);
+		String[] parts = result.toString().split(",");
+		String id = "";
+		for(String s : parts) {
+			if(s.indexOf("d") == 3) {
+				String[] parts2 = s.split("\"");
+				for(String s2 : parts2){
+					if(s2.length() > 3) { //found id
+						id = s2;
+					}
+				}
+			}
+		}
+		return id;
+		
+	}
 	public static String postPurchase(String acctID, String merchID, String medium,
 										String purchaseDate, double amt, String desc) throws Exception {
 		
