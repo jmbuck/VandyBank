@@ -1,6 +1,7 @@
 package org.vandy.client;
 
 import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
 
 import com.polaris.engine.App;
 import com.polaris.engine.LogicGui;
@@ -28,6 +29,7 @@ public class VandyApp extends App
 	@Override
 	public long createWindow()
 	{
+		GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, 0);
 		return this.createWindow(1080, 640, "Vandy", 0);
 	}
 
