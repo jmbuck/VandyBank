@@ -7,6 +7,7 @@ import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -22,13 +23,13 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		postAccount2("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
+		postAccount("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
 		getAccounts("Savings");
 	}
 	
-	public static void postAccount2 (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
-		String testCustID = "5826c30d360f81f104547758";
-		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
+	public static void postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
+		//String testCustID = "5826c30d360f81f104547758";
+		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
 		HttpClient client = HttpClients.createDefault();
 		JSONObject juo = new JSONObject();
@@ -66,31 +67,34 @@ public class CapitalHttpClient {
 		System.out.println(result.toString());
 	}
 	
-	public static void postAccount(String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
-		String testCustID = "5826c30d360f81f104547758";
-		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
+	
+	public void postCustomer(String first, String last, String streetNum, String streetName,
+							 String city, String state, String zip) throws Exception{
+		String url = "http://api.reimaginebanking.com/customers?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
 		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+		JSONObject nestedJUO = new JSONObject();
+		juo.put("type", first);
+		juo.put("nickname", last);
 		
-		//add headers
-		//post.addHeader("Content-Type", "application/json");
-		post.addHeader("Accept", "application/json");
+		nestedJUO.put("street_number", streetNum);
+		nestedJUO.put("street_name", streetName);
+		nestedJUO.put("city", city);
+		nestedJUO.put("state", state);
+		nestedJUO.put("zip", zip);
+		
+		juo.put("address", nestedJUO);
+		
+		StringEntity entityForPost = new StringEntity(juo.toString());
+	    post.setHeader("content-type", "application/json");
+	    post.setHeader("accept", "application/json");
+	    post.setEntity(entityForPost);
+	    
 
-		//add data
-		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-		urlParameters.add(new BasicNameValuePair("type", type));
-		urlParameters.add(new BasicNameValuePair("nickname", nickname));
-		urlParameters.add(new BasicNameValuePair("rewards", Integer.toString(rewards)));
-		urlParameters.add(new BasicNameValuePair("balance", Integer.toString(balance)));
-		urlParameters.add(new BasicNameValuePair("account_number", acctNum));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(urlParameters, Consts.UTF_8);
-		post.setEntity(entity);
-		
-		//post
-		HttpResponse response = client.execute(post);
-		
-		//test output
-		System.out.println("\nSending 'POST' request to URL : " + url);
+	    HttpResponse response = client.execute(post);
+	    
+	    System.out.println("\nSending 'POST' request to URL : " + url);
 		System.out.println("Post parameters : " + post.getEntity());
 		System.out.println("Response Code : " +
                                     response.getStatusLine().getStatusCode());
@@ -106,11 +110,6 @@ public class CapitalHttpClient {
 
 		System.out.println(result.toString());
 	}
-	
-	//public void postCustomer(String first, String last, ){
-		
-		
-	//}
 	
 	public static void getAccounts(String type) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
