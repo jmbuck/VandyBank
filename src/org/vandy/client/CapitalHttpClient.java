@@ -19,11 +19,11 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		postAccount(0, "Credit Card", "Test", 0, 15, "738435");
-		getAccounts();
+		postAccount("0", "Credit Card", "Test", 0, 15, "738435");
+		getAccounts("Savings");
 	}
 	
-	public static void postAccount(int custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
+	public static void postAccount(String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
 		String testCustID = "5826c30d360f81f104547758";
 		String url = "http://api.reimaginebanking.com/customers/" + testCustID + "/accounts?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
@@ -64,8 +64,61 @@ public class CapitalHttpClient {
 		System.out.println(result.toString());
 	}
 	
-	public static void getAccounts() throws Exception {
+	public static void getAccounts(String type) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
+		HttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(url);
+		
+		boolean exit = false; //Used to find if account matches the type parameter
+		boolean printed = false;
+		int counter = 0; //Used to find line with the type of the bank account
+		//add header
+		request.addHeader("Accept", "application/json");
+		
+		//execute and get response
+		HttpResponse response = client.execute(request);
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " +
+				response.getStatusLine().getStatusCode());
+//		while(response.getStatusLine().getStatusCode() == 200) //Implement way to iterate through accounts
+		{
+			
+
+			BufferedReader rd = new BufferedReader(
+					new InputStreamReader(response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+				if(counter == 1)
+				{
+					int i;
+					for(i = 0; line.toCharArray()[i] == type.toCharArray()[i] &&
+							i <= line.length(); i++);
+					if(i != line.length() || type.length() == 0)
+						exit = true;
+				}
+				counter++;	//May need fixing once post works
+			}
+			if(!exit)
+			{
+				System.out.println(result.toString());
+				printed = true;
+			}
+			exit = false;
+			counter = 0;
+//			response = client.execute(request);
+//			System.out.println("Response Code : " +
+//					response.getStatusLine().getStatusCode());
+		}
+		if(!printed)
+			System.out.println("Account not found.");
+		
+	}
+	
+	public static void getCustAccounts(String custID) throws Exception {
+		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key="+apiKey;
 		HttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet(url);
 		
@@ -90,10 +143,60 @@ public class CapitalHttpClient {
 
 		System.out.println(result.toString());
 	}
-	/*
+	
+	public static void getSpecificAccount(String acctNum) throws Exception {
+		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
+		HttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(url);
+		
+		boolean exit = false; //Used to find if account matches the type parameter
+		boolean printed = false;
+		int counter = 0; //Used to find line with the type of the bank account
+		//add header
+		request.addHeader("Accept", "application/json");
+		
+		//execute and get response
+		HttpResponse response = client.execute(request);
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " +
+				response.getStatusLine().getStatusCode());
+//		while(response.getStatusLine().getStatusCode() == 200) //Implement way to iterate through accounts
+		{
+			
+
+			BufferedReader rd = new BufferedReader(
+					new InputStreamReader(response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+				if(counter == 1)
+				{
+					int i;
+					for(i = 0; line.toCharArray()[i] == acctNum.toCharArray()[i] &&
+							i <= line.length(); i++);
+					if(i != line.length())
+						exit = true;
+				}
+				counter++;	//May need fixing once post works
+			}
+			if(!exit)
+			{
+				System.out.println(result.toString());
+				printed = true;
+			}
+			exit = false;
+			counter = 0;
+//			response = client.execute(request);
+//			System.out.println("Response Code : " +
+//					response.getStatusLine().getStatusCode());
+		}
+		if(!printed)
+			System.out.println("Account not found.");
 	}
 	// HTTP GET request 
-	private void sendGet() throws Exception {
+/*	private void sendGet() throws Exception {
 
 		String url = "http://www.google.com/search?q=developer";
 		
