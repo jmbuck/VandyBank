@@ -480,6 +480,53 @@ public class CapitalHttpClient {
 		return accountNums;
 
 	}
+	
+	public static String[] getMerchantsAssignedToAccount(String account) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants?key="+apiKey);
+		JSONArray arr = new JSONArray(result.toString());
+		String[] merchantIds = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			merchantIds[i] = arr.getJSONObject(i).getString("_id");
+		}
+
+		return merchantIds;
+		
+	}
+	
+	public static String getMerchantInfoFromID(String id, String parameter) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants/" + id + "?key="+apiKey);
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("name")) {
+			return obj.getString("name");
+		}
+		if (parameter.equals("category")) {
+			String r = "";
+			for (int i = 0; i<obj.getJSONArray("category").length(); i++) {
+				r+=obj.getJSONArray("category").getJSONObject(i).toString()+",";
+			}
+			return r;
+		}
+		if (parameter.equals("zip")) {
+			return obj.getJSONObject("address").getString("zip");
+		}
+		if (parameter.equals("city")) {
+			return obj.getJSONObject("address").getString("city");
+		}
+		if (parameter.equals("street_number")) {
+			return obj.getJSONObject("address").getString("street_number");
+		}
+		if (parameter.equals("state")) {
+			return obj.getJSONObject("address").getString("state");
+		}
+		if (parameter.equals("street_name")) {
+			return obj.getJSONObject("address").getString("street_number");
+		}
+
+		//System.out.println(obj.getJSONObject("address").getString("zip"));
+		return "error";
+		
+		
+	}
 
 	public static String[] getAllCustomers() throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/?key="+apiKey);
@@ -493,7 +540,15 @@ public class CapitalHttpClient {
 		return customerIds;
 
 	}
-
+	public static String[] getWithdrawsFromAccountID(String id) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/" +id+"/withdrawals?key=" + apiKey);
+		JSONArray arr = new JSONArray(result.toString());
+		String[] withdrawIDs = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			withdrawIDs[i] = arr.getJSONObject(i).getString("_id");
+		}
+		return withdrawIDs;
+	}
 	public static String getCustomerByID(String id, String parameter) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
 
