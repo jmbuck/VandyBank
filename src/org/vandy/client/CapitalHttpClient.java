@@ -12,7 +12,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
-
 import org.json.*;
 
 public class CapitalHttpClient {
@@ -504,5 +503,56 @@ public class CapitalHttpClient {
 		
 		return customerIds;
 
+	}
+	
+	public static String getCustomerByID(String id, String parameter) throws IOException {
+		String url = "http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey;
+		HttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(url);
+		request.addHeader("Accept", "application/json");
+		HttpResponse response = client.execute(request);
+		
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Response Code : " +
+                                    response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		System.out.println(result.toString());
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("first_name")) {
+			return obj.getString("first_name");
+		}
+		if (parameter.equals("last_name")) {
+			return obj.getString("last_name");
+		}
+		if (parameter.equals("zip")) {
+			return obj.getJSONObject("address").getString("zip");
+		}
+		if (parameter.equals("city")) {
+			return obj.getJSONObject("address").getString("city");
+		}
+		if (parameter.equals("street_number")) {
+			return obj.getJSONObject("address").getString("street_number");
+		}
+		if (parameter.equals("state")) {
+			return obj.getJSONObject("address").getString("state");
+		}
+		if (parameter.equals("street_name")) {
+			return obj.getJSONObject("address").getString("street_number");
+		}
+		
+		
+		//System.out.println(obj.getJSONObject("address").getString("zip"));
+		
+		
+		return "error";
+		
 	}
 }
