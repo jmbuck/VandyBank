@@ -6,7 +6,6 @@ import com.polaris.engine.thread.LogicApp;
 
 public class LoginLogic extends LogicGui
 {
-
 	public LoginLogic(LogicApp app)
 	{
 		super(app);
