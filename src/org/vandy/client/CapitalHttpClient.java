@@ -520,11 +520,75 @@ public class CapitalHttpClient {
 			return obj.getJSONObject("address").getString("street_number");
 		}
 
-
 		//System.out.println(obj.getJSONObject("address").getString("zip"));
-
-
 		return "error";
 
+	}
+	
+	public static String[] getAccountBills(String acctId) throws Exception {
+		String url = "http://api.reimaginebanking.com/accounts/"+acctId+"/bills?key="+apiKey;
+		HttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(url);
+		request.addHeader("Accept", "application/json");
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Response Code : " +
+				response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		System.out.println(result.toString());
+		
+		JSONArray arr = new JSONArray(result.toString());
+		String[] billIds = new String[arr.length()];
+		
+		for (int i = 0; i<arr.length(); i++) {
+			billIds[i] = arr.getJSONObject(i).getString("_id");
+		}
+		
+		return billIds;
+	}
+	
+	public static String[] getCustomerBills(String custId) throws Exception {
+		String url = "http://api.reimaginebanking.com/customers/"+custId+"/bills?key="+apiKey;
+		HttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(url);
+		request.addHeader("Accept", "application/json");
+		HttpResponse response = client.execute(request);
+
+		System.out.println("\nSending 'POST' request to URL : " + url);
+		System.out.println("Response Code : " +
+				response.getStatusLine().getStatusCode());
+
+		BufferedReader rd = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		System.out.println(result.toString());
+		
+		JSONArray arr = new JSONArray(result.toString());
+		String[] billIds = new String[arr.length()];
+		
+		for (int i = 0; i<arr.length(); i++) {
+			billIds[i] = arr.getJSONObject(i).getString("_id");
+		}
+		
+		return billIds;
+	}
+	
+	public static String getBillByID(String id, String parameter) throws Exception {
+		
+		return "";
 	}
 }
