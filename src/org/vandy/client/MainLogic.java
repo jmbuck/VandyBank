@@ -7,9 +7,9 @@ import com.polaris.engine.thread.LogicApp;
 public class MainLogic extends LogicGui
 {
 
-	public MainLogic(LogicApp app, LogicGui p) 
+	public MainLogic(LogicApp app) 
 	{
-		super(app, p);
+		super(app);
 	}
 
 	@Override
