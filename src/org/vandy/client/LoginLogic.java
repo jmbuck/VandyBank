@@ -19,5 +19,10 @@ public class LoginLogic extends LogicGui
 	}
 	
 	
+	public void update()
+	{
+		
+	}
+	
 
 }
