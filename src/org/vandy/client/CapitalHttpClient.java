@@ -19,7 +19,7 @@ public class CapitalHttpClient {
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	
 	public static void main(String[] args) throws Exception {
-		postAccount("0", "Credit Card", "Test", 0, 15, "738435");
+		postAccount("0", "Credit Card", "Test", 100, 15000, "1234567890987654");
 		getAccounts("Savings");
 	}
 	
@@ -30,9 +30,9 @@ public class CapitalHttpClient {
 		HttpClient client = HttpClients.createDefault();
 		
 		//add headers
-		post.addHeader("Content-Type", "application/json");
+		//post.addHeader("Content-Type", "application/json");
 		post.addHeader("Accept", "application/json");
-		
+
 		//add data
 		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 		urlParameters.add(new BasicNameValuePair("type", type));
@@ -63,6 +63,11 @@ public class CapitalHttpClient {
 
 		System.out.println(result.toString());
 	}
+	
+	//public void postCustomer(String first, String last, ){
+		
+		
+	//}
 	
 	public static void getAccounts(String type) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
