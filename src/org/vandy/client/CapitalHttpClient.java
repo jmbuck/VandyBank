@@ -404,7 +404,6 @@ public class CapitalHttpClient {
 
 	public static StringBuffer buffer(String url) throws Exception
 	{
-		//String url = "http://api.reimaginebanking.com/customers/?key="+apiKey;
 		HttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet(url);
 		request.addHeader("Accept", "application/json");
