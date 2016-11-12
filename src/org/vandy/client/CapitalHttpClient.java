@@ -402,9 +402,9 @@ public class CapitalHttpClient {
 	}
 
 
-	public static StringBuffer buffer() throws Exception
+	public static StringBuffer buffer(String url) throws Exception
 	{
-		String url = "http://api.reimaginebanking.com/customers/?key="+apiKey;
+		//String url = "http://api.reimaginebanking.com/customers/?key="+apiKey;
 		HttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet(url);
 		request.addHeader("Accept", "application/json");
@@ -428,15 +428,18 @@ public class CapitalHttpClient {
 	}
 
 	public static String[] getAllAccounts(String type) throws Exception {
-		StringBuffer result = buffer();
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts?key="+apiKey);
 
 		String accountType;
 		JSONArray arr = new JSONArray(result.toString());
 		String[] accountNums = new String[arr.length()];
+		int countValid = 0;
 		for (int i = 0; i<arr.length(); i++) {
 			accountType = arr.getJSONObject(i).getString("type");
-			if(accountType.equals(type))
-				accountNums[i] = arr.getJSONObject(i).getString("account_number");
+			if(accountType.equals(type)){
+				accountNums[countValid] = arr.getJSONObject(i).getString("account_number");
+				countValid++;
+			}
 		}
 
 		return accountNums;
@@ -444,7 +447,7 @@ public class CapitalHttpClient {
 	}
 
 	public static String getAccountByID(String id) throws Exception {
-		StringBuffer result = buffer();
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/" + id+ "?key=" +apiKey);
 
 		String accountID;
 		JSONArray arr = new JSONArray(result.toString());
@@ -459,8 +462,8 @@ public class CapitalHttpClient {
 	}
 
 	public static String[] getAccountsByCustomer(String customer_id) throws Exception {
-		StringBuffer result = buffer();
-
+		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/"+ customer_id +"/accounts?key="+apiKey);
+		
 		String customerID;
 		JSONArray arr = new JSONArray(result.toString());
 		String[] accountNums = new String[arr.length()];
@@ -479,7 +482,7 @@ public class CapitalHttpClient {
 	}
 
 	public static String[] getAllCustomers() throws Exception {
-		StringBuffer result = buffer();
+		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/?key="+apiKey);
 
 		JSONArray arr = new JSONArray(result.toString());
 		String[] customerIds = new String[arr.length()];
@@ -492,7 +495,7 @@ public class CapitalHttpClient {
 	}
 
 	public static String getCustomerByID(String id, String parameter) throws Exception {
-		StringBuffer result = buffer();
+		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
 
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("first_name")) {
