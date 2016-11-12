@@ -38,7 +38,6 @@ public class CapitalHttpClient {
 	    juo.put("balance", balance);
 	    juo.put("account_number", acctNum);
 
-
 	    StringEntity entityForPost = new StringEntity(juo.toString());
 	    post.setHeader("content-type", "application/json");
 	    post.setHeader("accept", "application/json");
