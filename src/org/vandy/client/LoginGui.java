@@ -37,6 +37,11 @@ public class LoginGui extends Gui
 		playRegular = Font.createFont(new File("Play-Regular.ttf"), 64);
 	}
 	
+	public void close()
+	{
+		playRegular.destroy();
+	}
+	
 	@Override
 	public void render(double delta)
 	{
@@ -44,19 +49,15 @@ public class LoginGui extends Gui
 		GL11.glEnable(GL11.GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glColor4f(.7f, .7f, 1, 1f);
+		GL11.glColor4f(.6f, .6f, 1, 1f);
 		Draw.rect(0, 0, 1920, 1080, -100);
 		GL11.glEnd();
 		
 		drawLoader();
 		
-		GL11.glBegin(GL11.GL_TRIANGLE_FAN);
-		Draw.circle(1920 / 2, 1280 / 2, -99, 2200, 100, new Vector4f(1f, 1f, 1f, 0f), new Vector4f(1f, .5f, .5f, .2f));
-		GL11.glEnd();
-		
 		GL11.glColor4f(.3f, .3f, .3f, (float) Math.abs(ticksExisted % 12 - 6) / 3f);
 		playRegular.bind();
-		playRegular.draw("LOADING", 1920 / 2 - playRegular.getWidth("LOADING") / 2, 1280 / 2 + 100, 1);
+		playRegular.draw("LOADING", 1920 / 2 - playRegular.getWidth("LOADING") / 2, 1280 / 2 + 100, 1, 1);
 		playRegular.unbind();
 		
 		if(application.getInput().getKey(GLFW.GLFW_KEY_ESCAPE).isPressed())
