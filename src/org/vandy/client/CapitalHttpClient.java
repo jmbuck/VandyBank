@@ -292,7 +292,7 @@ public class CapitalHttpClient {
 
 	}
 
-	public static String postTransfe(String payerId, String medium, String payeeId,
+	public static String postTransfer(String payerId, String medium, String payeeId,
 									  double amt, String transDate, String desc) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts/" + payerId + "/transfers?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
@@ -766,6 +766,50 @@ public class CapitalHttpClient {
 		}
 		if (parameter.equals("description")) {
 			return obj.getString("description");
+		}
+		
+		return "error";
+	}
+	
+	public static String[] getTransfers(String acctId) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+acctId+"/transfers?key="+apiKey);
+		
+		JSONArray arr = new JSONArray(result.toString());
+		String[] transIds = new String[arr.length()];
+		
+		for (int i = 0; i<arr.length(); i++) {
+			transIds[i] = arr.getJSONObject(i).getString("_id");
+		}
+		return transIds;
+	}
+	
+	public static String getTransferByID(String transId, String parameter) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/transfers/"+transId+"?key="+apiKey);
+		
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("type")) {
+			return obj.getString("type");
+		}
+		if (parameter.equals("transaction_date")) {
+			return obj.getString("transaction_date");
+		}
+		if (parameter.equals("status")) {
+			return obj.getString("status");
+		}
+		if (parameter.equals("payee_id")) {
+			return obj.getString("payee_id");
+		}
+		if (parameter.equals("medium")) {
+			return obj.getString("medium");
+		}
+		if (parameter.equals("amount")) {
+			return Double.toString(obj.getDouble("amount"));
+		}
+		if (parameter.equals("description")) {
+			return obj.getString("description");
+		}
+		if	(parameter.equals("payer_id")) {
+			return obj.getString("payer_id");
 		}
 		
 		return "error";
