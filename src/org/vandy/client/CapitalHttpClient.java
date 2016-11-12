@@ -19,17 +19,24 @@ public class CapitalHttpClient {
 	private final String USER_AGENT = "Mozilla/5.0";
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	private final static String testAcct = "5827661c360f81f104547b84";
-
+	/*
 	public static void main(String[] args) throws Exception {
-		//String custId = postCustomer("Jordan", "Buckmaster", "3333", "Willow", "Chicago", "IL", "12345");
-		//String acctId = postAccount(custId, "Credit Card", "Test", 100, 15000, "1234567890987654");
-		String billId = postBill(testAcct, "recurring", "Comcast", "Internet", "1/16/16", 11, 100.00);
+		String custId = postCustomer("Killian", "Le Clainche", "6754", "French Ave", "Chicago", "IL", "60513");
+		String acctId = postAccount(custId, "Checking", "My Checking", 100, 15000, "1234567890987654");
+		String acctId2 = postAccount(custId, "Savings", "My Saving", 100, 5, "1234567890987655");
+		String billId = postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 11, 100.00);
+		String depId = postDeposit(acctId, "balance", "", 150.55, "First deposit");
+		String withId = postWithdrawal(acctId2, "balance", "11/12/2016", 50.00, "First withdrawal");
+		String transId = postTransfer(acctId2, "balance", acctId, 1000.67, "11/10/2016", "First transfer.");
+		String[] cat = {"Retail", "Supermarket"};
+		String merchId = postMerchant("Walmart", cat, "7845", "Rocky Rd", "Chicago", "IL", "12345");
+		String purchId = postPurchase(acctId, merchId, "balance", "1/1/16", 50.00, "Bought stuff.");
 		//System.out.println("Dep ID: " + postDeposit(acctId, "rewards", "", 100.10, "Test deposit."));
 		//System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
 		//getAccounts("Savings");
 		//System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
 		System.out.println(getBillByID(billId, "recurring_date"));
-	}
+	}*/
 
 	public static StringBuffer processInput(String url, HttpPost post, JSONObject juo, HttpClient client) throws Exception
 	{
@@ -94,6 +101,7 @@ public class CapitalHttpClient {
 		juo.put("account_number", acctNum);
 
 		StringBuffer result = processInput(url, post, juo, client);
+		System.out.println(result);
 		return findID(result);
 	}
 
@@ -224,6 +232,7 @@ public class CapitalHttpClient {
 		return id;
 		
 	}
+	
 	public static String postPurchase(String acctID, String merchID, String medium,
 			String purchaseDate, double amt, String desc) throws Exception {
 
@@ -265,7 +274,6 @@ public class CapitalHttpClient {
 		StringBuffer result = processInput(url, post, juo, client);
 		return findID(result);
 	}
-
 
 	public static StringBuffer buffer(String url) throws Exception
 	{
