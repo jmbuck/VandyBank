@@ -527,24 +527,7 @@ public class CapitalHttpClient {
 	
 	public static String[] getAccountBills(String acctId) throws Exception {
 		String url = "http://api.reimaginebanking.com/accounts/"+acctId+"/bills?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		request.addHeader("Accept", "application/json");
-		HttpResponse response = client.execute(request);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println(result.toString());
+		StringBuffer result = buffer(url);
 		
 		JSONArray arr = new JSONArray(result.toString());
 		String[] billIds = new String[arr.length()];
@@ -557,25 +540,7 @@ public class CapitalHttpClient {
 	}
 	
 	public static String[] getCustomerBills(String custId) throws Exception {
-		String url = "http://api.reimaginebanking.com/customers/"+custId+"/bills?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		request.addHeader("Accept", "application/json");
-		HttpResponse response = client.execute(request);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println(result.toString());
+		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/"+custId+"/bills?key="+apiKey);
 		
 		JSONArray arr = new JSONArray(result.toString());
 		String[] billIds = new String[arr.length()];
