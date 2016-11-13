@@ -26,7 +26,7 @@ public class LoginGui extends GuiScreen
 	{
 		super.init();
 		
-		setState(new LoginLogin(this, boldFont));
+		setState(new LoginLoading(this, boldFont));
 	}
 
 	@Override
@@ -61,6 +61,11 @@ public class LoginGui extends GuiScreen
 	public void setPotentials(String[] potentials)
 	{
 		customerSearch = potentials;
+	}
+
+	public LoginState getState() 
+	{
+		return state;
 	}
 
 }

@@ -17,6 +17,7 @@ public class LoadBankPacket extends AppPacket
 	public void handle()
 	{
 		Bank.load();
+		logicThread.sendPacket(new FinishLoadBankPacket(application, logicThread));
 	}
 
 }

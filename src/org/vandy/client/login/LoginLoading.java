@@ -76,4 +76,9 @@ public class LoginLoading extends LoginState
 
 		GL11.glPopMatrix();
 	}
+
+	public void startClose() 
+	{
+		
+	}
 }
