@@ -149,7 +149,7 @@ public class LoginCreateAccount extends LoginState
 				customer.setZip(currentText);
 				Bank.createCustomer(customer);
 				Bank.setCurrentCustomer(customer);
-				loginGui.setState(new LoginLoading(loginGui, font));
+				loginGui.setState(new LoginLogin(loginGui, font));
 			}
 			currentText = "";
 			stage++;

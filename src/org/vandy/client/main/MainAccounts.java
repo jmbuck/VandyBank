@@ -276,10 +276,11 @@ public class MainAccounts extends MainState
 			s = "**** **** **** " + account.getAccountNumber().substring(12);
 			boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
 			y += 50;
-			s = format.format(account.getBalance());
+			s = "$" + format.format(account.getBalance());
 			boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
 			boldFont.unbind();
 		}
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
 		GL11.glBegin(GL11.GL_QUADS);
