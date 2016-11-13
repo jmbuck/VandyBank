@@ -186,7 +186,7 @@ public class Account {
 			double amount = Double.parseDouble(amt);
 			if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
 			{
-				return 0;				//Check for bounces
+				return 0;				//Check for bounces//
 			}
 			else
 			{
