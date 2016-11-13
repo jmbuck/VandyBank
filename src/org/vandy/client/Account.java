@@ -7,6 +7,7 @@ public class Account {
 
 	private List<Transfer> transferList = new ArrayList<Transfer>();
 	private List<Bill> billList = new ArrayList<Bill>();
+	private List<Transaction> transList = new ArrayList<Transaction>();
 	private List<Deposit> depList = new ArrayList<Deposit>();
 	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
 	private String id, type, nickname, account_number, customer_id;
@@ -14,20 +15,36 @@ public class Account {
 	private double balance;
 	
 	public Account(String accId, String custID, String accType, String custNickname, int accRewards, double accBalance,
-					String acctNum) throws Exception 
+				String accNum) throws Exception 
 	{	
 		id = accId;
 		type = accType;
 		nickname = custNickname;
 		rewards = accRewards;
 		balance = accBalance;
-		account_number = acctNum;
+		account_number = accNum;
 		customer_id = custID;
 	}
 	
-	public int withdraw(Withdrawal transaction)
+	public int deposit(Deposit transaction, String depID) throws Exception
 	{
-		amount = 
+		double amount = Double.parseDouble(CapitalHttpClient.getDepositsByID(depID, "amount"));
+		if(balance + amount < 0 || amount < 0)	//Insufficient funds or amount
+		{
+			return 0;				//Check bounces
+		}
+		else
+		{
+			balance += amount;
+			transList.add(transaction);
+			depList.add(transaction);			
+			return 1;
+		}
+	}
+	
+	public int withdraw(Withdrawal transaction, String withID) throws Exception
+	{
+		double amount = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(withID, "amount"));
 		if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
 		{
 			return 0;				//Check bounces
@@ -35,7 +52,8 @@ public class Account {
 		else
 		{
 			balance -= amount;
-			withList.add(amount)
+			transList.add(transaction);
+			withList.add(transaction);			
 			return 1;
 		}
 	}

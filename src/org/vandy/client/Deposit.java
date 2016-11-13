@@ -1,5 +1,5 @@
 package org.vandy.client;
 
-public class Deposit {
+public class Deposit extends Transaction {
 
 }
