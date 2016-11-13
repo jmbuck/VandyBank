@@ -347,6 +347,7 @@ public class Bank {
 			String streetName = name;
 			String firstLast = first + last;
 			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
+			System.out.println(custID);
 			Customer c = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
 			customerList.add(c);
 			Randomize.addRandomAccounts(custID, firstLast);
@@ -393,11 +394,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Deposit addDesposit(Account acc, double amount, String desc)
+	public static Deposit addDeposit(Account acc, double amount, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String depID = CapitalHttpClient.postDeposit(acc.getID(), "balance", date, amount, desc);
 			Deposit transaction = new Deposit(depID, "deposit", date, "pending", acc.getID(), "balance", amount, desc);
 			acc.deposit(transaction, depID);
