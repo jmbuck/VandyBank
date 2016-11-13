@@ -52,6 +52,13 @@ public class Bank {
 				String category = CapitalHttpClient.getMerchantByID(s, "category");
 				String[] parts = category.split(",");
 				String zip = CapitalHttpClient.getMerchantByID(s, "zip");
+				String city = CapitalHttpClient.getMerchantByID(s, "city");
+				String streetNumber = CapitalHttpClient.getMerchantByID(s, "street_number");
+				String streetName = CapitalHttpClient.getMerchantByID(s, "street_name");
+				String state = CapitalHttpClient.getMerchantByID(s, "state");
+				Merchant m = new Merchant (s, name, parts, zip, city, streetNumber,
+											state, streetName);
+				merchList.add(m);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
