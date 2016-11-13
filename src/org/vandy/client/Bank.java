@@ -72,7 +72,7 @@ public class Bank {
 					String medium = CapitalHttpClient.getWithdrawalsByID(s, "medium");
 					String description = CapitalHttpClient.getWithdrawalsByID(s, "description");
 					double amt = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(s, "amount"));
-					Withdrawal w = new Withdrawal(s, type, transDate, status, a.getID(), medium, amt, description);
+					Withdrawal w = new Withdrawal(s, type, transDate, status, a, medium, amt, description);
 					a.addWithdraw(w);
 					for(Customer c : customerList) {
 						if(a.getCustomerID().equals(c.getID())) {
