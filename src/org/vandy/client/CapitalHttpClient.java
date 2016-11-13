@@ -165,38 +165,8 @@ public class CapitalHttpClient {
 		if(desc != "")
 			juo.put("description", desc);
 		
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-		HttpResponse response = client.execute(post);
-
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		//get transfer ID
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("i") == 2) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
-		
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 	
 	public static String postPurchase(String acctID, String merchID, String medium,
