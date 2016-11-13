@@ -11,6 +11,7 @@ public class Customer
 	private String id, first, last, streetNum, streetName, city, state, zip;
 	
 	public Customer() { //default values
+		id = "";
 		first = ""; 
 		last = "";
 		streetNum = "";
@@ -80,29 +81,49 @@ public class Customer
 		return zip;
 	}
 	
-	public void setFirst(String f) {
-		
+	public void setFirst(String f) throws Exception {
+		if(first != "")
+			CapitalHttpClient.putCustomerChanges(id, "first_name", f);
+		first = f;
 	}
 	
-	public void setLast(String l) {
-		
+	public void setLast(String l) throws Exception {
+		if(last != "")
+			CapitalHttpClient.putCustomerChanges(id, "last_name", l);
+		last = l;
 	}
 	
-	public void setAddress(String a) {
-		
+	public void setAddress(String a) throws Exception {
+		String[] parts = a.split(" ");
+		if(streetNum != "")
+			CapitalHttpClient.putCustomerChanges(id, "street_number", parts[0]);
+		streetNum = parts[0];
+		String name = "";
+		for(int i = 1; 1 < parts.length; i++) {
+			name += parts[i];
+			if(i != parts.length - 1)
+				name += " ";
+		}
+		if(streetName != "") 
+			CapitalHttpClient.putCustomerChanges(id, "street_name", name);
+		streetName = name;
 	}
 	
-	public void setCity(String c) {
-		
+	public void setCity(String c) throws Exception {
+		if(city != "")
+			CapitalHttpClient.putCustomerChanges(id, "city", c);
+		city = c;
 	}
 	
-	public void setZip(String z) {
-		
-		
+	public void setZip(String z) throws Exception {
+		if(zip != "")
+			CapitalHttpClient.putCustomerChanges(id, "zip", z);
+		state = z;
 	}
 	
-	public void setState(String s) {
-		
-		
+	public void setState(String s) throws Exception {
+		if(state != "")
+			CapitalHttpClient.putCustomerChanges(id, "state", s);
+		state = s;
 	}
 }

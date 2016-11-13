@@ -122,4 +122,9 @@ public class Bank {
 		
 		
 	}
+	
+	public static Customer findCustomer(String fullname) {
+		
+		return null;
+	}
 }
