@@ -11,10 +11,9 @@ public class Account {
 	private List<Deposit> depList = new ArrayList<Deposit>();
 	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
 	private String id, type, nickname, account_number, customer_id;
-	private int rewards;
-	private double balance;
+	private double rewards, balance;
 	
-	public Account(String accId, String custID, String accType, String custNickname, int accRewards, double accBalance,
+	public Account(String accId, String custID, String accType, String custNickname, double accRewards, double accBalance,
 				String accNum) throws Exception 
 	{	
 		id = accId;
@@ -51,7 +50,7 @@ public class Account {
 		return customer_id;
 	}
 	
-	public int getRewards()
+	public double getRewards()
 	{
 		return rewards;
 	}
@@ -63,8 +62,20 @@ public class Account {
 	
 	public void setType(String accType) throws Exception
 	{
-		type = accType;
-		CapitalHttpClient.putAccountChanges(id, "type", accType);
+		if(!type.equals(accType))
+		{
+			type = accType;
+			CapitalHttpClient.putAccountChanges(id, "type", accType);
+		}
+	}
+	
+	public void setNickname(String accNickname) throws Exception
+	{
+		if(!nickname.equals(accNickname))
+		{
+			nickname = accNickname;
+			CapitalHttpClient.putAccountChanges(id, "nickname", accNickname);
+		}
 	}
 	
 	public void addBill(Bill cost)
@@ -82,6 +93,7 @@ public class Account {
 		else
 		{
 			balance += amount;
+			CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
 			transList.add(transaction);
 			depList.add(transaction);			
 			return 1;
@@ -98,9 +110,29 @@ public class Account {
 		else
 		{
 			balance -= amount;
+			CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
 			transList.add(transaction);
 			withList.add(transaction);			
 			return 1;
 		}
+	}
+	
+	public int purchase(Purchase transaction, String purchID) throws Exception
+	{
+		double amount = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(purchID, "amount"));
+		if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
+		{
+			return 0;				//Check bounces
+		}
+		else
+		{
+			balance -= amount;
+			rewards += amount*0.015;
+			CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
+			CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
+			transList.add(transaction);
+			withList.add(transaction);	
+			return 1;
+		}		
 	}
 }
