@@ -12,9 +12,9 @@ public class Account {
 	private List<Transfer> payerTransList = new ArrayList<Transfer>();
 	private List<Transfer> payeeTransList = new ArrayList<Transfer>();
 	private String id, type, nickname, account_number, customer_id;
-	private int rewards, balance;
+	private double rewards, balance;
 	
-	public Account(String accId, String custID, String accType, String custNickname, int accRewards, int accBalance,
+	public Account(String accId, String custID, String accType, String custNickname, double accRewards, double accBalance,
 				String accNum) throws Exception 
 	{	
 		id = accId;
