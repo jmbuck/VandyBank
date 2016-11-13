@@ -61,6 +61,21 @@ public class Account {
 		return balance;
 	}
 	
+	public List<Deposit> getDepList()
+	{
+		return depList;
+	}
+	
+	public List<Withdrawal> getWithList()
+	{
+		return withList;
+	}
+	
+	public List<Transaction> getTransList()
+	{
+		return transList;
+	}
+	
 	public void addDep(Deposit d) {
 		depList.add(d);
 	}
@@ -165,8 +180,9 @@ public class Account {
 	
 	public int transferTo(Transfer transaction, String transID, Account receiver)
 	{
+		try
 		{
-			double amount = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(purchID, "amount"));
+			double amount = Double.parseDouble(CapitalHttpClient.getTransferByID(transID, "amount"));
 			if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
 			{
 				return 0;				//Check for bounces
@@ -181,10 +197,47 @@ public class Account {
 				CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
 				transList.add(withdraw);
 				withList.add(withdraw);
-				receiver.get
+				receiver.getDepList().add(deposit);
+				receiver.getTransList().add(deposit);
 				return 1;
 			}		
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int transferFrom(Transfer transaction, String transID, Account source)
+	{
+		try
+		{
+			double amount = Double.parseDouble(CapitalHttpClient.getTransferByID(transID, "amount"));
+			if(source.getBalance() - amount < 0 || amount < 0)	//Insufficient funds or amount
+			{
+				return 0;				//Check for bounces
+			}
+			else
+			{
+				balance += amount;
+				Deposit deposit = new Deposit(transaction.getID(), type, transaction.getTransDate(), "pending", id, "balance", transaction.getAmount(), transaction.getDesc());
+				Withdrawal withdraw = new Withdrawal(transaction.getID(), source.getType(), transaction.getTransDate(), "pending", source.getID(), "balance", transaction.getAmount(), transaction.getDesc());
+				source.withdraw(withdraw, transID);
+				CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
+				CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
+				transList.add(deposit);
+				depList.add(deposit);
+				source.getWithList().add(withdraw);
+				source.getTransList().add(withdraw);
+				return 1;
+			}		
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public void merge(Account account)

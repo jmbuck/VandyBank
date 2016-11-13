@@ -363,7 +363,7 @@ public class Bank {
 		{
 			String date = getDate();
 			String withID = CapitalHttpClient.postWithdrawal(acc.getID(), "balance", date, amount, desc);
-			Withdrawal transaction = new Withdrawal(depID, "withdrawal", date, "pending", acc.getID(), "balance", amount, desc);
+			Withdrawal transaction = new Withdrawal(withID, "withdrawal", date, "pending", acc.getID(), "balance", amount, desc);
 			acc.withdraw(transaction, withID);
 			withList.add(transaction);
 			return transaction;
