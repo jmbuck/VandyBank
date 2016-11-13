@@ -2,6 +2,8 @@ package org.vandy.client;
 
 import java.util.*;
 
+import com.polaris.engine.util.MathHelper;
+
 public class Bank {
 
 	private static List<Customer> customerList = new ArrayList<Customer>();
@@ -293,7 +295,7 @@ public class Bank {
 			if(curr.getAccounts().size() < 4) {
 				String accNum = "";
 				for(int i = 0; i < 16; i++) {
-					int num = (int)(Math.random()) * 10;
+					int num = MathHelper.random(9);
 					accNum += Integer.toString(num);
 				}
 				

@@ -2,8 +2,7 @@ package org.vandy.client;
 
 public class Purchase extends Withdrawal {
 	
-	String id, payer, merch, type, status, medium, desc, purchaseDate;
-	double amt;
+	String merch;
 	
 	public Purchase(String pId, String pType, String purchDate, String pStatus, String pPayer, String med,
 			double wAmt, String descr, String pMerch) {
