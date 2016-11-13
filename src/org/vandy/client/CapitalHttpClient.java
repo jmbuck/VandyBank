@@ -295,7 +295,10 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putAccountChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/" + id+ "?key="+apiKey);
+		String url = "http://api.reimaginebanking.com/accounts/" + id+ "?key="+apiKey;
+		StringBuffer result = buffer(url);
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
 
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("type")) {
@@ -316,6 +319,7 @@ public class CapitalHttpClient {
 		if (parameter.equals("customer_id")) {
 			obj.put("customer_id", change);
 		}
+		processInput(url, post, obj, client);
 	}
 	
 	public static String[] getMerchants() throws Exception {
@@ -412,7 +416,10 @@ public class CapitalHttpClient {
 	public static void putCustomerChanges(String id, String parameter, String change){
 		StringBuffer result;
 		try {
-			result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
+			String url = "http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey;
+			result = buffer(url);
+			HttpPost post = new HttpPost(url);
+			HttpClient client = HttpClients.createDefault();
 			JSONObject obj = new JSONObject(result.toString());
 			if (parameter.equals("first_name")) {
 				obj.put("first_name", change);
@@ -472,29 +479,70 @@ public class CapitalHttpClient {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/bills/"+id+"?key="+apiKey);
 		
 		JSONObject obj = new JSONObject(result.toString());
-		if (parameter.equals("status")) {
-			return obj.getString("status");
+		
+		try {
+			if (parameter.equals("status")) {
+				return obj.getString("status");
+			}
 		}
-		if (parameter.equals("payee")) {
-			return obj.getString("payee");
+		catch (Exception e) {
+			return "No status listed.";
 		}
-		if (parameter.equals("nickname")) {
-			return obj.getString("nickname");
+		try {
+			if (parameter.equals("payee")) {
+				return obj.getString("payee");
+			} 
 		}
-		if (parameter.equals("creation_date")) {
-			return obj.getString("creation_date");
+		catch (Exception e) {
+			return "No payee listed.";
 		}
-		if (parameter.equals("payment_date")) {
-			return obj.getString("payment_date");
+		try {
+			if (parameter.equals("nickname")) {
+				return obj.getString("nickname");
+			} 
 		}
-		if (parameter.equals("recurring_date")) {
-			return Integer.toString(obj.getInt("recurring_date"));
+		catch (Exception e) {
+			return "Bill";
 		}
-		if (parameter.equals("upcoming_payment_date")) {
-			return obj.getString("upcoming_payment_date");
+		try {
+			if (parameter.equals("creation_date")) {
+				return obj.getString("creation_date");
+			}
 		}
-		if (parameter.equals("account_id")) {
-			return obj.getString("account_id");
+		catch (Exception e) {
+			return "No creation date.";
+		}
+		try {
+			if (parameter.equals("payment_date")) {
+				return obj.getString("payment_date");
+			}
+		}
+		catch (Exception e) {
+			return "No payment date listed.";
+		}
+		try {
+			if (parameter.equals("recurring_date")) {
+				return Integer.toString(obj.getInt("recurring_date"));
+			}
+		}
+		catch (Exception e) {
+			return "Not a recurring bill";
+		}
+		try {
+			if (parameter.equals("upcoming_payment_date")) {
+				return obj.getString("upcoming_payment_date");
+			} 
+		}
+		catch (Exception e) {
+			return "No upcoming payment date.";
+		}
+		try {
+			if (parameter.equals("account_id")) {
+				return obj.getString("account_id");
+			}
+		}
+		catch (Exception e) { 
+			return "1234567890125473";
 		}
 		
 		return "error";
@@ -502,7 +550,9 @@ public class CapitalHttpClient {
 	
 	public static void putBillChanges(String id, String parameter, String change) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/bills/" + id+ "?key="+apiKey);
-
+		StringBuffer result = buffer(url);
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("status")) {
 			obj.put("status", change);

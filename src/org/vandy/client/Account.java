@@ -165,6 +165,11 @@ public class Account {
 
 	public void merge(Account account)
 	{
+		double amount = account.getBalance();
+		if(amount == 0)
+			return;
+		balance += amount;
+//		CapitalHttpClient.deleteAccount();
 		
 	}
 }

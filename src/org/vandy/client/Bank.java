@@ -314,9 +314,18 @@ public class Bank {
 		return null;
 	}
 	
-	public static void createCustomer(Customer c)
+	public static void createCustomers()
 	{
+		try
+		{
+			List<Customer> customers = new Randomize().getCustomers();
+			for(Customer c : customers)
+				customerList.add(c);//
+		}
+		catch(Exception e)
+		{
 
+		}
 	}
 
 	public static void setCurrentCustomer(Customer c)
