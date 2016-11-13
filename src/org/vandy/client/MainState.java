@@ -5,6 +5,7 @@ public class MainState
 	
 	protected final MainGui mainGui;
 	protected double ticks = 0;
+	private boolean closing = false;
 	
 	public MainState(MainGui gui)
 	{
@@ -13,7 +14,16 @@ public class MainState
 	
 	public void render(double delta)
 	{
-		ticks += delta;
+		if(closing)
+			ticks -= delta;
+		else
+			ticks += delta;
+	}
+
+	public void close() 
+	{
+		ticks = 1;
+		closing = true;
 	}
 
 }
