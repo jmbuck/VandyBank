@@ -2,15 +2,20 @@ package org.vandy.client;
 
 import java.util.*;
 
-public class Banking {
+public class Bank {
 	
 	private List<Customer> customerList = new ArrayList<Customer>();
 	private List<Account> accountList = new ArrayList<Account>();
+	private List<Bill> billList = new ArrayList<Bill>();
 	
-	public Banking() throws Exception {
+	public Bank() throws Exception {
+		
+	}
+	
+	public void load() throws Exception {
 		loadCustomers();
 		loadAccounts();
-		
+		loadBills();
 	}
 	
 	public void loadCustomers() throws Exception {
@@ -48,6 +53,26 @@ public class Banking {
 			}
 			accountList.add(a);
 			
+		}
+	}
+	
+	public void loadBills() throws Exception {
+		for(Customer c : customerList) {
+			for(Account a : c.getAccounts()) {
+				String[] accBills = CapitalHttpClient.getAccountBills(a.getID());
+				for(String b : accBills) {
+					String status = CapitalHttpClient.getBillByID(b, "status");
+					String nickname = CapitalHttpClient.getBillByID(b, "nickname");
+					String creationDate = CapitalHttpClient.getBillByID(b, "creation_date");
+					String paymentDate = CapitalHttpClient.getBillByID(b, "payment_date");
+					int recurr = Integer.parseInt(CapitalHttpClient.getBillByID(b, "recurring_date"));
+					String upcoming = CapitalHttpClient.getBillByID(b, "upcoming_payment_date");
+					Bill bill = new Bill(b, status, c, nickname, creationDate, paymentDate, recurr, upcoming, a);
+					c.addBill(bill);
+					a.addBill(bill);
+					billList.add(bill);
+				}
+			}
 		}
 	}
 }

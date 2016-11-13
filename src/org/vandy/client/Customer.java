@@ -6,7 +6,8 @@ import java.util.List;
 public class Customer 
 {
 	
-	private ArrayList<Account> accountList;
+	private ArrayList<Account> accountList = new ArrayList<Account>();
+	private ArrayList<Bill> billList = new ArrayList<Bill>();
 	private String id;
 	private String first;
 	private String last;
@@ -27,11 +28,14 @@ public class Customer
 		city = cCity;
 		state = cState;
 		zip = cZip;
-		accountList = new ArrayList<Account>();
 	}
 	
 	public void addAccount(Account newAcc) {
 		accountList.add(newAcc);
+	}
+	
+	public void addBill(Bill bill) {
+		billList.add(bill);
 	}
 	
 	public ArrayList<Account> getAccounts() {
