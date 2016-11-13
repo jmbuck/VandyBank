@@ -320,14 +320,13 @@ public class CapitalHttpClient {
 	
 	public static String[] getMerchants() throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants?key="+apiKey);
-		JSONArray arr = new JSONArray(result.toString());
+		JSONObject juo = new JSONObject(result.toString());
+		JSONArray arr = juo.getJSONArray("data");
 		String[] merchantIds = new String[arr.length()];
 		for (int i = 0; i<arr.length(); i++) {
 			merchantIds[i] = arr.getJSONObject(i).getString("_id");
 		}
-
-		return merchantIds;
-		
+		return merchantIds;	
 	}
 	
 	public static String getMerchantByID(String id, String parameter) throws Exception {
