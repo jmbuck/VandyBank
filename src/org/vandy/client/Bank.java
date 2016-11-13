@@ -2,6 +2,8 @@ package org.vandy.client;
 
 import java.util.*;
 
+import com.polaris.engine.util.MathHelper;
+
 public class Bank {
 
 	private static List<Customer> customerList = new ArrayList<Customer>();
@@ -45,7 +47,7 @@ public class Bank {
 	}
 
 	private static void loadMerchants() {
-		/*try {
+		try {
 			String[] merchants = CapitalHttpClient.getMerchants();
 			for(String s: merchants) {
 				String name = CapitalHttpClient.getMerchantByID(s, "name");
@@ -62,8 +64,7 @@ public class Bank {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
-
+		}
 	}
 
 	private static void loadTransfers() {
@@ -121,7 +122,7 @@ public class Bank {
 					String medium = CapitalHttpClient.getWithdrawalsByID(s, "medium");
 					String description = CapitalHttpClient.getWithdrawalsByID(s, "description");
 					double amt = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(s, "amount"));
-					Withdrawal w = new Withdrawal(s, type, transDate, status, a, medium, amt, description);
+					Withdrawal w = new Withdrawal(s, type, transDate, status, a.getID(), medium, amt, description);
 					a.addWithdraw(w);
 					for(Customer c : customerList) {
 						if(a.getCustomerID().equals(c.getID())) {
@@ -294,10 +295,10 @@ public class Bank {
 			if(curr.getAccounts().size() < 4) {
 				String accNum = "";
 				for(int i = 0; i < 16; i++) {
-					int num = (int)(Math.random()) * 10;
+					int num = MathHelper.random(9);
 					accNum += Integer.toString(num);
 				}
-				
+				System.out.println(accNum);
 				String custId = curr.getID();
 				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
 				Account acc = new Account(accId, custId, accType, nickname, 0, 0, accNum);

@@ -2,13 +2,12 @@ package org.vandy.client;
 
 public class Withdrawal extends Transaction{
 
-	String id, medium, transDate, desc, status, type;
-	Account acct;
+	String id, medium, transDate, desc, status, type, acctId;
 	double amount;
 	
-	public Withdrawal(String wId, String wType, String wTransDate, String wStatus, Account wAcct, String med, double wAmt, String descr) {
+	public Withdrawal(String wId, String wType, String wTransDate, String wStatus, String aID, String med, double wAmt, String descr) {
 		id = wId;
-		acct = wAcct;
+		acctId = aID;
 		medium = med;
 		transDate = wTransDate;
 		desc = descr;
