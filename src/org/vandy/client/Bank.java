@@ -363,6 +363,16 @@ public class Bank {
 		return null;
 	}
 	
+	public static Account findAccount(String accNum)
+	{
+		for(Account a : accountList)
+		{
+			if(a.getAccountNumber().equals(accNum))
+				return a;
+		}
+		return null;
+	}
+	
 	public static Deposit addDesposit(Account acc, double amount, String desc)
 	{
 		try
