@@ -40,7 +40,7 @@ public class VandyApp extends App
 	}
 
 	@Override
-	protected LogicGui getStartGui() 
+	public LogicGui getStartGui() 
 	{
 		return new LoginLogic(this.getLogicHandler());
 	}
