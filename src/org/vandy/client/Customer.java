@@ -82,21 +82,15 @@ public class Customer
 	}
 	
 	public void setFirst(String f) {
-		if(first != "")
-			CapitalHttpClient.putCustomerChanges(id, "first_name", f);
 		first = f;
 	}
 	
 	public void setLast(String l){
-		if(last != "")
-			CapitalHttpClient.putCustomerChanges(id, "last_name", l);
 		last = l;
 	}
 	
 	public void setAddress(String a) {
 		String[] parts = a.split(" ");
-		if(streetNum != "")
-			CapitalHttpClient.putCustomerChanges(id, "street_number", parts[0]);
 		streetNum = parts[0];
 		String name = "";
 		for(int i = 1; 1 < parts.length; i++) {
@@ -104,26 +98,47 @@ public class Customer
 			if(i != parts.length - 1)
 				name += " ";
 		}
-		if(streetName != "") 
-			CapitalHttpClient.putCustomerChanges(id, "street_name", name);
 		streetName = name;
 	}
 	
 	public void setCity(String c) {
-		if(city != "")
-			CapitalHttpClient.putCustomerChanges(id, "city", c);
 		city = c;
 	}
 	
 	public void setZip(String z) {
-		if(zip != "")
-			CapitalHttpClient.putCustomerChanges(id, "zip", z);
-		state = z;
+		zip= z;
 	}
 	
 	public void setState(String s) {
-		if(state != "")
-			CapitalHttpClient.putCustomerChanges(id, "state", s);
 		state = s;
 	}
+	
+	public void updateFirst(String s){
+		CapitalHttpClient.putCustomerChanges(id, "first_name", s);
+	}
+	
+	public void updateLast(String s){
+		CapitalHttpClient.putCustomerChanges(id, "last_name", s);
+	}
+	
+	public void updateStreetName(String s){
+		CapitalHttpClient.putCustomerChanges(id, "street_name", s);
+	}
+	
+	public void updateStreetNumber(String s){
+		CapitalHttpClient.putCustomerChanges(id, "street_number", s);
+	}
+	
+	public void updateCity(String s){
+		CapitalHttpClient.putCustomerChanges(id, "city", s);
+	}
+	
+	public void updateZip(String s){
+		CapitalHttpClient.putCustomerChanges(id, "zip", s);
+	}
+	
+	public void updateState(String s){
+		CapitalHttpClient.putCustomerChanges(id, "state", s);
+	}
+
 }

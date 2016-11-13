@@ -60,6 +60,10 @@ public class Account {
 		return balance;
 	}
 	
+	public void addDep(Deposit d) {
+		depList.add(d);
+	}
+	
 	public void setType(String accType) throws Exception
 	{
 		if(!type.equals(accType))

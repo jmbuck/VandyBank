@@ -4,57 +4,81 @@ import java.util.*;
 
 public class Bank {
 	
-	private List<Customer> customerList = new ArrayList<Customer>();
-	private List<Account> accountList = new ArrayList<Account>();
-	private List<Bill> billList = new ArrayList<Bill>();
-	private List<Deposit> depList = new ArrayList<Deposit>();
-	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
-	private List<Transfer> transferList = new ArrayList<Transfer>();
-	private List<Merchant> merchList = new ArrayList<Merchant>();
-	private List<Purchase> purchList = new ArrayList<Purchase>();
+	private static List<Customer> customerList = new ArrayList<Customer>();
+	private static List<Account> accountList = new ArrayList<Account>();
+	private static List<Bill> billList = new ArrayList<Bill>();
+	private static List<Deposit> depList = new ArrayList<Deposit>();
+	private static List<Withdrawal> withList = new ArrayList<Withdrawal>();
+	private static List<Transfer> transferList = new ArrayList<Transfer>();
+	private static List<Merchant> merchList = new ArrayList<Merchant>();
+	private static List<Purchase> purchList = new ArrayList<Purchase>();
 	
-	public Bank() throws Exception {
-		
+	public static void load() {
+		try {
+			loadCustomers();
+			loadAccounts();
+			loadBills();
+			loadDeposits();
+			loadWithdrawals();
+			loadTransfers();
+			loadMerchants();
+			loadPurchases();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void load() throws Exception {
-		loadCustomers();
-		loadAccounts();
-		loadBills();
-		loadDeposits();
-		loadWithdrawals();
-		loadTransfers();
-		loadMerchants();
-		loadPurchases();
-		
-	}
-	
-	private void loadPurchases() {
+	private static void loadPurchases() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void loadMerchants() {
+	private static void loadMerchants() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void loadTransfers() {
+	private static void loadTransfers() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void loadWithdrawals() {
+	private static void loadWithdrawals() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void loadDeposits() {
+	private static void loadDeposits() {
 		// TODO Auto-generated method stub
 		
+			try {
+				for(Account a : accountList) {
+					String[] deposits;
+					deposits = CapitalHttpClient.getDeposits(a.getID());
+					for(String s : deposits) {
+						String type = CapitalHttpClient.getDepositsByID(s, "type");
+						String transDate = CapitalHttpClient.getDepositsByID(s, "transaction_date");
+						String status = CapitalHttpClient.getDepositsByID(s, "status");
+						String medium = CapitalHttpClient.getDepositsByID(s, "medium");
+						String description = CapitalHttpClient.getDepositsByID(s, "description");
+						double amt = Double.parseDouble(CapitalHttpClient.getDepositsByID(s, "amount"));
+						Deposit d = new Deposit(s, type, transDate, status, a.getID(), medium, amt, description);
+						a.addDep(d);
+						for(Customer c : customerList) {
+							if(a.getCustomerID().equals(c.getID())) {
+								c.addAccount(a);
+							}
+						}
+					}
+				}	
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
-	public void loadCustomers() throws Exception {
+	public static void loadCustomers() throws Exception {
 		String[] customers = CapitalHttpClient.getAllCustomers();
 		for(String s : customers) {
 			Customer c;
@@ -70,7 +94,7 @@ public class Bank {
 		}
 	}
 	
-	public void loadAccounts() throws Exception {
+	public static void loadAccounts() throws Exception {
 		String[] accounts = CapitalHttpClient.getAllAccounts("");
 		for(String s : accounts) {
 			Account a;
@@ -92,7 +116,7 @@ public class Bank {
 		}
 	}
 	
-	public void loadBills() throws Exception {
+	public static void loadBills() throws Exception {
 		for(Customer c : customerList) {
 			for(Account a : c.getAccounts()) {
 				String[] accBills = CapitalHttpClient.getAccountBills(a.getID());
