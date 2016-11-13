@@ -155,7 +155,13 @@ public class Bank {
 				String nickname = CapitalHttpClient.getAccountByID(s, "nickname");
 				int rewards = Integer.parseInt(CapitalHttpClient.getAccountByID(s, "rewards"));
 				int balance = Integer.parseInt(CapitalHttpClient.getAccountByID(s, "balance"));
-				String accNum = CapitalHttpClient.getAccountByID(s, "account_number");
+				String accNum = "";
+				try {
+					accNum = CapitalHttpClient.getAccountByID(s, "account_number");
+				} catch (Exception e) {
+					accNum = "UnknownAccount##";
+				}
+				
 				a = new Account(s, custID, type, nickname, rewards, balance, accNum);
 				//add accounts to customers
 				for(Customer c : customerList) {
