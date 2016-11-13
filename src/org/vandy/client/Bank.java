@@ -196,7 +196,7 @@ public class Bank {
 		}
 	}
 
-	public String[] getCustomers() {
+	public static String[] getCustomers() {
 		String[] customers = new String[customerList.size()];
 		for (int i = 0; i<customerList.size(); i++) {
 			customers[i] = customerList.get(i).getID();
@@ -204,7 +204,7 @@ public class Bank {
 		return customers;
 	}
 	
-	public String lookUpCustomer(String id, String parameter) {
+	public static String lookUpCustomer(String id, String parameter) {
 		Customer c = customerList.get(0);
 		int i = 0;
 		while (c.getID() != id) c = customerList.get(i);
