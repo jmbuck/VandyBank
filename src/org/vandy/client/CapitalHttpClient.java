@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.*;
@@ -26,6 +27,17 @@ public class CapitalHttpClient {
 		post.setHeader("accept", "application/json");
 		post.setEntity(entityForPost);
 		HttpResponse response = client.execute(post);
+		return responseBuffer(response);
+		
+	}
+	
+	public static StringBuffer processInput(String url, HttpPut put, JSONObject juo, HttpClient client) throws Exception
+	{
+		StringEntity entityForPost = new StringEntity(juo.toString());
+		put.setHeader("content-type", "application/json");
+		put.setHeader("accept", "application/json");
+		put.setEntity(entityForPost);
+		HttpResponse response = client.execute(put);
 		return responseBuffer(response);
 		
 	}
@@ -550,13 +562,15 @@ public class CapitalHttpClient {
 	
 	public static void putBillChanges(String id, String parameter, String change) throws Exception {
 		String url = "http://api.reimaginebanking.com/bills/" + id+ "?key="+apiKey;
-		StringBuffer result = buffer(url);
-		HttpPost post = new HttpPost(url);
+		//StringBuffer result = buffer(url);
+		HttpPut put = new HttpPut(url);
 		HttpClient client = HttpClients.createDefault();
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		
+		StringBuffer result = processInput(url, put, obj, client);
 	}
 	
 	public static String[] getPurchasesByPayer(String payer_id) throws Exception {
