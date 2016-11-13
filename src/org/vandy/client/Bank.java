@@ -290,7 +290,7 @@ public class Bank {
 	public static String[] getAccountNums() {
 		String[] acctNums = new String[accountList.size()];
 		for (int i = 0; i<accountList.size(); i++) {
-			acctNums[i] = accountList.get(0).getCustomerID();
+			acctNums[i] = accountList.get(i).getCustomerID();
 		}
 		return acctNums;
 	}
