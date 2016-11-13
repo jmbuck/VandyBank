@@ -179,11 +179,11 @@ public class Account {
 		}		
 	}
 	
-	public int transferTo(Transfer transaction, String transID, Account receiver)
+	public int transferTo(String amt, Account receiver)
 	{
 		try
 		{
-			double amount = Double.parseDouble(CapitalHttpClient.getTransferByID(transID, "amount"));
+			double amount = Double.parseDouble(amt);
 			if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
 			{
 				return 0;				//Check for bounces
@@ -191,9 +191,10 @@ public class Account {
 			else
 			{
 				balance -= amount;
-				Withdrawal withdraw = new Withdrawal(transaction.getID(), type, transaction.getTransDate(), "pending", id, "balance", transaction.getAmount(), transaction.getDesc());
-				Deposit deposit = new Deposit(transaction.getID(), receiver.getType(), transaction.getTransDate(), "pending", receiver.getID(), "balance", transaction.getAmount(), transaction.getDesc());
-				receiver.deposit(deposit, transID);
+				
+				Withdrawal withdraw = Bank.addWithdrawal(receiver, amount, "transfer");
+				Deposit deposit = Bank.addDesposit(receiver, amount, "transfer");
+				receiver.deposit(deposit, deposit.getID());
 				CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
 				CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
 				transList.add(withdraw);
