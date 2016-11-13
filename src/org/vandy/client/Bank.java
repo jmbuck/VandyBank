@@ -196,6 +196,42 @@ public class Bank {
 		}
 	}
 
+	public String[] getCustomers() {
+		String[] customers = new String[customerList.size()];
+		for (int i = 0; i<customerList.size(); i++) {
+			customers[i] = customerList.get(i).getID();
+		}
+		return customers;
+	}
+	
+	public String lookUpCustomer(String id, String parameter) {
+		Customer c = customerList.get(0);
+		int i = 0;
+		while (c.getID() != id) c = customerList.get(i);
+		if (parameter.equals("first_name")) {
+			return c.getFirstName();
+		}
+		if (parameter.equals("last_name")) {
+			return c.getLastName();
+		}
+		if (parameter.equals("zip")) {
+			return c.getZip();
+		}
+		if (parameter.equals("city")) {
+			return c.getCity();
+		}
+		if (parameter.equals("street_number")) {
+			return c.getStreetNum();
+		}
+		if (parameter.equals("state")) {
+			return c.getState();
+		}
+		if (parameter.equals("street_name")) {
+			return c.getStreetName();
+		}
+		return "";
+	}
+	
 	public static void createCustomer(Customer c)
 	{
 
