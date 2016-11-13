@@ -8,6 +8,7 @@ public class Customer
 	
 	private ArrayList<Account> accountList = new ArrayList<Account>();
 	private ArrayList<Bill> billList = new ArrayList<Bill>();
+	private ArrayList<Deposit> depList = new ArrayList<Deposit>();
 	private String id, first, last, streetNum, streetName, city, state, zip;
 	
 	public Customer() { //default values
@@ -39,6 +40,10 @@ public class Customer
 	
 	public void addBill(Bill bill) {
 		billList.add(bill);
+	}
+	
+	public void addDep(Deposit d) {
+		depList.add(d);
 	}
 	
 	public ArrayList<Account> getAccounts() {
