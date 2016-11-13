@@ -34,6 +34,10 @@ public class Customer
 		accountList.add(newAcc);
 	}
 	
+	public void addBill(Bill bill) {
+		billList.add(bill);
+	}
+	
 	public ArrayList<Account> getAccounts() {
 		return accountList;
 	}
