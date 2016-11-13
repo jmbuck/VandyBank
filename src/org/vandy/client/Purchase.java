@@ -10,5 +10,9 @@ public class Purchase extends Withdrawal {
 		merch = pMerch;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public int getType() {
+		return 2; //purchase
+	}
 
 }
