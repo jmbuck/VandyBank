@@ -19,6 +19,7 @@ import com.polaris.engine.render.Texture;
 public class MainAccounts extends MainState
 {
 	private String[] accTypes = {"", "Savings", "Checking", "Credit Card"};
+	private String[] transTypes = {"Deposit", "Withdrawl", "Purchase"};
 
 	private Key enterKey;
 	private Key deleteKey;
@@ -26,7 +27,6 @@ public class MainAccounts extends MainState
 
 	private List<Account> accountList;
 	private Account currentAccount = null;
-	private List<Transaction> transactionList;
 
 	private DecimalFormat format = new DecimalFormat("#.##");
 
@@ -86,6 +86,7 @@ public class MainAccounts extends MainState
 		if(mainGui.getApplication().getInput().getMouse(0).isPressed() && hover > 0)
 		{
 			state = hover;
+			currentAccount = null;
 		}
 
 		float x = 1920 / 32;
@@ -211,7 +212,7 @@ public class MainAccounts extends MainState
 								currentAccount = null;
 							}
 						}
-						else if(state == 3)
+						else if(state == 3 || state == 0)
 						{
 							currentAccount = accountList.get(i);
 						}
@@ -246,6 +247,30 @@ public class MainAccounts extends MainState
 			y += 75;
 			boldFont.unbind();
 		}
+		
+		x = 1920 / 3 + 12;
+		y -= 175 * accountList.size();
+		
+		if(currentAccount != null)
+		{
+			boldFont.bind();
+			List<Transaction> list = currentAccount.getTransList();
+			Transaction t;
+			for(int i = 0; i < list.size(); i++)
+			{
+				t = list.get(i);
+				boldFont.draw(transTypes[t.getType()], x, y, 0, .45f);
+				y += 128 * .45f + 10;
+				s = "**** **** **** " + currentAccount.getAccountNumber().substring(12);
+				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				y += 128 * .45f + 10;
+				s = "$" + format.format(currentAccount.getBalance());
+				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				y += 128 * .45f + 20;
+			}
+			boldFont.unbind();
+		}
+		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);

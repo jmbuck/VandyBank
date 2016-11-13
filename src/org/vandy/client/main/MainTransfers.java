@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.vandy.client.Account;
 import org.vandy.client.Bank;
 import org.vandy.client.Search;
+import org.vandy.client.Transaction;
 
 import com.polaris.engine.options.Key;
 import com.polaris.engine.render.Draw;
@@ -137,7 +138,10 @@ public class MainTransfers extends MainState
 			}
 			else if(state == 2)
 			{
-				
+				if(mainAccount.transferTo(currentText, account) == 0)
+				{
+					shakeTicks = .25f;
+				}
 			}
 		}
 		
@@ -208,7 +212,7 @@ public class MainTransfers extends MainState
 					font.draw(s, 1920 / 2 - font.getWidth(currentText + s, .6f) / 2 + font.getWidth(currentText, .6f) + font.getWidth(s.charAt(0) + "", .6f) / 2 + shake, y, 0, .6f);
 				for(int i = 0; i < potentials.length; i++)
 				{
-					y += 128 * .4f;
+					y += 128 * .4f + 10;
 					font.draw(potentials[i], 1920 / 2 - font.getWidth(potentials[i], .6f) / 2, y, 0, .6f);
 				}
 			}
