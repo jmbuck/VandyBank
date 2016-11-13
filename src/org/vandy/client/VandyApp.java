@@ -24,7 +24,7 @@ public class VandyApp extends App
 	{
 		super(debug);
 	}
-
+	
 	@Override
 	public long createWindow()
 	{
@@ -35,7 +35,7 @@ public class VandyApp extends App
 	@Override
 	protected LogicGui getStartGui() 
 	{
-		return new MainLogic(this.getLogicHandler());
+		return new LoginLogic(this.getLogicHandler());
 	}
 
 }
