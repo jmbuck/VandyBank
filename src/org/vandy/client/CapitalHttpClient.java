@@ -318,7 +318,7 @@ public class CapitalHttpClient {
 		}
 	}
 	
-	public static String[] getMerchantsAssignedToAccount(String account) throws Exception {
+	public static String[] getMerchants() throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants?key="+apiKey);
 		JSONArray arr = new JSONArray(result.toString());
 		String[] merchantIds = new String[arr.length()];
@@ -330,7 +330,7 @@ public class CapitalHttpClient {
 		
 	}
 	
-	public static String getMerchantInfoFromID(String id, String parameter) throws Exception {
+	public static String getMerchantByID(String id, String parameter) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants/" + id + "?key="+apiKey);
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("name")) {
