@@ -134,5 +134,10 @@ public class Randomize {
 		}
 		
 	}*/
+	
+	public List<Customer> getCustomers()
+	{
+		return custList;
+	}
 
 }
