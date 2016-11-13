@@ -310,31 +310,22 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putAccountChanges(String id, String parameter, String change) throws Exception {
-		String url = "http://api.reimaginebanking.com/accounts/" + id+ "?key="+apiKey;
-		StringBuffer result = buffer(url);
-		HttpPost post = new HttpPost(url);
+		try{
+			String url = "http://api.reimaginebanking.com/accounts/" + id+ "?key="+apiKey;
+		HttpPut put = new HttpPut(url);
 		HttpClient client = HttpClients.createDefault();
-
-		JSONObject obj = new JSONObject(result.toString());
-		if (parameter.equals("type")) {
-			obj.put("type", change);
+		
+		JSONObject obj = new JSONObject();
+		if (parameter.equals("status")) {
+			obj.put("status", change);
 		}
-		if (parameter.equals("nickname")) {
-			obj.put("nickname", change);
-		}
-		if (parameter.equals("rewards")) {
-			obj.put("rewards", change);
-		}
-		if (parameter.equals("balance")) {
-			obj.put("balance", change);
-		}
-		if (parameter.equals("account_number")) {
-			obj.put("account_number", change);
-		}
-		if (parameter.equals("customer_id")) {
-			obj.put("customer_id", change);
-		}
-		processInput(url, post, obj, client);
+		StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
+	}catch(Exception e) {
+		
+	}
 	}
 	
 	public static void deleteAccount(String id)throws Exception
@@ -448,38 +439,23 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putCustomerChanges(String id, String parameter, String change){
-		StringBuffer result;
 		try {
 			String url = "http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey;
-			result = buffer(url);
-			HttpPost post = new HttpPost(url);
+			HttpPut put = new HttpPut(url);
 			HttpClient client = HttpClients.createDefault();
-			JSONObject obj = new JSONObject(result.toString());
-			if (parameter.equals("first_name")) {
-				obj.put("first_name", change);
+			
+			JSONObject obj = new JSONObject();
+			if (parameter.equals("status")) {
+				obj.put("status", change);
 			}
-			if (parameter.equals("last_name")) {
-				obj.put("last_name", change);
-			}
-			if (parameter.equals("street_number")) {
-				obj.getJSONObject("address").put("street_number", change);
-			}
-			if (parameter.equals("street_name")) {
-				obj.getJSONObject("address").put("street_name", change);
-			}
-			if (parameter.equals("city")) {
-				obj.getJSONObject("address").put("city", change);
-			}
-			if (parameter.equals("state")) {
-				obj.getJSONObject("address").put("state", change);
-			}
-			if (parameter.equals("zip")) {
-				obj.getJSONObject("address").put("zip", change);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			StringBuffer result = 
+					processInput(url, put, obj, client);
+			//JSONObject resultsObject = new JSONObject(result);
+			System.out.println(result);
+		}catch(Exception e) {
+			
 		}
+
 	}
 	
 	public static String[] getAccountBills(String acctId) throws Exception {
@@ -704,12 +680,23 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putPurchaseChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/purchases/" + id+ "?key="+apiKey);
+		try{
+			String url = ("http://api.reimaginebanking.com/purchases/" + id+ "?key="+apiKey);
 
-		JSONObject obj = new JSONObject(result.toString());
+		HttpPut put = new HttpPut(url);
+		HttpClient client = HttpClients.createDefault();
+		
+		JSONObject obj = new JSONObject();
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
+	}catch(Exception e) {
+		
+	}
 	}
 	
 	public static String[] getDeposits(String acctId) throws Exception {
@@ -813,13 +800,23 @@ public class CapitalHttpClient {
 		return "error";
 	}
 	
-	public static void putWithdrawalChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/withdrawals/" + id+ "?key="+apiKey);
-
-		JSONObject obj = new JSONObject(result.toString());
+	public static void putWithdrawalChanges(String id, String parameter, String change) {
+		try{
+			String url = ("http://api.reimaginebanking.com/withdrawals/" + id+ "?key="+apiKey);
+		HttpPut put = new HttpPut(url);
+		HttpClient client = HttpClients.createDefault();
+		
+		JSONObject obj = new JSONObject();
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
+	}catch(Exception e) {
+		
+	}
 	}
 	
 	public static String[] getTransfers(String acctId) throws Exception {
@@ -866,12 +863,23 @@ public class CapitalHttpClient {
 		return "error";
 	}
 	
-	public static void putTransferChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/transfers/" + id+ "?key="+apiKey);
+	public static void putTransferChanges(String id, String parameter, String change){
+		try {
+			String url = ("http://api.reimaginebanking.com/transfers/" + id+ "?key="+apiKey);
 
-		JSONObject obj = new JSONObject(result.toString());
+		HttpPut put = new HttpPut(url);
+		HttpClient client = HttpClients.createDefault();
+		
+		JSONObject obj = new JSONObject();
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
+	}catch(Exception e) {
+		
+	}
 	}
 }
