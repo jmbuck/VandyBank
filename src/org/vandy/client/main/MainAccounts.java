@@ -33,7 +33,7 @@ public class MainAccounts extends MainState
 	private String currentText = "";
 
 	private int state = 0;
-	private int extraStuff = 0;
+	private int extraStuff = -1;
 
 	private Texture editTexture;
 	private Texture newTexture;
@@ -114,7 +114,7 @@ public class MainAccounts extends MainState
 			{
 				state = 0;
 				currentText = "";
-				extraStuff = 0;
+				extraStuff = -1;
 			}
 		}
 		else
@@ -138,7 +138,7 @@ public class MainAccounts extends MainState
 				Bank.addAccount(accTypes[extraStuff], currentText);
 				currentText = "";
 				state = 0;
-				extraStuff = 0;
+				extraStuff = -1;
 				y -= 100;
 			}
 
@@ -159,7 +159,7 @@ public class MainAccounts extends MainState
 		else if(state == 2 && extraStuff > 0)
 		{
 			hover = checkSpot(80);
-			
+
 			if(mainGui.getApplication().getInput().getMouse(0).isPressed() && hover > 0)
 			{
 				accountList.get(extraStuff).setType(accTypes[hover]);
@@ -171,68 +171,71 @@ public class MainAccounts extends MainState
 				accountList.get(extraStuff).setNickname(currentText);
 				currentText = "";
 				state = 0;
-				extraStuff = 0;
+				extraStuff = -1;
 				y -= 100;
 			}
 		}
-		else
-		{
-			Account account;
-			String s;
+		Account account;
+		String s;
 
-			GL11.glColor4f(1, 1, 1, 1);
-			for(int i = 0; i < accountList.size(); i++)
+		GL11.glColor4f(1, 1, 1, 1);
+		for(int i = 0; i < accountList.size(); i++)
+		{
+			GL11.glColor4f(1f, 1f, 1f, 1f);
+			if(i == extraStuff && state > 1)
+				GL11.glColor4f(.6f, .6f, .6f, 1);
+			if(mouseX >= x - 10 && mouseX <= 1920 / 3 - 2)
 			{
-				if(mouseX >= x - 10 && mouseX <= 1920 / 3 - 2)
+				if(mouseY >= y && mouseY <= y + 125)
 				{
-					if(mouseY >= y - 67.5f && mouseY <= y + 67.5)
+					GL11.glColor4f(.6f, .6f, .6f, 1);
+					if(state == 2)
 					{
-						GL11.glColor4f(.8f, .8f, .8f, 1);
-						if(state == 2)
-						{
+						extraStuff = i;
+					}
+					else if(state == 3)
+					{
+						if(extraStuff == 0)
 							extraStuff = i;
-						}
-						else if(state == 3)
+						else
 						{
-							if(extraStuff == 0)
-								extraStuff = i;
-							else
-							{
-								accountList.get(i).merge(accountList.get(extraStuff));
-							}
+							accountList.get(i).merge(accountList.get(extraStuff));
+							accountList.remove(i);
+							state = 0;
+							extraStuff = -1;
 						}
 					}
 				}
-				account = accountList.get(i);
-				if(account.getType().equals("savings"))
-				{
-					savingsTexture.bind();
-				}
-				else if(account.getType().equals("checking"))
-				{
-					checkTexture.bind();
-				}
-				else
-				{
-					creditTexture.bind();
-				}
-				GL11.glBegin(GL11.GL_QUADS);
-				Draw.rectUV(x - 10, y - 60, x + 50, y, 1);
-				GL11.glEnd();
-
-				boldFont.bind();
-				boldFont.draw(account.getNickname(), x + 52, y, 0, .45f);
-				y += 50;
-				s = "**** **** **** " + account.getAccountNumber().substring(12);
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
-				y += 50;
-				s = "$" + format.format(account.getBalance());
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
-				y += 75;
-				boldFont.unbind();
 			}
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			account = accountList.get(i);
+			if(account.getType().equals("Savings"))
+			{
+				savingsTexture.bind();
+			}
+			else if(account.getType().equals("Checking"))
+			{
+				checkTexture.bind();
+			}
+			else
+			{
+				creditTexture.bind();
+			}
+			GL11.glBegin(GL11.GL_QUADS);
+			Draw.rectUV(x - 10, y - 60, x + 50, y, 1);
+			GL11.glEnd();
+
+			boldFont.bind();
+			boldFont.draw(account.getNickname(), x + 52, y, 0, .45f);
+			y += 50;
+			s = "**** **** **** " + account.getAccountNumber().substring(12);
+			boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+			y += 50;
+			s = "$" + format.format(account.getBalance());
+			boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+			y += 75;
+			boldFont.unbind();
 		}
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
 		GL11.glBegin(GL11.GL_QUADS);

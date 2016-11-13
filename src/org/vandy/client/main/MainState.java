@@ -52,11 +52,10 @@ public class MainState
 		mouseX -= mainGui.getApplication().getWindowScaleX() * (mainGui.getApplication().getWindowX() / 16 + 16);
 		
 		mouseY = (float) mainGui.getApplication().getMouseY();
-		mouseY -= 1080 / 7 + 8;
+		mouseY -= mainGui.getApplication().getWindowScaleY() * (mainGui.getApplication().getWindowY() / 7 + 16);
 		
 		mouseX *= 1.08379327647;
-		//System.out.println(mouseX);
-		mouseY *= 1080 / (1080 - 1080 / 7 - 16);
+		mouseY *= 1.2017167382;
 		
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0, (1 - (float) ticks) * -1080f + closingTicks * 1080f, 0);

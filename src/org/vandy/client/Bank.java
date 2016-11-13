@@ -215,7 +215,7 @@ public class Bank {
 				a = new Account(s, custID, type, nickname, rewards, balance, accNum);
 				//add accounts to customers
 				for(Customer c : customerList) {
-					if(s.equals(c.getID())) {
+					if(custID.equals(c.getID())) {
 						c.addAccount(a);
 					}
 				}
