@@ -1,4 +1,4 @@
-package org.vandy.client;
+package org.vandy.client.login;
 
 import com.polaris.engine.Gui;
 import com.polaris.engine.LogicGui;
@@ -19,6 +19,11 @@ public class LoginLogic extends LogicGui
 	
 	
 	public void update()
+	{
+		
+	}
+
+	public void doSearch()
 	{
 		
 	}

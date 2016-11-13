@@ -1,4 +1,4 @@
-package org.vandy.client;
+package org.vandy.client.login;
 
 import com.polaris.engine.render.Font;
 

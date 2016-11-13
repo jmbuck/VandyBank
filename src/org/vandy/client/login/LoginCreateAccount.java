@@ -1,8 +1,11 @@
-package org.vandy.client;
+package org.vandy.client.login;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.opengl.GL11;
+import org.vandy.client.Bank;
+import org.vandy.client.Customer;
+import org.vandy.client.VandyApp;
 
 import com.polaris.engine.options.Key;
 import com.polaris.engine.render.Draw;

@@ -2,6 +2,8 @@ package org.vandy.client;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
+import org.vandy.client.login.LoginLogic;
+import org.vandy.client.packet.LoadBankPacket;
 
 import com.polaris.engine.App;
 import com.polaris.engine.LogicGui;
@@ -23,6 +25,11 @@ public class VandyApp extends App
 	public VandyApp(boolean debug) 
 	{
 		super(debug);
+	}
+	
+	public void init()
+	{
+		this.sendPacket(new LoadBankPacket(this, this.getLogicHandler()));
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package org.vandy.client;
+package org.vandy.client.main;
 
 import com.polaris.engine.Gui;
 import com.polaris.engine.LogicGui;

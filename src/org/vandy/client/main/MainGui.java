@@ -1,4 +1,4 @@
-package org.vandy.client;
+package org.vandy.client.main;
 
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
@@ -9,6 +9,8 @@ import java.io.File;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.vandy.client.GuiScreen;
+import org.vandy.client.VandyApp;
 
 import com.polaris.engine.App;
 import com.polaris.engine.render.Draw;

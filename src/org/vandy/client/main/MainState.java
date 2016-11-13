@@ -1,4 +1,4 @@
-package org.vandy.client;
+package org.vandy.client.main;
 
 public class MainState 
 {

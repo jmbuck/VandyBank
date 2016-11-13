@@ -1,8 +1,9 @@
-package org.vandy.client;
+package org.vandy.client.login;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.opengl.GL11;
+import org.vandy.client.GuiScreen;
 
 import com.polaris.engine.App;
 import com.polaris.engine.options.Key;
@@ -12,6 +13,8 @@ public class LoginGui extends GuiScreen
 {
 
 	private LoginState state;
+	
+	private String[] customerSearch;
 
 	public LoginGui(App app) 
 	{
@@ -48,6 +51,16 @@ public class LoginGui extends GuiScreen
 		
 		state = newState;
 		newState.init();
+	}
+	
+	public String[] getCustomers()
+	{
+		return customerSearch;
+	}
+
+	public void setPotentials(String[] potentials)
+	{
+		customerSearch = potentials;
 	}
 
 }

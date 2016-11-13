@@ -1,8 +1,11 @@
-package org.vandy.client;
+package org.vandy.client.login;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.opengl.GL11;
+import org.vandy.client.Bank;
+import org.vandy.client.Customer;
+import org.vandy.client.VandyApp;
 
 import com.polaris.engine.options.Key;
 import com.polaris.engine.render.Draw;
@@ -10,24 +13,27 @@ import com.polaris.engine.render.Font;
 
 public class LoginLogin extends LoginState
 {
-	
+
 	private Key enterKey;
 	private Key deleteKey;
 	private Key backspaceKey;
-	
+
 	private String currentText = "";
-	
+	private String[] potentials;
+
 	private long nextDeleteTime = 0;
+
+	private double shakeTicks = 0;
 
 	public LoginLogin(LoginGui gui, Font boldFont)
 	{
 		super(gui, boldFont);
-		
+
 		deleteKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_DELETE);
 		backspaceKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_BACKSPACE);
 		enterKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_ENTER);
 	}
-	
+
 	public void init()
 	{
 		GLFW.glfwSetCharCallback(loginGui.getApplication().getWindow(), GLFWCharCallback.create((window, codepoint) -> {
@@ -38,10 +44,13 @@ public class LoginLogin extends LoginState
 			}
 		}));
 	}
-	
+
 	public void render(double delta)
 	{
 		super.render(delta);
+
+		shakeTicks = Math.max(0, shakeTicks - delta);
+
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1);
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rect(1920 / 2 - 400, 1080 / 2 + 210 * .3f, 1920 / 2 + 400, 1080 / 2 + 220 * .3f, 2);
@@ -98,17 +107,23 @@ public class LoginLogin extends LoginState
 			{
 				enterKey.removeQuickPress();
 				Customer customer = Bank.findCustomer(currentText);
-				if(customer != null)
+				if(customer == null)
 				{
-					Bank.setCurrentCustomer(customer);
+					//Bank.setCurrentCustomer(customer);
 					loginGui.setState(new LoginLoading(loginGui, font));
 				}
+				else
+				{
+					shakeTicks = .25;
+				}
 			}
-			font.draw(currentText, 1920 / 2 - font.getWidth(currentText, .3f) / 2, 1080 / 2 + 128 * .3f, 0, .3f);
+			float shake = 0;
+			shake = 10 * (float) (1 - (shakeTicks % (1 / 16d) * 16));
+			font.draw(currentText, 1920 / 2 - font.getWidth(currentText, .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
 		}
 		font.unbind();
 	}
-	
+
 	public void close()
 	{
 		GLFW.glfwSetCharCallback(loginGui.getApplication().getWindow(), null);
