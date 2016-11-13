@@ -411,11 +411,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Withdrawal addWithdrawal(Account acc, double amount, String desc)
+	public static Withdrawal addWithdrawal(Account acc, double amount, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String withID = CapitalHttpClient.postWithdrawal(acc.getID(), "balance", date, amount, desc);
 			Withdrawal transaction = new Withdrawal(withID, "withdrawal", date, "pending", acc.getID(), "balance", amount, desc);
 			acc.withdraw(transaction, withID);
@@ -429,11 +428,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Purchase addPurchase(Account acc, double amount, String merchID, String desc)
+	public static Purchase addPurchase(Account acc, double amount, String merchID, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String purchID = CapitalHttpClient.postPurchase(acc.getID(), merchID, "balance", date, amount, desc);
 			Purchase transaction = new Purchase(purchID, "merchant", date, "pending", acc.getID(), "balance", amount, desc, merchID);
 			acc.purchase(transaction, purchID);
