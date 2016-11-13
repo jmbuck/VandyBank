@@ -12,6 +12,7 @@ public class Bank {
 	private static List<Transfer> transferList = new ArrayList<Transfer>();
 	private static List<Merchant> merchList = new ArrayList<Merchant>();
 	private static List<Purchase> purchList = new ArrayList<Purchase>();
+	private static Customer curr;
 
 	public static void load() {
 		try {
@@ -239,8 +240,11 @@ public class Bank {
 
 	public static void setCurrentCustomer(Customer c)
 	{
-
-
+		curr = c;
+	}
+	
+	public static Customer getCurrentCustomer() {
+		return curr;
 	}
 
 	public static Customer findCustomer(String fullname) {
