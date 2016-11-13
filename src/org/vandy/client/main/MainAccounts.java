@@ -24,6 +24,7 @@ public class MainAccounts extends MainState
 	private Key enterKey;
 	private Key deleteKey;
 	private Key backspaceKey;
+	private float yOffset = 0;
 
 	private List<Account> accountList;
 	private Account currentAccount = null;
@@ -251,8 +252,11 @@ public class MainAccounts extends MainState
 		x = 1920 / 3 + 12;
 		y -= 175 * accountList.size();
 		
+		y -= yOffset;
+		
 		if(currentAccount != null)
 		{
+			yOffset += mainGui.getApplication().getScrollDeltaY() * 4;
 			boldFont.bind();
 			List<Transaction> list = currentAccount.getTransList();
 			Transaction t;
@@ -269,6 +273,10 @@ public class MainAccounts extends MainState
 				y += 128 * .45f + 20;
 			}
 			boldFont.unbind();
+		}
+		else
+		{
+			yOffset = 0;
 		}
 		
 		GL11.glDisable(GL11.GL_TEXTURE_2D);

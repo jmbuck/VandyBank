@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.opengl.GL11;
 import org.vandy.client.Bank;
-import org.vandy.client.Customer;
 import org.vandy.client.VandyApp;
 
 import com.polaris.engine.options.Key;
@@ -173,7 +172,7 @@ public class LoginCreateAccount extends LoginState
 			else
 			{
 				zip = currentText;
-				//Bank.createCustomer(customer);
+				Bank.createCustomer(firstName, lastName, address, city, state, zip);
 				loginGui.setState(new LoginLogin(loginGui, font));
 			}
 			currentText = "";
