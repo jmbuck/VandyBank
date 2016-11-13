@@ -71,7 +71,7 @@ public class Randomize {
 				accNum += Integer.toString(num);
 			}
 			int balance = (int)Math.round((Math.random()*1000 + 1000)*100);
-			String type = types.get((int)(Math.random()*4));
+			String type = types.get((int)(Math.random()*3));
 			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
 			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
 			int numDeposits = MathHelper.random(20, 30);
