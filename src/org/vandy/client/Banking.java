@@ -39,7 +39,14 @@ public class Banking {
 			int rewards = Integer.parseInt(CapitalHttpClient.getAccountByID(s, "rewards"));
 			int balance = Integer.parseInt(CapitalHttpClient.getAccountByID(s, "balance"));
 			String accNum = CapitalHttpClient.getAccountByID(s, "account_number");
-			
+			a = new Account(s, custID, type, nickname, rewards, balance, accNum);
+			//add accounts to customers
+			for(Customer c : customerList) {
+				if(s.equals(c.getID())) {
+					c.addAccount(a);
+				}
+			}
+			accountList.add(a);
 			
 		}
 	}
