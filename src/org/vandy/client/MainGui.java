@@ -19,9 +19,6 @@ import com.polaris.engine.util.MathHelper;
 public class MainGui extends GuiScreen
 {
 
-	private Font boldFont;
-	private Font font;
-
 	private MainState prevState;
 	private MainState state;
 
@@ -44,9 +41,7 @@ public class MainGui extends GuiScreen
 	@Override
 	public void init()
 	{
-		boldFont = Font.createFont(new File("Hero.ttf"), 128);
-		font = Font.createFont(new File("Hero Light.ttf"), 128);
-		
+		super.init();
 		state = new MainAccounts(this);
 
 		accountsTexture = application.getTextureManager().genTexture("Accounts", new File("textures/bank.png"));
@@ -61,22 +56,12 @@ public class MainGui extends GuiScreen
 	public void render(double delta)
 	{
 		super.render(delta);
-		GL11.glEnable(GL13.GL_MULTISAMPLE);  
-		GL11.glEnable(GL11.GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		drawBackground();
 
 		drawTitle();
 
 		drawSideMenu(delta);
 
 		state.render(delta);
-
-		if(application.getInput().getKey(GLFW.GLFW_KEY_ESCAPE).isPressed())
-		{
-			application.close();
-		}
 
 		if(application.getInput().getMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT).isPressed() && inScreen)
 		{
@@ -123,19 +108,11 @@ public class MainGui extends GuiScreen
 
 	}
 
-	public void drawBackground()
-	{
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glColor4f(VandyApp.light.x, VandyApp.light.y, VandyApp.light.z, 1f);
-		Draw.rect(0, 0, 1920, 1080, -100);
-		GL11.glEnd();
-	}
-
 	public void drawTitle()
 	{
 		GL11.glColor4f(1, 1, 1, 1);
 		boldFont.bind();
-		boldFont.draw("Hey Killian,", 1920 / 6 + 40, 1080 / 14, 1, .75f);
+		boldFont.draw("Hello Killian,", 1920 / 6 + 40, 1080 / 14, 1, .75f);
 		font.bind();
 		font.draw("You are looking great today!", 1920 / 6 + 40, 1080 / 8, 1, .5f);
 		font.unbind();
@@ -159,7 +136,7 @@ public class MainGui extends GuiScreen
 				application.getMouseY() >= 1080 * 4 / 7 - 50 - 300 - 10 && 
 				application.getMouseY() < 1080 * 4 / 7 + 60 + 300)
 		{
-			GL11.glColor4f(VandyApp.light.x, VandyApp.light.y, VandyApp.light.z, 1);
+			GL11.glColor4f(VandyApp.dark.x, VandyApp.dark.y, VandyApp.dark.z, 1);
 			GL11.glBegin(GL11.GL_QUADS);
 			if(application.getMouseY() < 1080 * 4 / 7 - 40 - 200)
 			{
@@ -188,14 +165,14 @@ public class MainGui extends GuiScreen
 			GL11.glEnd();
 		}
 
-		GL11.glColor4f(VandyApp.normal.x, VandyApp.normal.y, VandyApp.normal.z, 1f);
+		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rect(0, 0, sideMenuSize, 1080, 20);
 		GL11.glEnd();
 
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		accountsTexture.bind();
-		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
+		GL11.glColor4f(.9f, .9f, .9f, 1);
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rectUV(sideMenuSize - 110, 1080 * 4 / 7 - 50 - 300, sideMenuSize - 10, 1080 * 4 / 7 - 50 - 200, 21);
 		GL11.glEnd();
@@ -225,7 +202,6 @@ public class MainGui extends GuiScreen
 		Draw.rectUV(sideMenuSize - 110, 1080 * 4 / 7 + 50 + 200, sideMenuSize - 10, 1080 * 4 / 7 + 300 + 50, 21);
 		GL11.glEnd();
 
-		GL11.glColor4f(1, 1, 1, 1);
 		boldFont.bind();
 		boldFont.draw("Accounts", sideMenuSize - 110 - 100 - boldFont.getWidth("Accounts") * .3f / 2, 1080 * 4 / 7 - 50 - 233, 22, .3f);
 		boldFont.draw("Transfers", sideMenuSize - 110 - 100 - boldFont.getWidth("Transfers") * .3f / 2, 1080 * 4 / 7 - 30 - 133, 22, .3f);

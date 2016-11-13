@@ -4,19 +4,14 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 
-import java.io.File;
-
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.polaris.engine.App;
 import com.polaris.engine.render.Draw;
-import com.polaris.engine.render.Font;
 
 public class LoginGui extends GuiScreen
 {
 
-	private Font playRegular;
 	private float nextScreenAlpha = 1;
 	
 	public LoginGui(App app) 
@@ -24,39 +19,23 @@ public class LoginGui extends GuiScreen
 		super(app);
 	}
 	
-	@Override
-	public void init()
-	{
-		playRegular = Font.createFont(new File("Play-Regular.ttf"), 64);
-	}
-	
 	public void close()
 	{
-		playRegular.destroy();
+		font.destroy();
+		boldFont.destroy();
 	}
 	
 	@Override
 	public void render(double delta)
 	{
 		super.render(delta);
-		GL11.glEnable(GL11.GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glColor4f(.6f, .6f, 1, 1f);
-		Draw.rect(0, 0, 1920, 1080, -100);
-		GL11.glEnd();
 		
 		drawLoader();
 		
 		GL11.glColor4f(.3f, .3f, .3f, (float) Math.abs(ticksExisted % 12 - 6) / 3f);
-		playRegular.bind();
-		playRegular.draw("LOADING", 1920 / 2 - playRegular.getWidth("LOADING") / 2, 1280 / 2 + 100, 1, 1);
-		playRegular.unbind();
-		
-		if(application.getInput().getKey(GLFW.GLFW_KEY_ESCAPE).isPressed())
-		{
-			application.close();
-		}
+		boldFont.bind();
+		boldFont.draw("LOADING", 1920 / 2 - boldFont.getWidth("LOADING") / 2, 1280 / 2 + 100, 1, 1);
+		boldFont.unbind();
 	}
 	
 	private void drawLoader()

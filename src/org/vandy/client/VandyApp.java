@@ -1,6 +1,6 @@
 package org.vandy.client;
 
-import org.joml.Vector4f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.polaris.engine.App;
@@ -8,13 +8,12 @@ import com.polaris.engine.LogicGui;
 
 public class VandyApp extends App
 {
-	
-	public static final Vector4f lightest = new Vector4f(1, 170 / 255f, 163 / 255f, 1f);
-	public static final Vector4f light = new Vector4f(245 / 255f, 125 / 255f, 115/ 255f, 1f);
-	public static final Vector4f normal = new Vector4f(211 /255f, 81 / 255f, 71 / 255f, 1f);
-	public static final Vector4f dark = new Vector4f(181 / 255f, 49 / 255f, 38 / 255f, 1f);
-	public static final Vector4f darkest = new Vector4f(143 / 255f, 22 / 255f, 13 / 255f, 1f);
+	public static final Vector3f dark = new Vector3f(181 / 255f, 49 / 255f, 38 / 255f);
 
+	public static final Vector3f darkest = new Vector3f(143 / 255f, 22 / 255f, 13 / 255f);
+
+	public static final Vector3f fontDarkest = new Vector3f(48 / 255f, 41 / 255f, 41 / 255f);
+	
 	public static void main(String[] args)
 	{
 		VandyApp app = new VandyApp(true);
