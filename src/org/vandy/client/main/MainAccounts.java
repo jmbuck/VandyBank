@@ -44,9 +44,9 @@ public class MainAccounts extends MainState
 
 	private long nextDeleteTime = 0;
 
-	public MainAccounts(MainGui gui, List<Account> list)
+	public MainAccounts(MainGui gui, List<Account> list, boolean alt)
 	{
-		super(gui);
+		super(gui, alt);
 		accountList = list;
 	}
 
@@ -186,7 +186,7 @@ public class MainAccounts extends MainState
 				GL11.glColor4f(.6f, .6f, .6f, 1);
 			if(mouseX >= x - 10 && mouseX <= 1920 / 3 - 2)
 			{
-				if(mouseY >= y && mouseY <= y + 125)
+				if(mouseY >= y - 128 * .45f && mouseY <= y + 125 - 64 * .45f)
 				{
 					GL11.glColor4f(.6f, .6f, .6f, 1);
 					if(state == 2)
@@ -195,7 +195,7 @@ public class MainAccounts extends MainState
 					}
 					else if(state == 3)
 					{
-						if(extraStuff < 1)
+						if(extraStuff == -1)
 							extraStuff = i;
 						else
 						{
@@ -298,10 +298,14 @@ public class MainAccounts extends MainState
 		GL11.glEnd();
 	}
 
-	public void destroy()
+	public void close()
 	{
+		super.close();
 		GLFW.glfwSetCharCallback(mainGui.getApplication().getWindow(), null);
-		
+	}
+	
+	public void destroy()
+	{		
 		editTexture.destroy();
 		newTexture.destroy();
 		mergeTexture.destroy();

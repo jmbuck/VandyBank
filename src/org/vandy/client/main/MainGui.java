@@ -15,6 +15,8 @@ import org.vandy.client.Bank;
 import org.vandy.client.Customer;
 import org.vandy.client.GuiScreen;
 import org.vandy.client.VandyApp;
+import org.vandy.client.login.LoginLogic;
+import org.vandy.client.packet.GuiLoginPacket;
 
 import com.polaris.engine.App;
 import com.polaris.engine.render.Draw;
@@ -40,6 +42,7 @@ public class MainGui extends GuiScreen
 	private float sideMenuSize = 1920 / 16;
 
 	private boolean clicked = false;
+	private boolean alternate = false;
 
 	public MainGui(App app) 
 	{
@@ -51,7 +54,8 @@ public class MainGui extends GuiScreen
 	public void init()
 	{
 		super.init();
-		state = new MainAccounts(this, customer.getAccounts());
+		state = new MainAccounts(this, customer.getAccounts(), alternate);
+		alternate = !alternate;
 		state.init();
 
 		accountsTexture = application.getTextureManager().genTexture("Accounts", new File("textures/bank.png"));
@@ -91,27 +95,27 @@ public class MainGui extends GuiScreen
 				prevState = state;
 				if(application.getMouseY() < 1080 * 4 / 7 - 40 - 200 && !(state instanceof MainAccounts))
 				{
-					state = new MainAccounts(this, customer.getAccounts());
+					state = new MainAccounts(this, customer.getAccounts(), alternate);
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 - 20 - 100 && !(state instanceof MainTransfers))
 				{
-					state = new MainTransfers(this);
+					state = new MainTransfers(this, alternate);
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 && !(state instanceof MainBills))
 				{
-					state = new MainBills(this);
+					state = new MainBills(this, alternate);
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 + 20 + 100 && !(state instanceof MainLocation))
 				{
-					state = new MainLocation(this);
+					state = new MainLocation(this, alternate);
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 + 40 + 200 && !(state instanceof MainSettings))
 				{
-					state = new MainSettings(this);
+					state = new MainSettings(this, alternate);
 				}
 				else
 				{
-					
+					application.sendPacket(new GuiLoginPacket(application, application.getLogicHandler(), ((LoginLogic) application.getLogicHandler().getLogicHandler().getParent())));
 				}
 				if(state == prevState)
 				{
@@ -119,8 +123,9 @@ public class MainGui extends GuiScreen
 				}
 				else
 				{
-					state.init();
+					alternate = !alternate;
 					prevState.close();
+					state.init();
 				}
 				clicked = true;
 			}
