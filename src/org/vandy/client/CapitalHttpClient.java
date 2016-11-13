@@ -19,10 +19,11 @@ public class CapitalHttpClient {
 	private final String USER_AGENT = "Mozilla/5.0";
 	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
 	private final static String testAcct = "5827661c360f81f104547b84";
-	/*
+	
 	public static void main(String[] args) throws Exception {
-		String custId = postCustomer("Killian", "Le Clainche", "6754", "French Ave", "Chicago", "IL", "60513");
+		/*String custId = postCustomer("Killian", "Le Clainche", "6754", "French Ave", "Chicago", "IL", "60513");
 		String acctId = postAccount(custId, "Checking", "My Checking", 100, 15000, "1234567890987654");
+		System.out.println(getAccountByID(billId, "recurring_date"));
 		String acctId2 = postAccount(custId, "Savings", "My Saving", 100, 5, "1234567890987655");
 		String billId = postBill(acctId, "recurring", "Comcast", "Internet", "1/16/16", 11, 100.00);
 		String depId = postDeposit(acctId, "balance", "", 150.55, "First deposit");
@@ -35,8 +36,8 @@ public class CapitalHttpClient {
 		//System.out.println("Purch ID: " + postPurchase(acctId, "kmlafsj", "rewards", "", 1000.00, "Test purchase."));
 		//getAccounts("Savings");
 		//System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
-		System.out.println(getBillByID(billId, "recurring_date"));
-	}*/
+		System.out.println(getBillByID(billId, "recurring_date"));*/
+	}
 
 	public static StringBuffer processInput(String url, HttpPost post, JSONObject juo, HttpClient client) throws Exception
 	{
