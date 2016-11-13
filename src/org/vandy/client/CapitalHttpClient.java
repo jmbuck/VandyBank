@@ -334,6 +334,25 @@ public class CapitalHttpClient {
 		processInput(url, post, obj, client);
 	}
 	
+	public static void deleteAccount(String id)throws Exception
+	{
+		String url = "http://api.reimaginebanking.com/accounts/" + id+ "?key="+apiKey;
+		StringBuffer result = buffer(url);
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		
+		JSONObject obj = new JSONObject(result.toString());
+		obj.remove("type");
+		obj.remove("nickname");
+		obj.remove("rewards");
+		obj.remove("balance");
+		obj.remove("account_number");
+		obj.remove("customer_id");
+		obj.remove("_id");
+		processInput(url, post, obj, client);
+		
+	}
+	
 	public static String[] getMerchants() throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants?key="+apiKey);
 		JSONObject juo = new JSONObject(result.toString());
