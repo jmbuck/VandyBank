@@ -156,10 +156,11 @@ public class LoginLogin extends LoginState
 			}
 			float shake = 0;
 			shake = 10 * (float) (1 - (shakeTicks % (1 / 16d) * 16));
-			String s = (potentials[0] != null && potentials[0].length() > currentText.length() ? potentials[0].substring(currentText.length() - 1) : "");
+			String s = (potentials[0] != null && potentials[0].length() > currentText.length() ? potentials[0].substring(currentText.length()) : "");
 			font.draw(currentText, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
-			GL11.glColor4f(.6f, .6f, .6f, 1);
-			font.draw(s, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + font.getWidth(currentText, .3f), 1080 / 2 + 128 * .3f, 0, .3f);
+			GL11.glColor4f(.6f, .6f, .6f, 1 - (float) endTicks);
+			if(s.length() > 0)
+				font.draw(s, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + font.getWidth(currentText, .3f) + font.getWidth(s.charAt(0) + "", .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
 			
 			float y = 1080 / 2 + 388 * .3f;
 			for(int i = 0; i < potentials.length; i++)

@@ -214,7 +214,7 @@ public class Bank {
 	public static String lookUpCustomer(String id, String parameter) {
 		Customer c = customerList.get(0);
 		int i = 0;
-		while (c.getID() != id) c = customerList.get(i);
+		while (i < customerList.size() && c.getID() != id) {c = customerList.get(i); i++;}
 		if (parameter.equals("first_name")) {
 			return c.getFirstName();
 		}

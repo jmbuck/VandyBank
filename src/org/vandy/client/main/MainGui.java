@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import org.vandy.client.Bank;
 import org.vandy.client.Customer;
 import org.vandy.client.GuiScreen;
 import org.vandy.client.VandyApp;

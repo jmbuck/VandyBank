@@ -2,27 +2,25 @@ package org.vandy.client;
 public class Search {
 	
 	public static String[] doSearch(int n, String phrase) {
-		String[] retArr = new String[n];
 		String[] userIds = Bank.getCustomers();
-		if (userIds.length<=n) {
+		String[] retArr = new String[Math.min(n, userIds.length)];
+		/*if (userIds.length<=n) {
 			for (int i = 0; i < userIds.length; i++) {
 				retArr[i] = Bank.lookUpCustomer(userIds[i], "first_name") + " " +
 						Bank.lookUpCustomer(userIds[i], "last_name");
 			}
 			return retArr;
-		}
-		
+		}*/
 		int[] diffs = new int[userIds.length];
 		for (int i = 0; i<diffs.length; i++) {
 			diffs[i] = calcSimilarity(phrase, Bank.lookUpCustomer(userIds[i], "first_name")) * 2 +
 					calcSimilarity(phrase, Bank.lookUpCustomer(userIds[i], "last_name"));
 		}
-		for (int i = 0; i<n; i++) {
+		for (int i = 0; i<retArr.length; i++) {
 			retArr[i] = Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "first_name") + " " +
 					Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "last_name");
 			diffs[getIndexOfLowest(diffs)] = Integer.MAX_VALUE;
 		}
-		
 		return retArr;
 		
 		

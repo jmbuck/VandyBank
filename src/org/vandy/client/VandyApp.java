@@ -18,7 +18,7 @@ public class VandyApp extends App
 	
 	public static void main(String[] args)
 	{
-		VandyApp app = new VandyApp(true);
+		VandyApp app = new VandyApp(false);
 		app.run();
 	}
 	
