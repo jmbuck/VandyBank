@@ -284,6 +284,8 @@ public class MainAccounts extends MainState
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rect(1920 / 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
+		if(currentAccount != null)
+			Draw.rect(1920 * 2/ 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
 		GL11.glEnd();
 
 		GL11.glPopMatrix();
