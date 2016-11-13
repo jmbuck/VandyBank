@@ -555,4 +555,20 @@ public class CapitalHttpClient {
 		
 		return "";
 	}
+	
+	public static String[] getPurchasesByPayer(String payer_id) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+payer_id+"/purchases?key="+apiKey);
+		
+		String payerID;
+		JSONArray arr = new JSONArray(result.toString());
+		String[] purchaseIDs = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			payerID = arr.getJSONObject(i).getString("payer_id");
+			if(payerID.equals(payer_id))
+				purchaseIDs[i] = arr.getJSONObject(i).getString("_id");
+		}
+		
+		return purchaseIDs;
+	}
+	
 }
