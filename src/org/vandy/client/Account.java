@@ -5,26 +5,37 @@ import java.util.List;
 
 public class Account {
 
-	private List<Transfer> transferList;
-	private List<Bill> billList;
-	private List<Deposit> depList;
-	private List<Withdrawal> withList;
-	private String id;
+	private List<Transfer> transferList = new ArrayList<Transfer>();
+	private List<Bill> billList = new ArrayList<Bill>();
+	private List<Deposit> depList = new ArrayList<Deposit>();
+	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
+	private String id, type, nickname, account_number, customer_id;
+	private int rewards;
+	private double balance;
 	
-	public Account(String custID, String type, String nickname, int rewards, int balance,
+	public Account(String custID, String accType, String custNickname, int accRewards, double accBalance,
 					String acctNum) throws Exception 
 	{	
-		String[] accounts = CapitalHttpClient.getAccountsByCustomer(custID);
-		if(accounts.length != 0) {
-			for(String s : accounts) {
-				
-			}
+		id = custID;
+		type = accType;
+		nickname = custNickname;
+		rewards = accRewards;
+		balance = accBalance;
+		account_number = acctNum;
+	}
+	
+	public int withdraw(Withdrawal transaction)
+	{
+		amount = 
+		if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
+		{
+			return 0;				//Check bounces
 		}
-		id = CapitalHttpClient.postAccount(custID, type, nickname, rewards, balance, acctNum);
-		
-		transferList = new ArrayList<Transfer>();
-		billList = new ArrayList<Bill>();
-		depList = new ArrayList<Deposit>();
-		withList = new ArrayList<Withdrawal>();
+		else
+		{
+			balance -= amount;
+			withList.add(amount)
+			return 1;
+		}
 	}
 }
