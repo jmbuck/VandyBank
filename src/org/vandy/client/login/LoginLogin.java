@@ -156,7 +156,7 @@ public class LoginLogin extends LoginState
 			}
 			float shake = 0;
 			shake = 10 * (float) (1 - (shakeTicks % (1 / 16d) * 16));
-			String s = (potentials[0] != null && potentials[0].length() > currentText.length() ? potentials[0].substring(currentText.length()) : "");
+			String s = (potentials.length > 0 && potentials[0] != null && potentials[0].length() > currentText.length() ? potentials[0].substring(currentText.length()) : "");
 			font.draw(currentText, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
 			GL11.glColor4f(.6f, .6f, .6f, 1 - (float) endTicks);
 			if(s.length() > 0)
