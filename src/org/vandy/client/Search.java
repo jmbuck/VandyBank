@@ -17,8 +17,16 @@ public class Search {
 					calcSimilarity(phrase, Bank.lookUpCustomer(userIds[i], "last_name"));
 		}
 		for (int i = 0; i<retArr.length; i++) {
-			retArr[i] = Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "first_name") + " " +
-					Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "last_name");
+			
+			if (calcSimilarity (phrase,Bank.lookUpCustomer(userIds[i], "first_name")) > 
+					calcSimilarity (phrase,Bank.lookUpCustomer(userIds[i], "first_name"))) {
+				retArr[i] = Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "last_name") + ", " +
+						Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "first_name");
+				}
+			else {
+				retArr[i] = Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "first_name") + " " +
+						Bank.lookUpCustomer(userIds[getIndexOfLowest(diffs)], "last_name");
+			}
 			diffs[getIndexOfLowest(diffs)] = Integer.MAX_VALUE;
 		}
 		return retArr;
