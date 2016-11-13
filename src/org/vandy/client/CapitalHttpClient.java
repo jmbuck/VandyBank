@@ -318,7 +318,7 @@ public class CapitalHttpClient {
 
 	}
 
-	public static String getAccountByID(String accId, String parameter) throws Exception {
+	public static String getAccountByID(String accId, String parameter) throws Exception {//
 		StringBuffer result = buffer("http://api.reimaginebanking.com/account/"+accId+"?key="+apiKey);
 		
 		JSONObject obj = new JSONObject(result.toString());
