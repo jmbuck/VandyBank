@@ -15,14 +15,23 @@ public class Bank {
 
 	public static void load() {
 		try {
+			System.out.println("Loading Customers...");
 			loadCustomers();
+			System.out.println("Loading Accounts...");
 			loadAccounts();
+			System.out.println("Loading Bills...");
 			loadBills();
+			System.out.println("Loading Deposits...");
 			loadDeposits();
+			System.out.println("Loading Withdrawals...");
 			loadWithdrawals();
+			System.out.println("Loading Transfers...");
 			loadTransfers();
+			System.out.println("Loading Merchants...");
 			loadMerchants();
+			System.out.println("Loading Purchases...");
 			loadPurchases();
+			System.out.println("Done loading.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

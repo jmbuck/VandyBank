@@ -47,17 +47,8 @@ public class CapitalHttpClient {
 		post.setHeader("accept", "application/json");
 		post.setEntity(entityForPost);
 		HttpResponse response = client.execute(post);
-		processRequest(url, post, response);
 		return responseBuffer(response);
 		
-	}
-	
-	public static void processRequest(String url, HttpPost post, HttpResponse response)
-	{
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
 	}
 	
 	public static StringBuffer responseBuffer(HttpResponse response) throws IOException
@@ -103,7 +94,6 @@ public class CapitalHttpClient {
 		juo.put("account_number", acctNum);
 
 		StringBuffer result = processInput(url, post, juo, client);
-		System.out.println(result);
 		return findID(result);
 	}
 
@@ -203,10 +193,6 @@ public class CapitalHttpClient {
 
 		HttpResponse response = client.execute(post);
 
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
 
 		BufferedReader rd = new BufferedReader(
 				new InputStreamReader(response.getEntity().getContent()));
@@ -218,7 +204,6 @@ public class CapitalHttpClient {
 		}
 
 		//get transfer ID
-		System.out.println(result);
 		String[] parts = result.toString().split(",");
 		String id = "";
 		for(String s : parts) {
@@ -284,10 +269,6 @@ public class CapitalHttpClient {
 		request.addHeader("Accept", "application/json");
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
 		BufferedReader rd = new BufferedReader(
 				new InputStreamReader(response.getEntity().getContent()));
 
@@ -296,7 +277,6 @@ public class CapitalHttpClient {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
-		System.out.println(result.toString());
 
 		return result;
 	}
@@ -429,11 +409,7 @@ public class CapitalHttpClient {
 		if (parameter.equals("street_name")) {
 			return obj.getJSONObject("address").getString("street_number");
 		}
-
-		//System.out.println(obj.getJSONObject("address").getString("zip"));
-		return "error";
-		
-		
+		return "error";	
 	}
 
 	public static String[] getAllCustomers() throws Exception {
@@ -474,10 +450,7 @@ public class CapitalHttpClient {
 		if (parameter.equals("street_name")) {
 			return obj.getJSONObject("address").getString("street_number");
 		}
-
-		//System.out.println(obj.getJSONObject("address").getString("zip"));
 		return "error";
-
 	}
 	
 	public static void putCustomerChanges(String id, String parameter, String change){
