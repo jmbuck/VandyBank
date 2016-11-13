@@ -112,7 +112,12 @@ public class Bank {
 		}
 	}
 	
-	public void createCustomer() throws Exception {
+	public void createCustomer(Customer c) throws Exception {
+		
+	}
+	
+	public void setCurrentCustomer(Customer c) throws Exception {
+		
 		
 	}
 }
