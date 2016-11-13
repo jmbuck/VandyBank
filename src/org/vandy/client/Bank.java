@@ -45,7 +45,7 @@ public class Bank {
 	}
 
 	private static void loadMerchants() {
-		try {
+		/*try {
 			String[] merchants = CapitalHttpClient.getMerchants();
 			for(String s: merchants) {
 				String name = CapitalHttpClient.getMerchantByID(s, "name");
@@ -62,7 +62,7 @@ public class Bank {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 
