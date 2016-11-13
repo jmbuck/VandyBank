@@ -341,7 +341,7 @@ public class Bank {
 			customerList.add(curr);
 			String firstLast = first + last;
 			Randomize.addRandomAccounts(curr.getID(), firstLast);
-			return curr;
+			return curr;//
 		}
 		catch(Exception e)
 		{
