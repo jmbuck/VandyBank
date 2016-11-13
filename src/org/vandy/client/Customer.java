@@ -8,14 +8,7 @@ public class Customer
 	
 	private ArrayList<Account> accountList = new ArrayList<Account>();
 	private ArrayList<Bill> billList = new ArrayList<Bill>();
-	private String id;
-	private String first;
-	private String last;
-	private String streetNum;
-	private String streetName;
-	private String city;
-	private String state;
-	private String zip;
+	private String id, first, last, streetNum, streetName, city, state, zip;
 	
 	public Customer(String cId, String cFirst, String cLast, String cStreetNum, 
 			String cStreetName, String cCity, String cState, String cZip) throws Exception

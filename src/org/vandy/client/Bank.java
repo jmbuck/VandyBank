@@ -7,6 +7,11 @@ public class Bank {
 	private List<Customer> customerList = new ArrayList<Customer>();
 	private List<Account> accountList = new ArrayList<Account>();
 	private List<Bill> billList = new ArrayList<Bill>();
+	private List<Deposit> depList = new ArrayList<Deposit>();
+	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
+	private List<Transfer> transferList = new ArrayList<Transfer>();
+	private List<Merchant> merchList = new ArrayList<Merchant>();
+	private List<Purchase> purchList = new ArrayList<Purchase>();
 	
 	public Bank() throws Exception {
 		
