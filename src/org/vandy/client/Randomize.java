@@ -58,7 +58,7 @@ public class Randomize {
 		return randy;
 	}
 	
-	public static void addRandomAccounts(String randID, String randFirstLast) throws Exception
+	public static void addRandomAccounts(String randID, String randFirstLast) throws Exception//
 	{
 		List<String> types = new ArrayList<String>();
 		int numAccounts = MathHelper.random(1, 4);
