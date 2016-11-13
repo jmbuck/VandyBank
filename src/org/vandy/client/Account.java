@@ -64,6 +64,10 @@ public class Account {
 		depList.add(d);
 	}
 	
+	public void addWithdraw(Withdrawal w) {
+		withList.add(w);
+	}
+	
 	public void setType(String accType) throws Exception
 	{
 		if(!type.equals(accType))

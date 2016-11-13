@@ -31,7 +31,7 @@ public class Bank {
 
 	private static void loadPurchases() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	private static void loadMerchants() {
@@ -46,6 +46,30 @@ public class Bank {
 
 	private static void loadWithdrawals() {
 		// TODO Auto-generated method stub
+		try {
+			for(Account a : accountList) {
+				String[] withdrawals = CapitalHttpClient.getDeposits(a.getID());
+				for(String s : withdrawals) {
+					String type = CapitalHttpClient.getWithdrawalsByID(s, "type");
+					String transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
+					String status = CapitalHttpClient.getWithdrawalsByID(s, "status");
+					String medium = CapitalHttpClient.getWithdrawalsByID(s, "medium");
+					String description = CapitalHttpClient.getWithdrawalsByID(s, "description");
+					double amt = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(s, "amount"));
+					Withdrawal w = new Withdrawal(s, type, transDate, status, a.getID(), medium, amt, description);
+					a.addWithdraw(w);
+					for(Customer c : customerList) {
+						if(a.getCustomerID().equals(c.getID())) {
+							c.addWithdraw(w);
+						}
+					}
+					withList.add(w);
+				}
+			}	
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

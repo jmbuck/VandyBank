@@ -10,6 +10,7 @@ public class Customer
 	private ArrayList<Bill> billList = new ArrayList<Bill>();
 	private ArrayList<Deposit> depList = new ArrayList<Deposit>();
 	private String id, first, last, streetNum, streetName, city, state, zip;
+	private ArrayList<Withdrawal> withList = new ArrayList<Withdrawal>();
 	
 	public Customer() { //default values
 		id = "";
@@ -44,6 +45,10 @@ public class Customer
 	
 	public void addDep(Deposit d) {
 		depList.add(d);
+	}
+	
+	public void addWithdraw(Withdrawal w) {
+		withList.add(w);
 	}
 	
 	public ArrayList<Account> getAccounts() {
@@ -145,5 +150,4 @@ public class Customer
 	public void updateState(String s){
 		CapitalHttpClient.putCustomerChanges(id, "state", s);
 	}
-
 }
