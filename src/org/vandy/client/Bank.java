@@ -298,7 +298,7 @@ public class Bank {
 					int num = MathHelper.random(9);
 					accNum += Integer.toString(num);
 				}
-				
+				System.out.println(accNum);
 				String custId = curr.getID();
 				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
 				Account acc = new Account(accId, custId, accType, nickname, 0, 0, accNum);

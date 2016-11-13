@@ -61,7 +61,6 @@ public class CapitalHttpClient {
 	}
 	
 	public static String postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
-		//String testCustID = "5826c30d360f81f104547758";
 		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key=" + apiKey;
 		HttpPost post = new HttpPost(url);
 		HttpClient client = HttpClients.createDefault();
@@ -73,6 +72,7 @@ public class CapitalHttpClient {
 		juo.put("account_number", acctNum);
 
 		StringBuffer result = processInput(url, post, juo, client);
+		System.out.println(result);
 		return findID(result);
 	}
 
@@ -342,6 +342,7 @@ public class CapitalHttpClient {
 			}
 			return r;
 		}
+		try {
 		if (parameter.equals("zip")) {
 			return obj.getJSONObject("address").getString("zip");
 		}
@@ -356,6 +357,9 @@ public class CapitalHttpClient {
 		}
 		if (parameter.equals("street_name")) {
 			return obj.getJSONObject("address").getString("street_name");
+		}
+		} catch (Exception e) {
+			return "No address listed.";
 		}
 		return "error";	
 	}
