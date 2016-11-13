@@ -28,4 +28,8 @@ public class Transaction {
 		return -1;
 	}
 	
+	public String getID() {
+		return id;
+	}
+	
 }
