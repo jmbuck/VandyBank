@@ -195,7 +195,7 @@ public class MainAccounts extends MainState
 					}
 					else if(state == 3)
 					{
-						if(extraStuff == 0)
+						if(extraStuff < 1)
 							extraStuff = i;
 						else
 						{
@@ -300,6 +300,8 @@ public class MainAccounts extends MainState
 
 	public void destroy()
 	{
+		GLFW.glfwSetCharCallback(mainGui.getApplication().getWindow(), null);
+		
 		editTexture.destroy();
 		newTexture.destroy();
 		mergeTexture.destroy();

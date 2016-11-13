@@ -111,7 +111,7 @@ public class MainGui extends GuiScreen
 				}
 				else
 				{
-					application.close();
+					
 				}
 				if(state == prevState)
 				{

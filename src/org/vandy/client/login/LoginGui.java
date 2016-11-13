@@ -25,6 +25,13 @@ public class LoginGui extends GuiScreen
 		
 		setState(new LoginLoading(this, boldFont));
 	}
+	
+	public void reinit()
+	{
+		super.init();
+		
+		setState(new LoginLogin(this, boldFont));
+	}
 
 	@Override
 	public void render(double delta)
