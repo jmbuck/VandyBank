@@ -18,6 +18,10 @@ public class Transaction {
 		multiplier = mult;
 	}
 	
+	public int getMultiplier() {
+		return multiplier;
+	}
+	
 	public int getType() {
 		if(multiplier == 1) {
 			return 0; //deposit
@@ -31,5 +35,31 @@ public class Transaction {
 	public String getID() {
 		return id;
 	}
+	
+	public String getAcctId() {
+		return acctId;
+	}
+	
+	public String getMedium() {
+		return medium;
+	}
+	
+	public String getTransDate() {
+		return transDate;
+	}
+	
+	public String getDesc() {
+		return this.desc;
+	}
+	
+	public double getAmount() {
+		return this.amount;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	
 	
 }
