@@ -332,7 +332,7 @@ public class Bank {
 		return df.format(today);
 	}
 	
-	public static Customer addCustomer(String first, String last, String streetNum, String streetName, String city, String state, String zip)
+	public static Customer createCustomer(String first, String last, String streetNum, String streetName, String city, String state, String zip)
 	{
 		try
 		{
@@ -341,7 +341,7 @@ public class Bank {
 			customerList.add(curr);
 			String firstLast = first + last;
 			Randomize.addRandomAccounts(curr.getID(), firstLast);
-			return curr;//
+			return curr;
 		}
 		catch(Exception e)
 		{
