@@ -95,6 +95,17 @@ public class Account {
 		payeeTransList.add(t);
 	}
 	
+	public void setBalance(double bal)
+	{
+		balance = bal;
+		try {
+			CapitalHttpClient.putAccountChanges(id, "balance", "" +balance);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void setType(String accType)
 	{
 		if(!type.equals(accType))

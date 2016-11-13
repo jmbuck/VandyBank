@@ -63,26 +63,22 @@ public class Randomize {
 		List<String> types = new ArrayList<String>();
 		int numAccounts = MathHelper.random(1, 3);
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
-		for(int i = 0; i < numAccounts; i++)
+		for(int i = 0; i < 1; i++)
 		{
-			String accNum = "";
-			for(int j = 0; j < 16; j++) {
-				int num = MathHelper.random(9);
-				accNum += Integer.toString(num);
-			}
 			int balance = (int)Math.round((Math.random()*1000 + 1000)*100);
 			String type = types.get((int)(Math.random()*3));
-			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
+			//String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
 			Account a = Bank.addAccount(type, randFirstLast);
+			a.setBalance(balance);
 			//Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
 			int numDeposits = MathHelper.random(20, 30);
 			if(!type.equals("Credit Card"))
-				makeRandomDeposits(a, accID, numDeposits);
+				makeRandomDeposits(a, a.getID(), numDeposits);
 			int numWithdrawals = MathHelper.random(15, 25);
-			makeRandomWithdrawals(a, accID, numWithdrawals);
+			makeRandomWithdrawals(a, a.getID(), numWithdrawals);
 			int numPurchases = MathHelper.random(30, 40);
 			if(!type.equals("Savings"))
-				makeRandomPurchases(a, accID, numPurchases);
+				makeRandomPurchases(a, a.getID(), numPurchases);
 //			numBills = MathHelper.random(3, 6);
 //			makeRandomBills(randAccount, accID);
 //			custList.get(custList.size()-1).addAccount(randAccount);
