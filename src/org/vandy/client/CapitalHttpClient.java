@@ -479,30 +479,35 @@ public class CapitalHttpClient {
 
 	}
 	
-	public static void putCustomerChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
-
-		JSONObject obj = new JSONObject(result.toString());
-		if (parameter.equals("first_name")) {
-			obj.put("first_name", change);
-		}
-		if (parameter.equals("last_name")) {
-			obj.put("last_name", change);
-		}
-		if (parameter.equals("street_number")) {
-			obj.getJSONObject("address").put("street_number", change);
-		}
-		if (parameter.equals("street_name")) {
-			obj.getJSONObject("address").put("street_name", change);
-		}
-		if (parameter.equals("city")) {
-			obj.getJSONObject("address").put("city", change);
-		}
-		if (parameter.equals("state")) {
-			obj.getJSONObject("address").put("state", change);
-		}
-		if (parameter.equals("zip")) {
-			obj.getJSONObject("address").put("zip", change);
+	public static void putCustomerChanges(String id, String parameter, String change){
+		StringBuffer result;
+		try {
+			result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
+			JSONObject obj = new JSONObject(result.toString());
+			if (parameter.equals("first_name")) {
+				obj.put("first_name", change);
+			}
+			if (parameter.equals("last_name")) {
+				obj.put("last_name", change);
+			}
+			if (parameter.equals("street_number")) {
+				obj.getJSONObject("address").put("street_number", change);
+			}
+			if (parameter.equals("street_name")) {
+				obj.getJSONObject("address").put("street_name", change);
+			}
+			if (parameter.equals("city")) {
+				obj.getJSONObject("address").put("city", change);
+			}
+			if (parameter.equals("state")) {
+				obj.getJSONObject("address").put("state", change);
+			}
+			if (parameter.equals("zip")) {
+				obj.getJSONObject("address").put("zip", change);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
