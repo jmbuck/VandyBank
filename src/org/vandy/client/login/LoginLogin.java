@@ -234,8 +234,8 @@ public class LoginLogin extends LoginState
 		
 		if(endTicks > 1.25)
 		{
-			loginGui.getApplication().sendPacket(new GuiMainPacket(loginGui.getApplication(), loginGui.getApplication().getLogicHandler(), (LoginLogic) loginGui.getApplication().getLogicHandler().getLogicHandler()));
-			close();
+			loginGui.getApplication().sendPacket(new GuiMainPacket(loginGui.getApplication(), loginGui.getApplication().getLogicHandler(), loginGui.logic));
+			//close();
 		}
 	}
 

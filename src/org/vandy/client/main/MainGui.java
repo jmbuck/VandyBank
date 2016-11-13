@@ -99,7 +99,7 @@ public class MainGui extends GuiScreen
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 - 20 - 100 && !(state instanceof MainTransfers))
 				{
-					state = new MainTransfers(this, alternate);
+					state = new MainTransfers(this, alternate, customer.getAccounts());
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 && !(state instanceof MainBills))
 				{

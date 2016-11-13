@@ -18,7 +18,12 @@ public class LoginCreateAccount extends LoginState
 	private Key deleteKey;
 	private Key backspaceKey;
 	
-	private Customer customer;
+	private String firstName = "";
+	private String lastName = "";
+	private String address = "";
+	private String city = "";
+	private String state = "";
+	private String zip = "";
 	private String currentText = "";
 	
 	private int stage = 0;
@@ -72,7 +77,29 @@ public class LoginCreateAccount extends LoginState
 		if(flag)
 		{
 			if(currentText.length() == 0)
+			{
 				stage--;
+				if(stage == 0)
+				{
+					currentText = firstName;
+				}
+				else if(stage == 1)
+				{
+					currentText = lastName;
+				}
+				else if(stage == 2)
+				{
+					currentText = address;
+				}
+				else if(stage == 3)
+				{
+					currentText = city;
+				}
+				else if(stage == 4)
+				{
+					currentText = state;
+				}
+			}
 			else
 				currentText = currentText.substring(0, currentText.length() - 1);
 			if(stage == -1)
@@ -125,30 +152,28 @@ public class LoginCreateAccount extends LoginState
 			enterKey.removeQuickPress();
 			if(stage == 0)
 			{
-				customer = new Customer();
-				customer.setFirst(currentText);
+				firstName = currentText.substring(0);
 			}
 			else if(stage == 1)
 			{
-				customer.setLast(currentText);
+				lastName = currentText.substring(0);
 			}
 			else if(stage == 2)
 			{
-				customer.setAddress(currentText);
+				address = currentText.substring(0);
 			}
 			else if(stage == 3)
 			{
-				customer.setCity(currentText);
+				city = currentText.substring(0);
 			}
 			else if(stage == 4)
 			{
-				customer.setState(currentText);
+				state = currentText.substring(0);
 			}
 			else
 			{
-				customer.setZip(currentText);
+				zip = currentText;
 				//Bank.createCustomer(customer);
-				Bank.setCurrentCustomer(customer);
 				loginGui.setState(new LoginLogin(loginGui, font));
 			}
 			currentText = "";

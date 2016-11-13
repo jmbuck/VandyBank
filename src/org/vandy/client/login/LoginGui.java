@@ -10,12 +10,14 @@ public class LoginGui extends GuiScreen
 {
 
 	private LoginState state;
+	protected LoginLogic logic;
 	
 	private String[] customerSearch;
 
 	public LoginGui(App app) 
 	{
 		super(app);
+		logic = (LoginLogic) application.getLogicHandler().getLogicHandler();
 	}
 
 	@Override
