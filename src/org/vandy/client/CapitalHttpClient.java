@@ -479,29 +479,70 @@ public class CapitalHttpClient {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/bills/"+id+"?key="+apiKey);
 		
 		JSONObject obj = new JSONObject(result.toString());
-		if (parameter.equals("status")) {
-			return obj.getString("status");
+		
+		try {
+			if (parameter.equals("status")) {
+				return obj.getString("status");
+			}
 		}
-		if (parameter.equals("payee")) {
-			return obj.getString("payee");
+		catch (Exception e) {
+			return "No status listed.";
 		}
-		if (parameter.equals("nickname")) {
-			return obj.getString("nickname");
+		try {
+			if (parameter.equals("payee")) {
+				return obj.getString("payee");
+			} 
 		}
-		if (parameter.equals("creation_date")) {
-			return obj.getString("creation_date");
+		catch (Exception e) {
+			return "No payee listed.";
 		}
-		if (parameter.equals("payment_date")) {
-			return obj.getString("payment_date");
+		try {
+			if (parameter.equals("nickname")) {
+				return obj.getString("nickname");
+			} 
 		}
-		if (parameter.equals("recurring_date")) {
-			return Integer.toString(obj.getInt("recurring_date"));
+		catch (Exception e) {
+			return "Bill";
 		}
-		if (parameter.equals("upcoming_payment_date")) {
-			return obj.getString("upcoming_payment_date");
+		try {
+			if (parameter.equals("creation_date")) {
+				return obj.getString("creation_date");
+			}
 		}
-		if (parameter.equals("account_id")) {
-			return obj.getString("account_id");
+		catch (Exception e) {
+			return "No creation date.";
+		}
+		try {
+			if (parameter.equals("payment_date")) {
+				return obj.getString("payment_date");
+			}
+		}
+		catch (Exception e) {
+			return "No payment date listed.";
+		}
+		try {
+			if (parameter.equals("recurring_date")) {
+				return Integer.toString(obj.getInt("recurring_date"));
+			}
+		}
+		catch (Exception e) {
+			return "Not a recurring bill";
+		}
+		try {
+			if (parameter.equals("upcoming_payment_date")) {
+				return obj.getString("upcoming_payment_date");
+			} 
+		}
+		catch (Exception e) {
+			return "No upcoming payment date.";
+		}
+		try {
+			if (parameter.equals("account_id")) {
+				return obj.getString("account_id");
+			}
+		}
+		catch (Exception e) { 
+			return "1234567890125473";
 		}
 		
 		return "error";
