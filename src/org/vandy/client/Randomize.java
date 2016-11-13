@@ -2,6 +2,8 @@ package org.vandy.client;
 
 import java.util.*;
 
+import com.polaris.engine.util.MathHelper;
+
 public class Randomize {
 	private int numAccounts;
 	private int numDeposits;
@@ -17,12 +19,12 @@ public class Randomize {
 	
 	public Randomize() throws Exception
 	{
-		numAccounts = (int)(Math.random()*4) + 1;
+		numAccounts = MathHelper.random(1, 4);
 		addRandomAccounts();
-		numDeposits = (int)(Math.random()*15) + 6;
-		numWithdrawals = (int)(Math.random()*5) + 6;
-		numPurchases = (int)(Math.random()*5) + 6;
-		numBills = (int)(Math.random()*3) + 4;
+		numDeposits = MathHelper.random(15, 20);
+		numWithdrawals = MathHelper.random(10, 15);
+		numPurchases = MathHelper.random(5, 10);
+		numBills = MathHelper.random(3, 6);
 	}
 	
 	public void addRandomAccounts() throws Exception
@@ -31,7 +33,7 @@ public class Randomize {
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
 		for(int i = 0; i < numAccounts; i++)
 		{
-			randy.addAccount(new Account(Integer.toString(1001+i), "1337", types.get((int)(Math.random()*4)), "rando", 0.00, Math.round(Math.random()*1000 + 1000), Integer.toString(7523+i)));
+			randy.addAccount(new Account(Integer.toString(1001+i), "1337", types.get((int)(Math.random()*4)), "rando", 0.00, Math.round((Math.random()*1000 + 1000)*100)/100, Integer.toString(7523+i)));
 		}
 		
 	}
