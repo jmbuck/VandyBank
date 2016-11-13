@@ -320,7 +320,7 @@ public class Bank {
 		{
 			List<Customer> customers = new Randomize().getCustomers();
 			for(Customer c : customers)
-				customerList.add(c);
+				customerList.add(c);//
 		}
 		catch(Exception e)
 		{
