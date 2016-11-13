@@ -255,6 +255,10 @@ public class Bank {
 
 	public static Customer findCustomer(String fullname) {
 		String[] parts = fullname.split(" ");
+		
+		if(parts.length != 2)
+			return null;
+		
 		for(Customer c : customerList) {
 			if(parts[0].equals(c.getFirstName()) && parts[1].equals(c.getLastName())) {
 				return c;

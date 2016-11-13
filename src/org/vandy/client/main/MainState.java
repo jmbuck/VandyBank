@@ -1,7 +1,12 @@
 package org.vandy.client.main;
 
+import com.polaris.engine.render.Font;
+
 public class MainState 
 {
+	
+	protected Font font;
+	protected Font boldFont;
 	
 	protected final MainGui mainGui;
 	protected double ticks = 0;
@@ -10,6 +15,9 @@ public class MainState
 	public MainState(MainGui gui)
 	{
 		mainGui = gui;
+		
+		font = mainGui.getLight();
+		boldFont = mainGui.getBold();
 	}
 	
 	public void render(double delta)

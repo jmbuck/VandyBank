@@ -1,5 +1,12 @@
 package org.vandy.client.main;
 
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glViewport;
+
 import java.io.File;
 
 import org.lwjgl.glfw.GLFW;
@@ -63,6 +70,13 @@ public class MainGui extends GuiScreen
 
 		drawSideMenu(delta);
 
+		glViewport(application.getWindowX() / 16 + 8, application.getWindowY() / 7 + 8, application.getWindowX(), application.getWindowY());
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, 1920, 1080, 0, -100, 100);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		
 		state.render(delta);
 
 		if(application.getInput().getMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT).isPressed() && inScreen)
@@ -114,9 +128,9 @@ public class MainGui extends GuiScreen
 	{
 		GL11.glColor4f(1, 1, 1, 1);
 		boldFont.bind();
-		boldFont.draw("Hello Killian,", 1920 / 6 + 40, 1080 / 14, 1, .75f);
+		boldFont.draw("Hello " + customer.getFirstName() + ",", 1920 / 6 + 40, 1080 / 14, 1, .75f);
 		font.bind();
-		font.draw("You are looking great today!", 1920 / 6 + 40, 1080 / 8, 1, .5f);
+		font.draw("You're looking great today!", 1920 / 6 + 40, 1080 / 8, 1, .5f);
 		font.unbind();
 
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
