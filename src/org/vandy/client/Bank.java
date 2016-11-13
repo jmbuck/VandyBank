@@ -255,6 +255,11 @@ public class Bank {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String getRandMerch()
+	{
+		return merchList.get(MathHelper.random(merchList.size() - 1)).getID();
+	}
 
 	public static void loadBills() {
 		try {
