@@ -80,7 +80,6 @@ public class MainAccounts extends MainState
 		super.render(delta);
 
 		int hover = checkSpot(0);
-		//System.out.println(mouseX + " " + mouseY);
 
 		renderIcons(newTexture, mergeTexture, editTexture, 0, hover, 0);
 
@@ -90,7 +89,7 @@ public class MainAccounts extends MainState
 		}
 
 		float x = 1920 / 32;
-		float y = 80 + 100 + (state == 1 ? 100 : 0);
+		float y = 80 + 100 + (state == 1 || (state == 3 && currentAccount != null) ? 100 : 0);
 
 		GL11.glColor4f(.8f, .8f, .8f, 1f);
 
@@ -139,6 +138,7 @@ public class MainAccounts extends MainState
 				currentText = "";
 				state = 0;
 				extraStuff = -1;
+				currentAccount = null;
 				y -= 100;
 			}
 
@@ -156,24 +156,31 @@ public class MainAccounts extends MainState
 			}
 			boldFont.unbind();
 		}
-		else if(state == 2 && extraStuff > 0)
+		else if(state == 3 && currentAccount != null)
 		{
-			hover = checkSpot(80);
-
-			if(mainGui.getApplication().getInput().getMouse(0).isPressed() && hover > 0)
-			{
-				accountList.get(extraStuff).setType(accTypes[hover]);
-			}
-
 			if(enterKey.wasQuickPressed() && currentText.length() > 0)
 			{
 				enterKey.removeQuickPress();
-				accountList.get(extraStuff).setNickname(currentText);
+				currentAccount.setNickname(currentText);
+
 				currentText = "";
 				state = 0;
 				extraStuff = -1;
+				currentAccount = null;
 				y -= 100;
 			}
+
+			GL11.glColor4f(1f, 1f, 1f, 1f);
+			boldFont.bind();
+			if(currentText.length() == 0)
+			{
+				boldFont.draw("Please Type the New Name", 1920 / 3 - 7 - boldFont.getWidth("Please Type the New Name", .3f), 130, 0, .3f);
+			}
+			else
+			{
+				boldFont.draw(currentText, 1920 / 3 - 7 - boldFont.getWidth(currentText, .3f), 130, 0, .3f);
+			}
+			boldFont.unbind();
 		}
 		Account account;
 		String s;
@@ -189,20 +196,24 @@ public class MainAccounts extends MainState
 				if(mouseY >= y - 128 * .45f && mouseY <= y + 125 - 64 * .45f)
 				{
 					GL11.glColor4f(.6f, .6f, .6f, 1);
-					if(state == 2)
+					if(mainGui.getApplication().getInput().getMouse(0).isPressed())
 					{
-						extraStuff = i;
-					}
-					else if(state == 3)
-					{
-						if(extraStuff == -1)
-							extraStuff = i;
-						else
+						if(state == 2)
 						{
-							accountList.get(i).merge(accountList.get(extraStuff));
-							accountList.remove(i);
-							state = 0;
-							extraStuff = -1;
+							if(currentAccount == null)
+								currentAccount = accountList.get(i);
+							else if(currentAccount != accountList.get(i))
+							{
+								accountList.get(i).merge(currentAccount);
+								accountList.remove(currentAccount);
+								state = 0;
+								extraStuff = -1;
+								currentAccount = null;
+							}
+						}
+						else if(state == 3)
+						{
+							currentAccount = accountList.get(i);
 						}
 					}
 				}
@@ -303,7 +314,7 @@ public class MainAccounts extends MainState
 		super.close();
 		GLFW.glfwSetCharCallback(mainGui.getApplication().getWindow(), null);
 	}
-	
+
 	public void destroy()
 	{		
 		editTexture.destroy();

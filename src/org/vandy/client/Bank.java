@@ -292,7 +292,7 @@ public class Bank {
 	public static String[] getAccountNums() {
 		String[] acctNums = new String[accountList.size()];
 		for (int i = 0; i<accountList.size(); i++) {
-			acctNums[i] = accountList.get(i).getCustomerID();
+			acctNums[i] = accountList.get(i).getAccountNumber();
 		}
 		return acctNums;
 	}
@@ -332,19 +332,31 @@ public class Bank {
 		return df.format(today);
 	}
 	
-	public static Customer createCustomer(Customer c)
-	{
+	public static Customer createCustomer(String first, String last, String address, String city, String state,
+											String zip) {
 		try
 		{
-			String firstLast = curr.getFirstName() + curr.getLastName();
+			String[] parts = address.split(" ");
+			String streetNum = parts[0];
+			String name = "";
+			for(int i = 1; i < parts.length; i++) {
+				name += parts[i];
+				if(i != parts.length - 1)
+					name += " ";
+			}
+			String streetName = name;
+			String firstLast = first + last;
 			Randomize.addRandomAccounts(curr.getID(), firstLast);
-			return curr;
+			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
+			Customer c = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
+			customerList.add(c);
+			return c;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public static Account addAccount(String accType, String nickname) {
@@ -356,7 +368,6 @@ public class Bank {
 					int num = MathHelper.random(9);
 					accNum += Integer.toString(num);
 				}
-				System.out.println(accNum);
 				String custId = curr.getID();
 				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
 				Account acc = new Account(accId, custId, accType, nickname, 0, 0, accNum);

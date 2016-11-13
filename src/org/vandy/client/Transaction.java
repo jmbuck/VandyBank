@@ -17,4 +17,15 @@ public class Transaction {
 		type = dType;
 		multiplier = mult;
 	}
+	
+	public int getType() {
+		if(multiplier == 1) {
+			return 0; //deposit
+		}
+		if(multiplier == -1) {
+			return 1; //withdraw
+		}
+		return -1;
+	}
+	
 }

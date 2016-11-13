@@ -2,7 +2,7 @@ package org.vandy.client;
 public class Search {
 	
 	public static String[] doSearchAcctNum(int n, String phrase) {
-		String[] acctNums = Bank.getCustomers();
+		String[] acctNums = Bank.getAccountNums();
 		String[] retArr = new String[Math.min(n, acctNums.length)];
 		/*if (userIds.length<=n) {
 			for (int i = 0; i < userIds.length; i++) {
