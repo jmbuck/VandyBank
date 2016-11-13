@@ -79,10 +79,12 @@ public class Account {
 	
 	public void addDep(Deposit d) {
 		depList.add(d);
+		transList.add(d);
 	}
 	
 	public void addWithdraw(Withdrawal w) {
 		withList.add(w);
+		transList.add(w);
 	}
 	
 	public void addPayerTrans(Transfer t) {

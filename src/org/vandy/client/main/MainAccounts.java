@@ -260,18 +260,30 @@ public class MainAccounts extends MainState
 			yOffset += mainGui.getApplication().getScrollDeltaY() * 4;
 			boldFont.bind();
 			List<Transaction> list = currentAccount.getTransList();
-			yOffset = MathHelper.clamp(0, (3 * 128 * .45f + 40) * list.size(), yOffset);
+			yOffset = MathHelper.clamp(0, (5 * 128 * .45f + 40) * list.size(), yOffset);
 			Transaction t;
 			for(int i = 0; i < list.size(); i++)
 			{
+				/*if(y < -128 || y > 1080)
+				{
+					y += (5 * 128 * .45f + 40);
+					continue;
+				}*/
 				t = list.get(i);
 				boldFont.draw(transTypes[t.getType()], x, y, 0, .45f);
 				y += 128 * .45f + 10;
-				s = "**** **** **** " + currentAccount.getAccountNumber().substring(12);
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				s = "$" + format.format(t.getAmount());
+				//s = "**** **** **** " + currentAccount.getAccountNumber().substring(12);
+				boldFont.draw(s, 1920 * 2 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
 				y += 128 * .45f + 10;
-				s = "$" + format.format(currentAccount.getBalance());
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				s = t.getTransDate();
+				boldFont.draw(s, 1920 * 2/ 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				y += 128 * .45f + 10;
+				s = t.getStatus();
+				boldFont.draw(s, 1920 * 2/ 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
+				y += 128 * .45f + 10;
+				s = t.getID();
+				boldFont.draw(s, 1920 * 3 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
 				y += 128 * .45f + 20;
 			}
 			boldFont.unbind();
