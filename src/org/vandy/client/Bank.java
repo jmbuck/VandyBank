@@ -41,7 +41,7 @@ public class Bank {
 
 	private static void loadPurchases() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private static void loadMerchants() {
@@ -68,19 +68,19 @@ public class Bank {
 					} catch (Exception e) {
 						desc = "No description.";
 					}
-				
-				
+
+
 					Transfer trans = new Transfer(s, type, transDate, status, payee, medium,
-												  amount, desc, payer);
+							amount, desc, payer);
 					if(a.getID().equals(payee))
 						a.addPayeeTrans(trans);
 					if(a.getID().equals(payer))
 						a.addPayerTrans(trans);
-	
+
 					transferList.add(trans);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,7 +96,7 @@ public class Bank {
 					//String transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
 					String transDate = "";
 					try {
-						 transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
+						transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
 					}catch (Exception e) {
 						transDate = "Unknown Date";
 					}
@@ -131,7 +131,7 @@ public class Bank {
 					String type = CapitalHttpClient.getDepositsByID(s, "type");
 					String transDate = "";
 					try {
-						 transDate = CapitalHttpClient.getDepositsByID(s, "transaction_date");
+						transDate = CapitalHttpClient.getDepositsByID(s, "transaction_date");
 					}catch (Exception e) {
 						transDate = "Unknown Date";
 					}
@@ -193,7 +193,7 @@ public class Bank {
 				} catch (Exception e) {
 					accNum = "UnknownAccount##";
 				}
-				
+
 				a = new Account(s, custID, type, nickname, rewards, balance, accNum);
 				//add accounts to customers
 				for(Customer c : customerList) {
@@ -242,7 +242,7 @@ public class Bank {
 		}
 		return customers;
 	}
-	
+
 	public static String lookUpCustomer(String id, String parameter) {
 		Customer c = customerList.get(0);
 		int i = 0;
@@ -270,7 +270,26 @@ public class Bank {
 		}
 		return "";
 	}
-	
+
+	public static void addAccount(String accType, String nickname) {
+		try {
+			//generate 16 digit acc number
+			if(curr.getAccounts().size() < 4) {
+				String accNum = "";
+				for(int i = 0; i < 16; i++) {
+					int num = (int)(Math.random()) * 10;
+					accNum += num;
+				}
+				String custId = curr.getID();
+				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
+
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	public static void createCustomer(Customer c)
 	{
 
@@ -280,17 +299,17 @@ public class Bank {
 	{
 		curr = c;
 	}
-	
+
 	public static Customer getCurrentCustomer() {
 		return curr;
 	}
 
 	public static Customer findCustomer(String fullname) {
 		String[] parts = fullname.split(" ");
-		
+
 		if(parts.length != 2)
 			return null;
-		
+
 		for(Customer c : customerList) {
 			if(parts[0].equals(c.getFirstName()) && parts[1].equals(c.getLastName())) {
 				return c;
