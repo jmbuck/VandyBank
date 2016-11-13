@@ -7,6 +7,8 @@ import com.polaris.engine.util.MathHelper;
 public class Randomize {
 	private List<Customer> custList = new ArrayList<Customer>();
 	private int numCustomers = 20;
+	static int[] days = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28};
+	static int[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	
 	public Randomize() throws Exception
 	{
@@ -72,12 +74,12 @@ public class Randomize {
 			String type = types.get((int)(Math.random()*4));
 			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
 			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
-			int numDeposits = MathHelper.random(15, 20);
+			int numDeposits = MathHelper.random(20, 30);
 			if(!type.equals("Credit Card"))
 				makeRandomDeposits(randAccount, accID, numDeposits);
-			int numWithdrawals = MathHelper.random(10, 15);
+			int numWithdrawals = MathHelper.random(15, 25);
 			makeRandomWithdrawals(randAccount, accID, numWithdrawals);
-			int numPurchases = MathHelper.random(5, 10);
+			int numPurchases = MathHelper.random(30, 40);
 			if(!type.equals("Savings"))
 				makeRandomPurchases(randAccount, accID, numPurchases);
 //			numBills = MathHelper.random(3, 6);
@@ -89,11 +91,26 @@ public class Randomize {
 	
 	public static void makeRandomDeposits(Account randAccount, String accID, int numDeposits) throws Exception
 	{
+		int d;
+		int m;
+		double amount;
 		for(int i = 0; i < numDeposits; i++)
 		{
-			double amount = MathHelper.random(100, 300);
-			String depID = CapitalHttpClient.postDeposit(accID, "balance", "11-13-2016", amount, "random");
-			Deposit randDep = new Deposit(accID, "balance", "11-13-2016", "pending", depID, "deposit", amount, "random");
+			amount = MathHelper.random(100, 300);
+			d = MathHelper.random(1, 28);
+			m = MathHelper.random(1,10);
+			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
+			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
+			Deposit randDep = new Deposit(accID, "balance", randDate, "pending", depID, "deposit", amount, "random");
+			randAccount.deposit(randDep, depID);
+		}
+		d = 15;
+		amount = 2000.00;
+		for(m = 1; m < 11; m++)
+		{
+			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
+			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
+			Deposit randDep = new Deposit(accID, "balance", randDate, "pending", depID, "deposit", amount, "paycheck baby");
 			randAccount.deposit(randDep, depID);
 		}
 		
@@ -101,12 +118,27 @@ public class Randomize {
 	
 	public static void makeRandomWithdrawals(Account randAccount, String accID, int numWithdrawals) throws Exception
 	{
+		int d;
+		int m;
+		double amount;
 		for(int i = 0; i < numWithdrawals; i++)
 		{
-			double amount = MathHelper.random(100, 200);
-			String withID = CapitalHttpClient.postWithdrawal(accID, "balance", "11-13-2016", amount, "random");
-			Withdrawal randWith = new Withdrawal(accID, "balance", "11-13-2016", "pending", withID, "withdraw", amount, "random");
+			amount = MathHelper.random(100, 200);
+			d = MathHelper.random(1, 28);
+			m = MathHelper.random(1,10);
+			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
+			String withID = CapitalHttpClient.postWithdrawal(accID, "balance", randDate, amount, "random");
+			Withdrawal randWith = new Withdrawal(accID, "balance", randDate, "pending", withID, "withdraw", amount, "random");
 			randAccount.withdraw(randWith, withID);
+		}
+		d = 25;
+		amount = 500.00;
+		for(m = 1; m < 11; m++)
+		{
+			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
+			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
+			Deposit randDep = new Deposit(accID, "balance", randDate, "pending", depID, "deposit", amount, "taxes :(");
+			randAccount.deposit(randDep, depID);
 		}
 		
 	}
@@ -116,8 +148,11 @@ public class Randomize {
 		for(int i = 0; i < numPurchases; i++)
 		{
 			double amount = MathHelper.random(50, 150);
-			String purchID = CapitalHttpClient.postPurchase(accID, "1337", "balance", "11-13-2016", amount, "random");
-			Purchase randPurch = new Purchase(accID, "balance", "11-13-2016", "pending", purchID, "deposit", amount, "random", "1337");
+			int d = MathHelper.random(1, 28);
+			int m = MathHelper.random(1,10);
+			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
+			String purchID = CapitalHttpClient.postPurchase(accID, "1337", "balance", randDate, amount, "random");
+			Purchase randPurch = new Purchase(accID, "balance", randDate, "pending", purchID, "deposit", amount, "random", "1337");
 			randAccount.purchase(randPurch, purchID);
 		}
 		
