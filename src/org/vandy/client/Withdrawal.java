@@ -1,19 +1,17 @@
 package org.vandy.client;
 
 public class Withdrawal extends Transaction{
-
-	String id, medium, transDate, desc, status, type;
-	Account acct;
-	double amount;
 	
-	public Withdrawal(String wId, String wType, String wTransDate, String wStatus, Account wAcct, String med, double wAmt, String descr) {
-		id = wId;
-		acct = wAcct;
-		medium = med;
-		transDate = wTransDate;
-		desc = descr;
-		amount = wAmt;
-		status = wStatus;
-		type = wType;
+	public Withdrawal(String wId, String wType, String wTransDate, String wStatus, String aId, String med, double dAmt, String descr) {
+		super(wId, wType, wTransDate, wStatus, aId, med, dAmt, descr, -1);
+	}
+	
+	public void setStatus(String state) throws Exception
+	{
+		if(!status.equals(state))
+		{
+			status = state;
+			CapitalHttpClient.putDepositChanges(id, "status", state);
+		}		
 	}
 }

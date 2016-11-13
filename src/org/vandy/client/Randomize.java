@@ -10,10 +10,7 @@ public class Randomize {
 	private int numWithdrawals;
 	private int numPurchases;
 	private int numBills;
-	private List<Account> accounts = new ArrayList<Account>();
-	private List<Transaction> transList = new ArrayList<Transaction>();
-	private List<Deposit> depList = new ArrayList<Deposit>();
-	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
+	private List<Customer> custList = new ArrayList<Customer>();
 	private int numCustomers = 20;
 	
 	public Randomize() throws Exception
@@ -48,9 +45,10 @@ public class Randomize {
 			firsts.add("12345");firsts.add("67891");firsts.add("23456");firsts.add("78912");
 			firsts.add("34567");firsts.add("89123");firsts.add("45678");firsts.add("91234");
 			firsts.add("56789");firsts.add("19283");firsts.add("74651");firsts.add("13579");
-			createRandomCustomer(firsts.get(MathHelper.random(12)), lasts.get(MathHelper.random(12)), streetNums.get(MathHelper.random(12)),
+			Customer rand = createRandomCustomer(firsts.get(MathHelper.random(12)), lasts.get(MathHelper.random(12)), streetNums.get(MathHelper.random(12)),
 					streetNames.get(MathHelper.random(12)), cities.get(MathHelper.random(12)), states.get(MathHelper.random(12)),
 						zipCodes.get(MathHelper.random(12)));
+			custList.add(rand);
 		}
 	}
 	
@@ -61,10 +59,7 @@ public class Randomize {
 		Customer randy = new Customer(randID, first, last, streetNum, streetName, city, state, zipCode);
 		String randFirstLast = first + last;
 		addRandomAccounts(randID, randFirstLast);
-		numDeposits = MathHelper.random(15, 20);
-		numWithdrawals = MathHelper.random(10, 15);
-		numPurchases = MathHelper.random(5, 10);
-		numBills = MathHelper.random(3, 6);
+		return randy;
 	}
 	
 	public void addRandomAccounts(String randID, String randFirstLast) throws Exception
@@ -73,9 +68,81 @@ public class Randomize {
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
 		for(int i = 0; i < numAccounts; i++)
 		{
-			String accID = CapitalHttpClient.postAccount(randID, types.get((int)(Math.random()*4)), randFirstLast, 0.00, Math.round((Math.random()*1000 + 1000)*100)/100.00, Integer.toString(i+1));
+			String accNum = "";
+			for(int j = 0; j < 16; j++) {
+				int num = MathHelper.random(9);
+				accNum += Integer.toString(num);
+			}
+			int balance = (int)Math.round((Math.random()*1000 + 1000)*100);
+			String type = types.get((int)(Math.random()*4));
+			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
+			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
+			numDeposits = MathHelper.random(15, 20);
+			if(!type.equals("Credit Card"))
+				makeRandomDeposits(randAccount, accID);
+			numWithdrawals = MathHelper.random(10, 15);
+			makeRandomWithdrawals(randAccount, accID);
+			numPurchases = MathHelper.random(5, 10);
+			if(!type.equals("Savings"))
+				makeRandomPurchases(randAccount, accID);
+//			numBills = MathHelper.random(3, 6);
+//			makeRandomBills(randAccount, accID);
+			custList.get(custList.size()-1).addAccount(randAccount);
 		}
 		
+	}
+	
+	public void makeRandomDeposits(Account randAccount, String accID) throws Exception
+	{
+		for(int i = 0; i < numDeposits; i++)
+		{
+			double amount = MathHelper.random(100, 300);
+			String depID = CapitalHttpClient.postDeposit(accID, "balance", "11-13-2016", amount, "random");
+			Deposit randDep = new Deposit(accID, "balance", "11-13-2016", "pending", depID, "deposit", amount, "random");
+			randAccount.deposit(randDep, depID);
+		}
+		
+	}
+	
+	public void makeRandomWithdrawals(Account randAccount, String accID) throws Exception
+	{
+		for(int i = 0; i < numWithdrawals; i++)
+		{
+			double amount = MathHelper.random(100, 200);
+			String withID = CapitalHttpClient.postWithdrawal(accID, "balance", "11-13-2016", amount, "random");
+			Withdrawal randWith = new Withdrawal(accID, "balance", "11-13-2016", "pending", withID, "withdraw", amount, "random");
+			randAccount.withdraw(randWith, withID);
+		}
+		
+	}
+	
+	public void makeRandomPurchases(Account randAccount, String accID) throws Exception
+	{
+		for(int i = 0; i < numPurchases; i++)
+		{
+			double amount = MathHelper.random(50, 150);
+			String purchID = CapitalHttpClient.postPurchase(accID, "1337", "balance", "11-13-2016", amount, "random");
+			Purchase randPurch = new Purchase(accID, "balance", "11-13-2016", "pending", purchID, "deposit", amount, "random", "1337");
+			randAccount.purchase(randPurch, purchID);
+		}
+		
+	}
+	
+	/*public void makeRandomBills(Account randAccount, String accID) throws Exception
+	{
+		for(int i = 0; i < numWithdrawals; i++)
+		{
+			double amount = MathHelper.random(100, 200);
+			String withID = CapitalHttpClient.postWithdrawal(accID, "balance", "11-13-2016", amount, "random");
+			Withdrawal randWith = new Withdrawal(accID, "balance", "11-13-2016", "pending", withID, "withdraw", amount, "random");
+			randAccount.withdraw(randWith, withID);
+		}
+		
+	}*/
+	
+	public List<Customer> getCustomers()
+	{
+		return custList;
 	}
 
 }

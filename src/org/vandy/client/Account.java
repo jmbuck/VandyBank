@@ -12,9 +12,9 @@ public class Account {
 	private List<Transfer> payerTransList = new ArrayList<Transfer>();
 	private List<Transfer> payeeTransList = new ArrayList<Transfer>();
 	private String id, type, nickname, account_number, customer_id;
-	private int rewards, balance;
+	private double rewards, balance;
 	
-	public Account(String accId, String custID, String accType, String custNickname, int accRewards, int accBalance,
+	public Account(String accId, String custID, String accType, String custNickname, double accRewards, double accBalance,
 				String accNum) throws Exception 
 	{	
 		id = accId;
@@ -77,21 +77,31 @@ public class Account {
 		payeeTransList.add(t);
 	}
 	
-	public void setType(String accType) throws Exception
+	public void setType(String accType)
 	{
 		if(!type.equals(accType))
 		{
 			type = accType;
-			CapitalHttpClient.putAccountChanges(id, "type", accType);
+			try {
+				CapitalHttpClient.putAccountChanges(id, "type", accType);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public void setNickname(String accNickname) throws Exception
+	public void setNickname(String accNickname)
 	{
 		if(!nickname.equals(accNickname))
 		{
 			nickname = accNickname;
-			CapitalHttpClient.putAccountChanges(id, "nickname", accNickname);
+			try {
+				CapitalHttpClient.putAccountChanges(id, "nickname", accNickname);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -103,7 +113,7 @@ public class Account {
 	public int deposit(Deposit transaction, String depID) throws Exception
 	{
 		double amount = Double.parseDouble(CapitalHttpClient.getDepositsByID(depID, "amount"));
-		if(balance + amount < 0 || amount < 0)	//Insufficient funds or amount
+		if(amount < 0)	//Insufficient amount
 		{
 			return 0;				//Check bounces
 		}
@@ -151,5 +161,39 @@ public class Account {
 			withList.add(transaction);	
 			return 1;
 		}		
+	}
+	
+	public int transferTo(Transfer transaction, String transID, Account receiver)
+	{
+		{
+			double amount = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(purchID, "amount"));
+			if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
+			{
+				return 0;				//Check for bounces
+			}
+			else
+			{
+				balance -= amount;
+				Withdrawal withdraw = new Withdrawal(transaction.getID(), type, transaction.getTransDate(), "pending", id, "balance", transaction.getAmount(), transaction.getDesc());
+				Deposit deposit = new Deposit(transaction.getID(), receiver.getType(), transaction.getTransDate(), "pending", receiver.getID(), "balance", transaction.getAmount(), transaction.getDesc());
+				receiver.deposit(deposit, transID);
+				CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
+				CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
+				transList.add(withdraw);
+				withList.add(withdraw);
+				receiver.get
+				return 1;
+			}		
+		}
+	}
+
+	public void merge(Account account)
+	{
+		double amount = account.getBalance();
+		if(amount == 0)
+			return;
+		balance += amount;
+//		CapitalHttpClient.deleteAccount();
+		
 	}
 }

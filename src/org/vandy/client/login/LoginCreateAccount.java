@@ -37,9 +37,9 @@ public class LoginCreateAccount extends LoginState
 	public void init()
 	{
 		GLFW.glfwSetCharCallback(loginGui.getApplication().getWindow(), GLFWCharCallback.create((window, codepoint) -> {
-			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',')
+			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',' || stage == 2 || stage == 5)
 			{
-				if(currentText.length() < 48)
+				if(currentText.length() < 32)
 					currentText += (char) codepoint;
 			}
 		}));
@@ -147,9 +147,9 @@ public class LoginCreateAccount extends LoginState
 			else
 			{
 				customer.setZip(currentText);
-				Bank.createCustomer(customer);
+				//Bank.createCustomer(customer);
 				Bank.setCurrentCustomer(customer);
-				loginGui.setState(new LoginLoading(loginGui, font));
+				loginGui.setState(new LoginLogin(loginGui, font));
 			}
 			currentText = "";
 			stage++;

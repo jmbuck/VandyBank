@@ -52,6 +52,7 @@ public class MainGui extends GuiScreen
 	{
 		super.init();
 		state = new MainAccounts(this, customer.getAccounts());
+		state.init();
 
 		accountsTexture = application.getTextureManager().genTexture("Accounts", new File("textures/bank.png"));
 		transfersTexture = application.getTextureManager().genTexture("Transfers", new File("textures/transfer.png"));
@@ -70,7 +71,7 @@ public class MainGui extends GuiScreen
 
 		drawSideMenu(delta);
 
-		glViewport(application.getWindowX() / 16 + 8, application.getWindowY() / 7 + 8, application.getWindowX(), application.getWindowY());
+		glViewport(application.getWindowX() / 16 + 8, 8, application.getWindowX() * 15 / 16 - 16, application.getWindowY() * 6 / 7 - 16);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, 1920, 1080, 0, -100, 100);
@@ -78,6 +79,8 @@ public class MainGui extends GuiScreen
 		glLoadIdentity();
 		
 		state.render(delta);
+		if(prevState != null)
+			prevState.render(delta);
 
 		if(application.getInput().getMouse(GLFW.GLFW_MOUSE_BUTTON_LEFT).isPressed() && inScreen)
 		{
@@ -108,7 +111,7 @@ public class MainGui extends GuiScreen
 				}
 				else
 				{
-					application.close();
+					
 				}
 				if(state == prevState)
 				{
@@ -116,10 +119,16 @@ public class MainGui extends GuiScreen
 				}
 				else
 				{
+					state.init();
 					prevState.close();
 				}
 				clicked = true;
 			}
+		}
+		if(prevState != null && prevState.closingTicks > .98f)
+		{
+			prevState.destroy();
+			prevState = null;
 		}
 
 	}
