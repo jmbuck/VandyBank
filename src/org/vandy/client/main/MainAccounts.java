@@ -156,49 +156,26 @@ public class MainAccounts extends MainState
 			}
 			boldFont.unbind();
 		}
-		else if(state == 2)
+		else if(state == 2 && extraStuff > 0)
 		{
-
-		}
-		else if(state == 3)
-		{
-			Account account;
-			String s;
-
-			GL11.glColor4f(1, 1, 1, 1);
-			for(int i = 0; i < 1; i++)
+			hover = checkSpot(80);
+			
+			if(mainGui.getApplication().getInput().getMouse(0).isPressed() && hover > 0)
 			{
-				account = accountList.get(i);
-				if(account.getType().equals("savings"))
-				{
-					savingsTexture.bind();
-				}
-				else if(account.getType().equals("checking"))
-				{
-					checkTexture.bind();
-				}
-				else
-				{
-					creditTexture.bind();
-				}
-				GL11.glBegin(GL11.GL_QUADS);
-				Draw.rectUV(x - 10, y - 60, x + 50, y, 1);
-				GL11.glEnd();
-
-				boldFont.bind();
-				boldFont.draw(account.getNickname(), x + 52, y, 0, .45f);
-				y += 50;
-				s = "**** **** **** " + account.getAccountNumber().substring(12);
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
-				y += 50;
-				s = "$" + format.format(account.getBalance());
-				boldFont.draw(s, 1920 / 3 - 12 - boldFont.getWidth(s, .33f), y, 0, .33f);
-				y += 75;
-				boldFont.unbind();
+				accountList.get(extraStuff).setType(accTypes[hover]);
 			}
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+			if(enterKey.wasQuickPressed() && currentText.length() > 0)
+			{
+				enterKey.removeQuickPress();
+				accountList.get(extraStuff).setNickname(currentText);
+				currentText = "";
+				state = 0;
+				extraStuff = 0;
+				y -= 100;
+			}
 		}
-		if(state < 2)
+		else
 		{
 			Account account;
 			String s;
@@ -206,6 +183,26 @@ public class MainAccounts extends MainState
 			GL11.glColor4f(1, 1, 1, 1);
 			for(int i = 0; i < accountList.size(); i++)
 			{
+				if(mouseX >= x - 10 && mouseX <= 1920 / 3 - 2)
+				{
+					if(mouseY >= y - 67.5f && mouseY <= y + 67.5)
+					{
+						GL11.glColor4f(.8f, .8f, .8f, 1);
+						if(state == 2)
+						{
+							extraStuff = i;
+						}
+						else if(state == 3)
+						{
+							if(extraStuff == 0)
+								extraStuff = i;
+							else
+							{
+								accountList.get(i).merge(accountList.get(extraStuff));
+							}
+						}
+					}
+				}
 				account = accountList.get(i);
 				if(account.getType().equals("savings"))
 				{

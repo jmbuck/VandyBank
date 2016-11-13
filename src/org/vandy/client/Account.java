@@ -77,21 +77,31 @@ public class Account {
 		payeeTransList.add(t);
 	}
 	
-	public void setType(String accType) throws Exception
+	public void setType(String accType)
 	{
 		if(!type.equals(accType))
 		{
 			type = accType;
-			CapitalHttpClient.putAccountChanges(id, "type", accType);
+			try {
+				CapitalHttpClient.putAccountChanges(id, "type", accType);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public void setNickname(String accNickname) throws Exception
+	public void setNickname(String accNickname)
 	{
 		if(!nickname.equals(accNickname))
 		{
 			nickname = accNickname;
-			CapitalHttpClient.putAccountChanges(id, "nickname", accNickname);
+			try {
+				CapitalHttpClient.putAccountChanges(id, "nickname", accNickname);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -151,5 +161,10 @@ public class Account {
 			withList.add(transaction);	
 			return 1;
 		}		
+	}
+
+	public void merge(Account account)
+	{
+		
 	}
 }
