@@ -1,12 +1,9 @@
 package org.vandy.client;
 public class Search {
-	private String phrase;
-	public Search(String p) {
-		// TODO Auto-generated constructor stub
-		phrase = p;
+	public Search() {
 	}
 	
-	public String[] doSearch(int n) throws Exception {
+	public String[] doSearch(int n, String phrase) throws Exception {
 		String[] retArr = new String[n];
 		String[] userIds = Bank.getCustomers();
 		if (userIds.length<=n) {
