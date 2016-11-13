@@ -103,7 +103,7 @@ public class Customer
 		String[] parts = a.split(" ");
 		streetNum = parts[0];
 		String name = "";
-		for(int i = 1; 1 < parts.length; i++) {
+		for(int i = 1; i < parts.length; i++) {
 			name += parts[i];
 			if(i != parts.length - 1)
 				name += " ";
