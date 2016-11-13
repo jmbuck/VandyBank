@@ -9,7 +9,7 @@ public class Customer
 	private ArrayList<Account> accountList;
 	private String id;
 	
-	public Customer(String first, String last, String streetNum, 
+	public Customer(String id, String first, String last, String streetNum, 
 			String streetName, String city, String state, String zip) throws Exception
 	{
 		id = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);

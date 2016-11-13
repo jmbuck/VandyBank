@@ -13,15 +13,16 @@ public class Account {
 	private int rewards;
 	private double balance;
 	
-	public Account(String custID, String accType, String custNickname, int accRewards, double accBalance,
+	public Account(String accId, String custID, String accType, String custNickname, int accRewards, double accBalance,
 					String acctNum) throws Exception 
 	{	
-		id = custID;
+		id = accId;
 		type = accType;
 		nickname = custNickname;
 		rewards = accRewards;
 		balance = accBalance;
 		account_number = acctNum;
+		customer_id = custID;
 	}
 	
 	public int withdraw(Withdrawal transaction)
