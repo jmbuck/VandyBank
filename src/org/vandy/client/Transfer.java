@@ -19,4 +19,24 @@ public class Transfer {
 		payee = tPayee;
 		payer = tPayer;
 	}
+	
+	public String getID()
+	{
+		return id;
+	}
+	
+	public String getTransDate()
+	{
+		return transDate;;
+	}
+	
+	public String getDesc()
+	{
+		return desc;
+	}
+	
+	public double getAmount()
+	{
+		return amount;
+	}
 }

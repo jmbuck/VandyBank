@@ -113,7 +113,7 @@ public class Account {
 	public int deposit(Deposit transaction, String depID) throws Exception
 	{
 		double amount = Double.parseDouble(CapitalHttpClient.getDepositsByID(depID, "amount"));
-		if(balance + amount < 0 || amount < 0)	//Insufficient funds or amount
+		if(amount < 0)	//Insufficient amount
 		{
 			return 0;				//Check bounces
 		}
@@ -161,6 +161,30 @@ public class Account {
 			withList.add(transaction);	
 			return 1;
 		}		
+	}
+	
+	public int transferTo(Transfer transaction, String transID, Account receiver)
+	{
+		{
+			double amount = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(purchID, "amount"));
+			if(balance - amount < 0 || amount < 0)	//Insufficient funds or amount
+			{
+				return 0;				//Check for bounces
+			}
+			else
+			{
+				balance -= amount;
+				Withdrawal withdraw = new Withdrawal(transaction.getID(), type, transaction.getTransDate(), "pending", id, "balance", transaction.getAmount(), transaction.getDesc());
+				Deposit deposit = new Deposit(transaction.getID(), receiver.getType(), transaction.getTransDate(), "pending", receiver.getID(), "balance", transaction.getAmount(), transaction.getDesc());
+				receiver.deposit(deposit, transID);
+				CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
+				CapitalHttpClient.putAccountChanges(id, "rewards", Double.toString(rewards));
+				transList.add(withdraw);
+				withList.add(withdraw);
+				receiver.get
+				return 1;
+			}		
+		}
 	}
 
 	public void merge(Account account)

@@ -1,5 +1,7 @@
 package org.vandy.client;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.polaris.engine.util.MathHelper;
@@ -288,6 +290,29 @@ public class Bank {
 		}
 		return "";
 	}
+	
+	public static String getDate()
+	{
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		return df.format(today);
+	}
+	
+	public static Customer addCustomer(String first, String last, String streetNum, String streetName, String city, String state, String zip)
+	{
+		try
+		{
+			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
+			Customer curr = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
+			customerList.add(curr);
+			return curr;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static Account addAccount(String accType, String nickname) {
 		try {
@@ -314,17 +339,71 @@ public class Bank {
 		return null;
 	}
 	
+	public static Deposit addDesposit(Account acc, double amount, String desc)
+	{
+		try
+		{
+			String date = getDate();
+			String depID = CapitalHttpClient.postDeposit(acc.getID(), "balance", date, amount, desc);
+			Deposit transaction = new Deposit(depID, "deposit", date, "pending", acc.getID(), "balance", amount, desc);
+			acc.deposit(transaction, depID);
+			depList.add(transaction);
+			return transaction;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Withdrawal addWithdrawal(Account acc, double amount, String desc)
+	{
+		try
+		{
+			String date = getDate();
+			String withID = CapitalHttpClient.postWithdrawal(acc.getID(), "balance", date, amount, desc);
+			Withdrawal transaction = new Withdrawal(depID, "withdrawal", date, "pending", acc.getID(), "balance", amount, desc);
+			acc.withdraw(transaction, withID);
+			withList.add(transaction);
+			return transaction;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Purchase addPurchase(Account acc, double amount, String merchID, String desc)
+	{
+		try
+		{
+			String date = getDate();
+			String purchID = CapitalHttpClient.postPurchase(acc.getID(), merchID, "balance", date, amount, desc);
+			Purchase transaction = new Purchase(purchID, "merchant", date, "pending", acc.getID(), "balance", amount, desc, merchID);
+			acc.purchase(transaction, purchID);
+			purchList.add(transaction);
+			return transaction;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static void createCustomers()
 	{
 		try
 		{
 			List<Customer> customers = new Randomize().getCustomers();
 			for(Customer c : customers)
-				customerList.add(c);//
+				customerList.add(c);
 		}
 		catch(Exception e)
 		{
-
+			e.printStackTrace();
 		}
 	}
 

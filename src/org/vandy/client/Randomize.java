@@ -68,10 +68,15 @@ public class Randomize {
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
 		for(int i = 0; i < numAccounts; i++)
 		{
+			String accNum = "";
+			for(int j = 0; j < 16; j++) {
+				int num = MathHelper.random(9);
+				accNum += Integer.toString(num);
+			}
 			int balance = (int)Math.round((Math.random()*1000 + 1000)*100);
 			String type = types.get((int)(Math.random()*4));
-			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, "10000000" + Integer.toString(i+10000001));
-			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, "10000000" + Integer.toString(i+10000001));
+			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
+			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
 			numDeposits = MathHelper.random(15, 20);
 			if(!type.equals("Credit Card"))
 				makeRandomDeposits(randAccount, accID);

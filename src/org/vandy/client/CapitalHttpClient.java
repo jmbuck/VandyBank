@@ -549,7 +549,7 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putBillChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/bills/" + id+ "?key="+apiKey);
+		String url = "http://api.reimaginebanking.com/bills/" + id+ "?key="+apiKey;
 		StringBuffer result = buffer(url);
 		HttpPost post = new HttpPost(url);
 		HttpClient client = HttpClients.createDefault();
