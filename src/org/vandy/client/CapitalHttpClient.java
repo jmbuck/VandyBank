@@ -341,140 +341,9 @@ public class CapitalHttpClient {
 		}
 		return id;
 	}
-	public static void getAccounts(String type) throws Exception {
-		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		
-		boolean exit = false; //Used to find if account matches the type parameter
-		boolean printed = false;
-		int counter = 0; //Used to find line with the type of the bank account
-		//add header
-		request.addHeader("Accept", "application/json");
-		
-		//execute and get response
-		HttpResponse response = client.execute(request);
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-//		while(response.getStatusLine().getStatusCode() == 200) //Implement way to iterate through accounts
-		{
-			
-
-			BufferedReader rd = new BufferedReader(
-					new InputStreamReader(response.getEntity().getContent()));
-
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				int i, j;
-				for(i = 0; i < line.length(); i++)
-					if(line.substring(i, i+4).equals("type"))
-					{
-						i += 7;
-						break;
-					}
-				for(j = 0; j < type.length() && line.toCharArray()[i] == type.toCharArray()[j]; i++, j++){}
-				if(j < type.length() && type.length() != 0)
-					exit = true;
-				result.append(line);
-				
-			}
-			if(!exit)
-			{
-				System.out.println(result.toString());
-				printed = true;
-			}
-			exit = false;
-//			response = client.execute(request);
-//			System.out.println("Response Code : " +
-//					response.getStatusLine().getStatusCode());
-		}
-		if(!printed)
-			System.out.println("Account not found.");
-		
-	}
 	
-	public static void getCustAccounts(String custID) throws Exception {
-		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		
-		//add header
-		request.addHeader("Accept", "application/json");
-		
-		//execute and get response
-		HttpResponse response = client.execute(request);
-
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " +
-                       response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-                       new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		System.out.println(result.toString());
-	}
-	
-	public static void getSpecificAccount(String acctNum) throws Exception {
-		String url = "http://api.reimaginebanking.com/accounts?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		
-		boolean exit = false; //Used to find if account matches the type parameter
-		boolean printed = false;
-		int counter = 0; //Used to find line with the type of the bank account
-		//add header
-		request.addHeader("Accept", "application/json");
-		
-		//execute and get response
-		HttpResponse response = client.execute(request);
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-//		while(response.getStatusLine().getStatusCode() == 200) //Implement way to iterate through accounts
-		{
-			
-
-			BufferedReader rd = new BufferedReader(
-					new InputStreamReader(response.getEntity().getContent()));
-
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				result.append(line);
-				if(counter == 1)
-				{
-					int i;
-					for(i = 0; line.toCharArray()[i] == acctNum.toCharArray()[i] &&
-							i <= line.length(); i++);
-					if(i != line.length())
-						exit = true;
-				}
-				counter++;	//May need fixing once post works
-			}
-			if(!exit)
-			{
-				System.out.println(result.toString());
-				printed = true;
-			}
-			exit = false;
-			counter = 0;
-//			response = client.execute(request);
-//			System.out.println("Response Code : " +
-//					response.getStatusLine().getStatusCode());
-		}
-		if(!printed)
-			System.out.println("Account not found.");
-	}
-	
-	public static String[] getAllCustomers() throws Exception {
+	public static StringBuffer buffer() throws Exception
+	{
 		String url = "http://api.reimaginebanking.com/customers/?key="+apiKey;
 		HttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet(url);
@@ -495,6 +364,63 @@ public class CapitalHttpClient {
 		}
 		System.out.println(result.toString());
 		
+		return result;
+	}
+	
+	public static String[] getAllAccounts(String type) throws Exception {
+		StringBuffer result = buffer();
+		
+		String accountType;
+		JSONArray arr = new JSONArray(result.toString());
+		String[] accountNums = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			accountType = arr.getJSONObject(i).getString("type");
+			if(accountType.equals(type))
+				accountNums[i] = arr.getJSONObject(i).getString("account_number");
+		}
+		
+		return accountNums;
+
+	}
+	
+	public static String getAccountByID(String id) throws Exception {
+		StringBuffer result = buffer();
+		
+		String accountID;
+		JSONArray arr = new JSONArray(result.toString());
+		for (int i = 0; i<arr.length(); i++) {
+			accountID = arr.getJSONObject(i).getString("_id");
+			if(accountID.equals(id))
+				return arr.getJSONObject(i).getString("account_number");
+		}
+		
+		return "error";
+
+	}
+	
+	public static String[] getAccountsByCustomer(String customer_id) throws Exception {
+		StringBuffer result = buffer();
+		
+		String customerID;
+		JSONArray arr = new JSONArray(result.toString());
+		String[] accountNums = new String[arr.length()];
+		int j = 0;
+		for (int i = 0; i<arr.length(); i++) {
+			customerID = arr.getJSONObject(i).getString("customer_id");
+			if(customerID.equals(customer_id))
+			{
+				accountNums[j] = arr.getJSONObject(i).getString("account_number");
+				j++;
+			}
+		}
+		
+		return accountNums;
+
+	}
+	
+	public static String[] getAllCustomers() throws Exception {
+		StringBuffer result = buffer();
+		
 		JSONArray arr = new JSONArray(result.toString());
 		String[] customerIds = new String[arr.length()];
 		for (int i = 0; i<arr.length(); i++) {
@@ -505,26 +431,9 @@ public class CapitalHttpClient {
 
 	}
 	
-	public static String getCustomerByID(String id, String parameter) throws IOException {
-		String url = "http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey;
-		HttpClient client = HttpClients.createDefault();
-		HttpGet request = new HttpGet(url);
-		request.addHeader("Accept", "application/json");
-		HttpResponse response = client.execute(request);
+	public static String getCustomerByID(String id, String parameter) throws Exception {
+		StringBuffer result = buffer();
 		
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Response Code : " +
-                                    response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-                        new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println(result.toString());
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("first_name")) {
 			return obj.getString("first_name");
