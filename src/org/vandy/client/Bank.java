@@ -263,6 +263,14 @@ public class Bank {
 		return customers;
 	}
 
+	public static String[] getAccountNums() {
+		String[] acctNums = new String[accountList.size()];
+		for (int i = 0; i<accountList.size(); i++) {
+			acctNums[i] = accountList.get(0).getCustomerID();
+		}
+		return acctNums;
+	}
+	
 	public static String lookUpCustomer(String id, String parameter) {
 		Customer c = customerList.get(0);
 		int i = 0;

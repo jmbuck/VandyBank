@@ -19,6 +19,9 @@ public class CapitalHttpClient {
 
 	//private final String USER_AGENT = "Mozilla/5.0";
 	private final static String apiKey = "fcdea9faec05f066286d84c38928d034";
+	public static void main(String[] args) {
+		
+	}
 
 	public static StringBuffer processInput(String url, HttpPost post, JSONObject juo, HttpClient client) throws Exception
 	{
@@ -571,9 +574,10 @@ public class CapitalHttpClient {
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
-		//StringBuffer result = 
+		StringBuffer result = 
 				processInput(url, put, obj, client);
 		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
 		
 		
 		
@@ -723,12 +727,20 @@ public class CapitalHttpClient {
 	}
 	
 	public static void putDepositChanges(String id, String parameter, String change) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/deposits/" + id+ "?key="+apiKey);
-
-		JSONObject obj = new JSONObject(result.toString());
+		String url = "http://api.reimaginebanking.com/transfers/" + id+ "?key="+apiKey;
+		//StringBuffer result = buffer(url);
+		
+		HttpPut put = new HttpPut(url);
+		HttpClient client = HttpClients.createDefault();
+		
+		JSONObject obj = new JSONObject();
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
+		System.out.println(result);
 	}
 	
 	public static String[] getWithdrawals(String acctId) throws Exception {
