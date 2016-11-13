@@ -31,31 +31,28 @@ public class CapitalHttpClient {
 		System.out.println(getBillByID(billId, "recurring_date"));
 	}
 
-	public static String postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
-		//String testCustID = "5826c30d360f81f104547758";
-		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key=" + apiKey;
-		HttpPost post = new HttpPost(url);
-		HttpClient client = HttpClients.createDefault();
-		JSONObject juo = new JSONObject();
-		juo.put("type", type);
-		juo.put("nickname", nickname);
-		juo.put("rewards", rewards);
-		juo.put("balance", balance);
-		juo.put("account_number", acctNum);
-
+	public static StringBuffer processInput(String url, HttpPost post, JSONObject juo, HttpClient client) throws Exception
+	{
 		StringEntity entityForPost = new StringEntity(juo.toString());
 		post.setHeader("content-type", "application/json");
 		post.setHeader("accept", "application/json");
 		post.setEntity(entityForPost);
-
-
 		HttpResponse response = client.execute(post);
-
+		processRequest(url, post, response);
+		return responseBuffer(response);
+		
+	}
+	
+	public static void processRequest(String url, HttpPost post, HttpResponse response)
+	{
 		System.out.println("\nSending 'POST' request to URL : " + url);
 		System.out.println("Post parameters : " + post.getEntity());
 		System.out.println("Response Code : " +
 				response.getStatusLine().getStatusCode());
-
+	}
+	
+	public static StringBuffer responseBuffer(HttpResponse response) throws IOException
+	{
 		BufferedReader rd = new BufferedReader(
 				new InputStreamReader(response.getEntity().getContent()));
 
@@ -64,6 +61,11 @@ public class CapitalHttpClient {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
+		return result;
+	}
+	
+	public static String findID(StringBuffer result)
+	{
 
 		//find account ID;
 		String[] parts = result.toString().split(",");
@@ -79,6 +81,22 @@ public class CapitalHttpClient {
 			}
 		}
 		return id;
+	}
+	
+	public static String postAccount (String custID, String type, String nickname, int rewards, int balance, String acctNum) throws Exception {
+		//String testCustID = "5826c30d360f81f104547758";
+		String url = "http://api.reimaginebanking.com/customers/" + custID + "/accounts?key=" + apiKey;
+		HttpPost post = new HttpPost(url);
+		HttpClient client = HttpClients.createDefault();
+		JSONObject juo = new JSONObject();
+		juo.put("type", type);
+		juo.put("nickname", nickname);
+		juo.put("rewards", rewards);
+		juo.put("balance", balance);
+		juo.put("account_number", acctNum);
+
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	public static String postBill(String acctID, String status, String payee, String nickname, String payDate,
@@ -97,40 +115,8 @@ public class CapitalHttpClient {
 			juo.put("recurring_date", reccurDate);
 		juo.put("payment_amount", payAmount);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		//find bill ID
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("d") == 3) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	//posts customer data provided in parameters. Returns customer's ID.
@@ -152,43 +138,8 @@ public class CapitalHttpClient {
 
 		juo.put("address", nestedJUO);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		//System.out.println(result.toString());
-
-		//find customer ID
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("i") == 2) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	public static String postDeposit(String acctID, String medium, String transDate, double amt, String desc) throws Exception {
@@ -203,42 +154,8 @@ public class CapitalHttpClient {
 		if(desc != "")
 			juo.put("description", desc);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		//get deposit ID
-		System.out.println(result);
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("d") == 3) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	public static String postWithdrawal(String acctID, String medium, String transDate, double amt, String desc) throws Exception {
@@ -253,43 +170,8 @@ public class CapitalHttpClient {
 		if(desc != "")
 			juo.put("description", desc);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		//get withdrawal ID
-		System.out.println(result);
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("d") == 3) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
-
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	public static String postPurchase(String acctID, String merchID, String medium,
@@ -307,42 +189,8 @@ public class CapitalHttpClient {
 		if(desc != "")
 			juo.put("description", desc);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-
-		//get purchase ID
-		System.out.println(result);
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("d") == 3) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 	//can add geolocation later
@@ -364,43 +212,8 @@ public class CapitalHttpClient {
 
 		juo.put("address", nestedJUO);
 
-		StringEntity entityForPost = new StringEntity(juo.toString());
-		post.setHeader("content-type", "application/json");
-		post.setHeader("accept", "application/json");
-		post.setEntity(entityForPost);
-
-
-		HttpResponse response = client.execute(post);
-
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + post.getEntity());
-		System.out.println("Response Code : " +
-				response.getStatusLine().getStatusCode());
-
-		BufferedReader rd = new BufferedReader(
-				new InputStreamReader(response.getEntity().getContent()));
-
-		StringBuffer result = new StringBuffer();
-		String line = "";
-		while ((line = rd.readLine()) != null) {
-			result.append(line);
-		}
-		System.out.println(result.toString());
-
-		//find merchant ID
-		String[] parts = result.toString().split(",");
-		String id = "";
-		for(String s : parts) {
-			if(s.indexOf("i") == 2) {
-				String[] parts2 = s.split("\"");
-				for(String s2 : parts2){
-					if(s2.length() > 3) { //found id
-						id = s2;
-					}
-				}
-			}
-		}
-		return id;
+		StringBuffer result = processInput(url, post, juo, client);
+		return findID(result);
 	}
 
 
