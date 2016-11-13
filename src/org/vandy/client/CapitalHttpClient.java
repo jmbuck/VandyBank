@@ -37,6 +37,7 @@ public class CapitalHttpClient {
 		//getAccounts("Savings");
 		//System.out.println("With ID: " + postWithdrawal(acctId, "rewards", "", 100.10, "Test withdrawal."));
 		System.out.println(getBillByID(billId, "recurring_date"));*/
+		Bank.load();
 	}
 
 	public static StringBuffer processInput(String url, HttpPost post, JSONObject juo, HttpClient client) throws Exception
@@ -310,7 +311,7 @@ public class CapitalHttpClient {
 		for (int i = 0; i<arr.length(); i++) {
 			accountType = arr.getJSONObject(i).getString("type");
 			if(accountType.equals(type) || type.length() == 0){
-				accountNums[countValid] = arr.getJSONObject(i).getString("account_number");
+				accountNums[countValid] = arr.getJSONObject(i).getString("_id");
 				countValid++;
 			}
 		}
@@ -320,7 +321,7 @@ public class CapitalHttpClient {
 	}
 
 	public static String getAccountByID(String accId, String parameter) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/account/"+accId+"?key="+apiKey);
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+accId+"?key="+apiKey);
 		
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("type")) {
@@ -330,16 +331,16 @@ public class CapitalHttpClient {
 			return obj.getString("nickname");
 		}
 		if (parameter.equals("rewards")) {
-			return obj.getString("rewards");
+			return Integer.toString(obj.getInt("rewards"));
 		}
 		if (parameter.equals("balance")) {
-			return obj.getString("balance");
+			return Integer.toString(obj.getInt("balance"));
 		}
 		if (parameter.equals("account_number")) {
 			return obj.getString("account_number");
 		}
 		if (parameter.equals("customer_id")) {
-			return Double.toString(obj.getDouble("customer_id"));
+			return obj.getString("customer_id");
 		}
 		return "error";
 	}

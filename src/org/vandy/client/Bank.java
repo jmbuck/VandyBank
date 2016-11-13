@@ -51,7 +51,13 @@ public class Bank {
 				String[] withdrawals = CapitalHttpClient.getDeposits(a.getID());
 				for(String s : withdrawals) {
 					String type = CapitalHttpClient.getWithdrawalsByID(s, "type");
-					String transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
+					//String transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
+					String transDate = "";
+					try {
+						 transDate = CapitalHttpClient.getWithdrawalsByID(s, "transaction_date");
+					}catch (Exception e) {
+						transDate = "Unknown Date";
+					}
 					String status = CapitalHttpClient.getWithdrawalsByID(s, "status");
 					String medium = CapitalHttpClient.getWithdrawalsByID(s, "medium");
 					String description = CapitalHttpClient.getWithdrawalsByID(s, "description");
@@ -81,7 +87,12 @@ public class Bank {
 				deposits = CapitalHttpClient.getDeposits(a.getID());
 				for(String s : deposits) {
 					String type = CapitalHttpClient.getDepositsByID(s, "type");
-					String transDate = CapitalHttpClient.getDepositsByID(s, "transaction_date");
+					String transDate = "";
+					try {
+						 transDate = CapitalHttpClient.getDepositsByID(s, "transaction_date");
+					}catch (Exception e) {
+						transDate = "Unknown Date";
+					}
 					String status = CapitalHttpClient.getDepositsByID(s, "status");
 					String medium = CapitalHttpClient.getDepositsByID(s, "medium");
 					String description = CapitalHttpClient.getDepositsByID(s, "description");
