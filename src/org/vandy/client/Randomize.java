@@ -5,11 +5,6 @@ import java.util.*;
 import com.polaris.engine.util.MathHelper;
 
 public class Randomize {
-	private int numAccounts;
-	private int numDeposits;
-	private int numWithdrawals;
-	private int numPurchases;
-	private int numBills;
 	private List<Customer> custList = new ArrayList<Customer>();
 	private int numCustomers = 20;
 	
@@ -54,7 +49,6 @@ public class Randomize {
 	
 	public Customer createRandomCustomer(String first, String last, String streetNum, String streetName, String city, String state, String zipCode) throws Exception
 	{
-		numAccounts = MathHelper.random(1, 4);
 		String randID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zipCode);
 		Customer randy = new Customer(randID, first, last, streetNum, streetName, city, state, zipCode);
 		String randFirstLast = first + last;
@@ -62,9 +56,10 @@ public class Randomize {
 		return randy;
 	}
 	
-	public void addRandomAccounts(String randID, String randFirstLast) throws Exception
+	public static void addRandomAccounts(String randID, String randFirstLast) throws Exception
 	{
 		List<String> types = new ArrayList<String>();
+		int numAccounts = MathHelper.random(1, 4);
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
 		for(int i = 0; i < numAccounts; i++)
 		{
@@ -77,22 +72,22 @@ public class Randomize {
 			String type = types.get((int)(Math.random()*4));
 			String accID = CapitalHttpClient.postAccount(randID, type, randFirstLast, 0, balance, accNum);
 			Account randAccount = new Account(accID, randID, type, randFirstLast, 0.00, balance/100.00, accNum);
-			numDeposits = MathHelper.random(15, 20);
+			int numDeposits = MathHelper.random(15, 20);
 			if(!type.equals("Credit Card"))
-				makeRandomDeposits(randAccount, accID);
-			numWithdrawals = MathHelper.random(10, 15);
-			makeRandomWithdrawals(randAccount, accID);
-			numPurchases = MathHelper.random(5, 10);
+				makeRandomDeposits(randAccount, accID, numDeposits);
+			int numWithdrawals = MathHelper.random(10, 15);
+			makeRandomWithdrawals(randAccount, accID, numWithdrawals);
+			int numPurchases = MathHelper.random(5, 10);
 			if(!type.equals("Savings"))
-				makeRandomPurchases(randAccount, accID);
+				makeRandomPurchases(randAccount, accID, numPurchases);
 //			numBills = MathHelper.random(3, 6);
 //			makeRandomBills(randAccount, accID);
-			custList.get(custList.size()-1).addAccount(randAccount);
+//			custList.get(custList.size()-1).addAccount(randAccount);
 		}
 		
 	}
 	
-	public void makeRandomDeposits(Account randAccount, String accID) throws Exception
+	public static void makeRandomDeposits(Account randAccount, String accID, int numDeposits) throws Exception
 	{
 		for(int i = 0; i < numDeposits; i++)
 		{
@@ -104,7 +99,7 @@ public class Randomize {
 		
 	}
 	
-	public void makeRandomWithdrawals(Account randAccount, String accID) throws Exception
+	public static void makeRandomWithdrawals(Account randAccount, String accID, int numWithdrawals) throws Exception
 	{
 		for(int i = 0; i < numWithdrawals; i++)
 		{
@@ -116,7 +111,7 @@ public class Randomize {
 		
 	}
 	
-	public void makeRandomPurchases(Account randAccount, String accID) throws Exception
+	public static void makeRandomPurchases(Account randAccount, String accID, int numPurchases) throws Exception
 	{
 		for(int i = 0; i < numPurchases; i++)
 		{

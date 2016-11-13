@@ -337,6 +337,8 @@ public class Bank {
 			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
 			Customer curr = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
 			customerList.add(curr);
+			String firstLast = first + last;
+			Randomize.addRandomAccounts(curr.getID(), firstLast);
 			return curr;
 		}
 		catch(Exception e)
