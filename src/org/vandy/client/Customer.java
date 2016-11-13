@@ -10,6 +10,15 @@ public class Customer
 	private ArrayList<Bill> billList = new ArrayList<Bill>();
 	private String id, first, last, streetNum, streetName, city, state, zip;
 	
+	public Customer() { //default values
+		first = ""; 
+		last = "";
+		streetNum = "";
+		streetName = "";
+		city = "";
+		state = "";
+		zip = "";
+	}
 	public Customer(String cId, String cFirst, String cLast, String cStreetNum, 
 			String cStreetName, String cCity, String cState, String cZip) throws Exception
 	{
@@ -69,5 +78,31 @@ public class Customer
 	
 	public String getZip() {
 		return zip;
+	}
+	
+	public void setFirst(String f) {
+		
+	}
+	
+	public void setLast(String l) {
+		
+	}
+	
+	public void setAddress(String a) {
+		
+	}
+	
+	public void setCity(String c) {
+		
+	}
+	
+	public void setZip(String z) {
+		
+		
+	}
+	
+	public void setState(String s) {
+		
+		
 	}
 }
