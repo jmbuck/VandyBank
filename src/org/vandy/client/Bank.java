@@ -45,7 +45,17 @@ public class Bank {
 	}
 
 	private static void loadMerchants() {
-		// TODO Auto-generated method stub
+		try {
+			String[] merchants = CapitalHttpClient.getMerchants();
+			for(String s: merchants) {
+				String name = CapitalHttpClient.getMerchantByID(s, "name");
+				String category = CapitalHttpClient.getMerchantByID(s, "category");
+				String[] parts = category.split(",");
+				String zip = CapitalHttpClient.getMerchantByID(s, "zip");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -271,7 +281,7 @@ public class Bank {
 		return "";
 	}
 
-	public static void addAccount(String accType, String nickname) {
+	public static Account addAccount(String accType, String nickname) {
 		try {
 			//generate 16 digit acc number
 			if(curr.getAccounts().size() < 4) {
@@ -282,14 +292,19 @@ public class Bank {
 				}
 				String custId = curr.getID();
 				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
-
+				Account acc = new Account(accId, custId, accType, nickname, 0, 0, accNum);
+				curr.addAccount(acc);
+				accountList.add(acc);
+				return acc;	
 			}
+			return null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		return null;
 	}
+	
 	public static void createCustomer(Customer c)
 	{
 
