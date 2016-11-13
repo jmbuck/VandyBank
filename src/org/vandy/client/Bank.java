@@ -244,7 +244,12 @@ public class Bank {
 	}
 
 	public static Customer findCustomer(String fullname) {
-
+		String[] parts = fullname.split(" ");
+		for(Customer c : customerList) {
+			if(parts[0].equals(c.getFirstName()) && parts[1].equals(c.getLastName())) {
+				return c;
+			}
+		}
 		return null;
 	}
 }
