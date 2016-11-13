@@ -50,19 +50,21 @@ public class Bank {
 				for(Account a : accountList) {
 					String[] purchases = CapitalHttpClient.getPurchasesFromMerchantByPayer(m.getID(), a.getID());
 					for(String p : purchases) {
-						String type = CapitalHttpClient.getPurchasesByID(p, "type");
-						String merchID = CapitalHttpClient.getPurchasesByID(p, "merchant_id");
-						String payerID = CapitalHttpClient.getPurchasesByID(p, "payer_id");
-						String purchDate = CapitalHttpClient.getPurchasesByID(p, "purchase_date");
-						double amt = Double.parseDouble(CapitalHttpClient.getPurchasesByID(p, "amount"));
-						String status = CapitalHttpClient.getPurchasesByID(p, "status");
-						String medium = CapitalHttpClient.getPurchasesByID(p, "medium");
-						String desc = CapitalHttpClient.getPurchasesByID(p, "description");
-						Purchase purch = new Purchase(p, type, purchDate, status, payerID,
-												  medium, amt, desc, merchID);
-						m.addPurchase(purch);
-						a.addPurchase(purch);
-						purchList.add(purch);	
+						if(p.length() > 1) {
+							String type = CapitalHttpClient.getPurchasesByID(p, "type");
+							String merchID = CapitalHttpClient.getPurchasesByID(p, "merchant_id");
+							String payerID = CapitalHttpClient.getPurchasesByID(p, "payer_id");
+							String purchDate = CapitalHttpClient.getPurchasesByID(p, "purchase_date");
+							double amt = Double.parseDouble(CapitalHttpClient.getPurchasesByID(p, "amount"));
+							String status = CapitalHttpClient.getPurchasesByID(p, "status");
+							String medium = CapitalHttpClient.getPurchasesByID(p, "medium");
+							String desc = CapitalHttpClient.getPurchasesByID(p, "description");
+							Purchase purch = new Purchase(p, type, purchDate, status, payerID,
+													  medium, amt, desc, merchID);
+							m.addPurchase(purch);
+							a.addPurchase(purch);
+							purchList.add(purch);	
+						}
 					}
 				}
 			}

@@ -646,19 +646,24 @@ public class CapitalHttpClient {
 		int j = 0;
 		String merchantID;
 		String payerID;
-		JSONArray arr = new JSONArray(result.toString());
-		String[] purchaseIDs = new String[arr.length()];
-		for (int i = 0; i<arr.length(); i++) {
-			merchantID = arr.getJSONObject(i).getString("merchant_id");
-			payerID = arr.getJSONObject(i).getString("payer_id");
-			if(merchantID.equals(merchant_id) && payerID.equals(payer_id))
-			{
-				purchaseIDs[j] = arr.getJSONObject(i).getString("_id");
-				j++;
+		try {
+			JSONArray arr = new JSONArray(result.toString());
+			String[] purchaseIDs = new String[arr.length()];
+			for (int i = 0; i<arr.length(); i++) {
+				merchantID = arr.getJSONObject(i).getString("merchant_id");
+				payerID = arr.getJSONObject(i).getString("payer_id");
+				if(merchantID.equals(merchant_id) && payerID.equals(payer_id))
+				{
+					purchaseIDs[j] = arr.getJSONObject(i).getString("_id");
+					j++;
+				}
 			}
-		}
 		
-		return purchaseIDs;
+			return purchaseIDs;
+		} catch (Exception e) {
+			String[] purchaseIDs = {""};
+			return purchaseIDs;
+		}
 	}
 	
 	public static String getPurchasesByID(String id, String parameter) throws Exception {
@@ -686,8 +691,12 @@ public class CapitalHttpClient {
 		if (parameter.equals("medium")) {
 			return obj.getString("medium");
 		}
-		if (parameter.equals("description")) {
-			return obj.getString("description");
+		try {
+			if (parameter.equals("description")) {
+				return obj.getString("description");
+			}
+		} catch (Exception e) {
+			return "No description.";
 		}
 
 		return "error";

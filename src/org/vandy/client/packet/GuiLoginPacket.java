@@ -8,16 +8,18 @@ import com.polaris.engine.thread.LogicApp;
 
 public class GuiLoginPacket extends AppPacket
 {
+	private LoginLogic loginLogic;
 
-	public GuiLoginPacket(App app, LogicApp logic) 
+	public GuiLoginPacket(App app, LogicApp logic, LoginLogic login) 
 	{
 		super(app, logic);
+		loginLogic = login;
 	}
 
 	@Override
 	public void handle() 
 	{
-		logicThread.setLogicHandler(new LoginLogic(logicThread));
+		logicThread.setLogicHandler(loginLogic);
 	}
 
 }
