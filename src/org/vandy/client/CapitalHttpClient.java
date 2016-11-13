@@ -339,7 +339,7 @@ public class CapitalHttpClient {
 		if (parameter.equals("category")) {
 			String r = "";
 			for (int i = 0; i<obj.getJSONArray("category").length(); i++) {
-				r+=obj.getJSONArray("category").getJSONObject(i).toString()+",";
+				r+=obj.getJSONArray("category").get(i).toString()+",";
 			}
 			return r;
 		}
@@ -356,7 +356,7 @@ public class CapitalHttpClient {
 			return obj.getJSONObject("address").getString("state");
 		}
 		if (parameter.equals("street_name")) {
-			return obj.getJSONObject("address").getString("street_number");
+			return obj.getJSONObject("address").getString("street_name");
 		}
 		return "error";	
 	}
@@ -384,20 +384,24 @@ public class CapitalHttpClient {
 		if (parameter.equals("last_name")) {
 			return obj.getString("last_name");
 		}
-		if (parameter.equals("zip")) {
-			return obj.getJSONObject("address").getString("zip");
-		}
-		if (parameter.equals("city")) {
-			return obj.getJSONObject("address").getString("city");
-		}
-		if (parameter.equals("street_number")) {
-			return obj.getJSONObject("address").getString("street_number");
-		}
-		if (parameter.equals("state")) {
-			return obj.getJSONObject("address").getString("state");
-		}
-		if (parameter.equals("street_name")) {
-			return obj.getJSONObject("address").getString("street_number");
+		try {
+			if (parameter.equals("zip")) {
+				return obj.getJSONObject("address").getString("zip");
+			}
+			if (parameter.equals("city")) {
+				return obj.getJSONObject("address").getString("city");
+			}
+			if (parameter.equals("street_number")) {
+				return obj.getJSONObject("address").getString("street_number");
+			}
+			if (parameter.equals("state")) {
+				return obj.getJSONObject("address").getString("state");
+			}
+			if (parameter.equals("street_name")) {
+				return obj.getJSONObject("address").getString("street_number");
+			}
+		} catch (Exception e) {
+			return "No address listed.";
 		}
 		return "error";
 	}
