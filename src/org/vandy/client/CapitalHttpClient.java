@@ -318,7 +318,7 @@ public class CapitalHttpClient {
 
 	}
 
-	public static String getAccountByID(String accId, String parameter) throws Exception {//
+	public static String getAccountByID(String accId, String parameter) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/account/"+accId+"?key="+apiKey);
 		
 		JSONObject obj = new JSONObject(result.toString());
@@ -647,14 +647,46 @@ public class CapitalHttpClient {
 		return "error";
 	}
 	
-	public static String[] getWithdrawsFromAccountID(String id) throws Exception {
-		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/" +id+"/withdrawals?key=" + apiKey);
+	public static String[] getWithdrawals(String acctId) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+acctId+"/withdrawals?key="+apiKey);
+		
 		JSONArray arr = new JSONArray(result.toString());
-		String[] withdrawIDs = new String[arr.length()];
+		String[] withIds = new String[arr.length()];
+		
 		for (int i = 0; i<arr.length(); i++) {
-			withdrawIDs[i] = arr.getJSONObject(i).getString("_id");
+			withIds[i] = arr.getJSONObject(i).getString("_id");
 		}
-		return withdrawIDs;
+		
+		return withIds;
+	}
+	
+	public static String getWithdrawalsByID(String withId, String parameter) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/withdrawals/"+withId+"?key="+apiKey);
+		
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("type")) {
+			return obj.getString("type");
+		}
+		if (parameter.equals("transaction_date")) {
+			return obj.getString("transaction_date");
+		}
+		if (parameter.equals("status")) {
+			return obj.getString("status");
+		}
+		if (parameter.equals("payer_id")) {
+			return obj.getString("payer_id");
+		}
+		if (parameter.equals("medium")) {
+			return obj.getString("medium");
+		}
+		if (parameter.equals("amount")) {
+			return Double.toString(obj.getDouble("amount"));
+		}
+		if (parameter.equals("description")) {
+			return obj.getString("description");
+		}
+		
+		return "error";
 	}
 	
 	public static String[] getTransfers(String acctId) throws Exception {
