@@ -5,11 +5,12 @@ import java.util.List;
 
 public class Account {
 
-	private List<Transfer> transferList = new ArrayList<Transfer>();
 	private List<Bill> billList = new ArrayList<Bill>();
 	private List<Transaction> transList = new ArrayList<Transaction>();
 	private List<Deposit> depList = new ArrayList<Deposit>();
 	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
+	private List<Transfer> payerTransList = new ArrayList<Transfer>();
+	private List<Transfer> payeeTransList = new ArrayList<Transfer>();
 	private String id, type, nickname, account_number, customer_id;
 	private double rewards, balance;
 	
@@ -66,6 +67,14 @@ public class Account {
 	
 	public void addWithdraw(Withdrawal w) {
 		withList.add(w);
+	}
+	
+	public void addPayerTrans(Transfer t) {
+		payerTransList.add(t);
+	}
+	
+	public void addPayeeTrans(Transfer t) {
+		payeeTransList.add(t);
 	}
 	
 	public void setType(String accType) throws Exception

@@ -51,7 +51,39 @@ public class Bank {
 
 	private static void loadTransfers() {
 		// TODO Auto-generated method stub
-
+		try {
+			for(Account a : accountList) {
+				String[] transfers = CapitalHttpClient.getTransfers(a.getID());
+				for(String s : transfers) {
+					String type = CapitalHttpClient.getTransferByID(s, "type");
+					String transDate = CapitalHttpClient.getTransferByID(s, "transaction_date");
+					String status = CapitalHttpClient.getTransferByID(s, "status");
+					String medium = CapitalHttpClient.getTransferByID(s, "medium");
+					double amount = Double.parseDouble(CapitalHttpClient.getTransferByID(s, "amount"));
+					String payer = CapitalHttpClient.getTransferByID(s, "payer_id");
+					String payee = CapitalHttpClient.getTransferByID(s, "payee_id");
+					String desc = "No description.";
+					try {
+						desc = CapitalHttpClient.getTransferByID(s, "description");
+					} catch (Exception e) {
+						desc = "No description.";
+					}
+				
+				
+					Transfer trans = new Transfer(s, type, transDate, status, payee, medium,
+												  amount, desc, payer);
+					if(a.getID().equals(payee))
+						a.addPayeeTrans(trans);
+					if(a.getID().equals(payer))
+						a.addPayerTrans(trans);
+	
+					transferList.add(trans);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void loadWithdrawals() {
@@ -72,7 +104,7 @@ public class Bank {
 					String medium = CapitalHttpClient.getWithdrawalsByID(s, "medium");
 					String description = CapitalHttpClient.getWithdrawalsByID(s, "description");
 					double amt = Double.parseDouble(CapitalHttpClient.getWithdrawalsByID(s, "amount"));
-					Withdrawal w = new Withdrawal(s, type, transDate, status, a.getID(), medium, amt, description);
+					Withdrawal w = new Withdrawal(s, type, transDate, status, a, medium, amt, description);
 					a.addWithdraw(w);
 					for(Customer c : customerList) {
 						if(a.getCustomerID().equals(c.getID())) {
