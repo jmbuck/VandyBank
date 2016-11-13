@@ -29,7 +29,10 @@ public class LoginCreateAccount extends LoginState
 		deleteKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_DELETE);
 		backspaceKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_BACKSPACE);
 		enterKey = loginGui.getApplication().getInput().getKey(GLFW.GLFW_KEY_ENTER);
-		
+	}
+	
+	public void init()
+	{
 		GLFW.glfwSetCharCallback(loginGui.getApplication().getWindow(), GLFWCharCallback.create((window, codepoint) -> {
 			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',')
 			{
@@ -145,6 +148,7 @@ public class LoginCreateAccount extends LoginState
 				Bank.setCurrentCustomer(customer);
 				loginGui.setState(new LoginLoading(loginGui, font));
 			}
+			currentText = "";
 			stage++;
 		}
 

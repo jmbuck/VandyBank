@@ -14,6 +14,11 @@ public class LoginState
 		loginGui = gui;
 		font = boldFont;
 	}
+
+	public void init() 
+	{
+		
+	}
 	
 	public void render(double delta)
 	{
