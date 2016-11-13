@@ -45,7 +45,31 @@ public class Bank {
 
 	private static void loadPurchases() {
 		// TODO Auto-generated method stub
-
+		try {
+			for(Merchant m : merchList) {
+				for(Account a : accountList) {
+					String[] purchases = CapitalHttpClient.getPurchasesFromMerchantByPayer(m.getID(), a.getID());
+					for(String p : purchases) {
+						String type = CapitalHttpClient.getPurchasesByID(p, "type");
+						String merchID = CapitalHttpClient.getPurchasesByID(p, "merchant_id");
+						String payerID = CapitalHttpClient.getPurchasesByID(p, "payer_id");
+						String purchDate = CapitalHttpClient.getPurchasesByID(p, "purchase_date");
+						double amt = Double.parseDouble(CapitalHttpClient.getPurchasesByID(p, "amount"));
+						String status = CapitalHttpClient.getPurchasesByID(p, "status");
+						String medium = CapitalHttpClient.getPurchasesByID(p, "medium");
+						String desc = CapitalHttpClient.getPurchasesByID(p, "description");
+						Purchase purch = new Purchase(p, type, purchDate, status, payerID,
+												  medium, amt, desc, merchID);
+						m.addPurchase(purch);
+						a.addPurchase(purch);
+						purchList.add(purch);	
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void loadMerchants() {
