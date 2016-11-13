@@ -97,16 +97,16 @@ public class Randomize {
 		for(int i = 0; i < numDeposits; i++)
 		{
 			amount = MathHelper.random(100, 300);
-			d = MathHelper.random(1, 28);
-			m = MathHelper.random(1,10);
+			d = MathHelper.random(27);
+			m = MathHelper.random(9);
 			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
 			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
 			Deposit randDep = new Deposit(accID, "balance", randDate, "pending", depID, "deposit", amount, "random");
 			randAccount.deposit(randDep, depID);
 		}
-		d = 15;
+		d = 14;
 		amount = 2000.00;
-		for(m = 1; m < 11; m++)
+		for(m = 0; m < 10; m++)
 		{
 			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
 			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
@@ -124,16 +124,16 @@ public class Randomize {
 		for(int i = 0; i < numWithdrawals; i++)
 		{
 			amount = MathHelper.random(100, 200);
-			d = MathHelper.random(1, 28);
-			m = MathHelper.random(1,10);
+			d = MathHelper.random(27);
+			m = MathHelper.random(9);
 			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
 			String withID = CapitalHttpClient.postWithdrawal(accID, "balance", randDate, amount, "random");
 			Withdrawal randWith = new Withdrawal(accID, "balance", randDate, "pending", withID, "withdraw", amount, "random");
 			randAccount.withdraw(randWith, withID);
 		}
-		d = 25;
+		d = 24;
 		amount = 500.00;
-		for(m = 1; m < 11; m++)
+		for(m = 0; m < 10; m++)
 		{
 			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
 			String depID = CapitalHttpClient.postDeposit(accID, "balance", randDate, amount, "random");
@@ -148,8 +148,8 @@ public class Randomize {
 		for(int i = 0; i < numPurchases; i++)
 		{
 			double amount = MathHelper.random(50, 150);
-			int d = MathHelper.random(1, 28);
-			int m = MathHelper.random(1,10);
+			int d = MathHelper.random(27);
+			int m = MathHelper.random(9);
 			String randDate = "2016-" + Integer.toString(months[m]) + "-" + Integer.toString(days[d]); 
 			String purchID = CapitalHttpClient.postPurchase(accID, "1337", "balance", randDate, amount, "random");
 			Purchase randPurch = new Purchase(accID, "balance", randDate, "pending", purchID, "deposit", amount, "random", "1337");

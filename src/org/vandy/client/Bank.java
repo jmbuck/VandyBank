@@ -346,10 +346,10 @@ public class Bank {
 			}
 			String streetName = name;
 			String firstLast = first + last;
-			Randomize.addRandomAccounts(curr.getID(), firstLast);
 			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
 			Customer c = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
 			customerList.add(c);
+			Randomize.addRandomAccounts(custID, firstLast);
 			return c;
 		}
 		catch(Exception e)
