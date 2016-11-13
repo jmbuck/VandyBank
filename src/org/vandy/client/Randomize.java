@@ -61,7 +61,7 @@ public class Randomize {
 	public static void addRandomAccounts(String randID, String randFirstLast) throws Exception//
 	{
 		List<String> types = new ArrayList<String>();
-		int numAccounts = MathHelper.random(1, 4);
+		int numAccounts = MathHelper.random(1, 3);
 		types.add("Credit Card"); types.add("Checking"); types.add("Savings");
 		for(int i = 0; i < numAccounts; i++)
 		{

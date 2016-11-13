@@ -350,12 +350,13 @@ public class Bank {
 					name += " ";
 			}
 			String streetName = name;
-			String firstLast = first + last;
+			String firstLast = first + " " + last;
 			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
-			System.out.println(custID);
 			Customer c = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
+			Bank.setCurrentCustomer(c);
 			customerList.add(c);
 			Randomize.addRandomAccounts(custID, firstLast);
+			Bank.setCurrentCustomer(null);
 			return c;
 		}
 		catch(Exception e)

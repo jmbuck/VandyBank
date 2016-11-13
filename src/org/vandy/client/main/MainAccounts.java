@@ -287,7 +287,7 @@ public class MainAccounts extends MainState
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rect(1920 / 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
 		if(currentAccount != null)
-			Draw.rect(1920 * 2/ 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
+			Draw.rect(1920 * 2/ 3 - 2, 0, 1920 * 2 / 3 + 2, 1080, -10);
 		GL11.glEnd();
 		
 		if(currentAccount != null)
