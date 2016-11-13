@@ -192,7 +192,7 @@ public class Account {
 			{
 				balance -= amount;
 				
-				Withdrawal withdraw = Bank.addWithdrawal(receiver, amount, "transfer");
+				Withdrawal withdraw = Bank.addWithdrawal(this, amount, "transfer");
 				Deposit deposit = Bank.addDesposit(receiver, amount, "transfer");
 				receiver.deposit(deposit, deposit.getID());
 				CapitalHttpClient.putAccountChanges(id, "balance", Double.toString(balance));
