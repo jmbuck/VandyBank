@@ -182,9 +182,9 @@ public class LoginLogin extends LoginState
 			
 			GL11.glColor4f(1, 1, 1, 1);
 			font.bind();
-			font.draw("Hello Killian,", 1920 / 6 + 40, topTextSize - (1080 / 8 - 1080 / 14), 1, .75f);
+			font.draw("Hello " + Bank.getCurrentCustomer().getFirstName() + ",", 1920 / 6 + 40, topTextSize - (1080 / 8 - 1080 / 14), 1, .75f);
 			loginGui.getFont().bind();
-			loginGui.getFont().draw("You are looking great today!", 1920 / 6 + 40, topTextSize, 1, .5f);
+			loginGui.getFont().draw("You're looking great today!", 1920 / 6 + 40, topTextSize, 1, .5f);
 			loginGui.getFont().unbind();
 			
 			GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);

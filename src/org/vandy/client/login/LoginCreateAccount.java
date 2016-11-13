@@ -37,7 +37,7 @@ public class LoginCreateAccount extends LoginState
 	public void init()
 	{
 		GLFW.glfwSetCharCallback(loginGui.getApplication().getWindow(), GLFWCharCallback.create((window, codepoint) -> {
-			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',')
+			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',' || stage == 2)
 			{
 				if(currentText.length() < 48)
 					currentText += (char) codepoint;
