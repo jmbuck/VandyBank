@@ -563,14 +563,20 @@ public class CapitalHttpClient {
 	public static void putBillChanges(String id, String parameter, String change) throws Exception {
 		String url = "http://api.reimaginebanking.com/bills/" + id+ "?key="+apiKey;
 		//StringBuffer result = buffer(url);
+		
 		HttpPut put = new HttpPut(url);
 		HttpClient client = HttpClients.createDefault();
-		JSONObject obj = new JSONObject(result.toString());
+		
+		JSONObject obj = new JSONObject();
 		if (parameter.equals("status")) {
 			obj.put("status", change);
 		}
+		//StringBuffer result = 
+				processInput(url, put, obj, client);
+		//JSONObject resultsObject = new JSONObject(result);
 		
-		StringBuffer result = processInput(url, put, obj, client);
+		
+		
 	}
 	
 	public static String[] getPurchasesByPayer(String payer_id) throws Exception {
