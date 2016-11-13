@@ -332,14 +332,11 @@ public class Bank {
 		return df.format(today);
 	}
 	
-	public static Customer createCustomer(String first, String last, String streetNum, String streetName, String city, String state, String zip)
+	public static Customer createCustomer(Customer c)
 	{
 		try
 		{
-			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
-			Customer curr = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
-			customerList.add(curr);
-			String firstLast = first + last;
+			String firstLast = curr.getFirstName() + curr.getLastName();
 			Randomize.addRandomAccounts(curr.getID(), firstLast);
 			return curr;
 		}
