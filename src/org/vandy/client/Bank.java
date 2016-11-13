@@ -21,8 +21,39 @@ public class Bank {
 		loadCustomers();
 		loadAccounts();
 		loadBills();
+		loadDeposits();
+		loadWithdrawals();
+		loadTransfers();
+		loadMerchants();
+		loadPurchases();
+		
 	}
 	
+	private void loadPurchases() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadMerchants() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadTransfers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadWithdrawals() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadDeposits() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void loadCustomers() throws Exception {
 		String[] customers = CapitalHttpClient.getAllCustomers();
 		for(String s : customers) {
