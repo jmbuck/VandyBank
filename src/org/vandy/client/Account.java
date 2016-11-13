@@ -11,6 +11,7 @@ public class Account {
 	private List<Withdrawal> withList = new ArrayList<Withdrawal>();
 	private List<Transfer> payerTransList = new ArrayList<Transfer>();
 	private List<Transfer> payeeTransList = new ArrayList<Transfer>();
+	private List<Purchase> purchList = new ArrayList<Purchase>();
 	private String id, type, nickname, account_number, customer_id;
 	private double rewards, balance;
 	
@@ -246,7 +247,16 @@ public class Account {
 		if(amount == 0)
 			return;
 		balance += amount;
-//		CapitalHttpClient.deleteAccount();
-		
+		try {
+			CapitalHttpClient.deleteAccount(account.getID());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	public void addPurchase(Purchase purch) {
+		// TODO Auto-generated method stub
+		purchList.add(purch);
 	}
 }
