@@ -18,7 +18,7 @@ import org.json.*;
 public class CapitalHttpClient {
 
 	//private final String USER_AGENT = "Mozilla/5.0";
-	private final static String apiKey = "fcdea9faec05f066286d84c38928d034";
+	private final static String apiKey = "be1825b31260b22a7078277116ab829e";
 	public static void main(String[] args) {
 		
 	}
