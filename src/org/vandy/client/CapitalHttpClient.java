@@ -16,9 +16,8 @@ import org.json.*;
 
 public class CapitalHttpClient {
 
-	private final String USER_AGENT = "Mozilla/5.0";
-	private final static String apiKey = "9d7d244b2a2df641310e877e3cc45869";
-	private final static String testAcct = "5827661c360f81f104547b84";
+	//private final String USER_AGENT = "Mozilla/5.0";
+	private final static String apiKey = "fcdea9faec05f066286d84c38928d034";
 	
 	public static void main(String[] args) throws Exception {
 		/*String custId = postCustomer("Killian", "Le Clainche", "6754", "French Ave", "Chicago", "IL", "60513");

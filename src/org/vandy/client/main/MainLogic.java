@@ -1,12 +1,14 @@
 package org.vandy.client.main;
 
+import org.vandy.client.Customer;
+
 import com.polaris.engine.Gui;
 import com.polaris.engine.LogicGui;
 import com.polaris.engine.thread.LogicApp;
 
 public class MainLogic extends LogicGui
 {
-
+	
 	public MainLogic(LogicApp app) 
 	{
 		super(app);

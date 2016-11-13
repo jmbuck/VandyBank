@@ -1,9 +1,7 @@
 package org.vandy.client;
 public class Search {
-	public Search() {
-	}
 	
-	public String[] doSearch(int n, String phrase) throws Exception {
+	public static String[] doSearch(int n, String phrase) {
 		String[] retArr = new String[n];
 		String[] userIds = Bank.getCustomers();
 		if (userIds.length<=n) {
@@ -41,7 +39,7 @@ public class Search {
 	}
 	
 	//lower number is more similar
-	private int calcSimilarity(String s1, String s2) {
+	private static int calcSimilarity(String s1, String s2) {
 		int diff = 0;
 		int min = s1.length();
 		if (s2.length()<min) min = s2.length();

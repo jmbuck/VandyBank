@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.opengl.GL11;
 import org.vandy.client.Bank;
 import org.vandy.client.Customer;
+import org.vandy.client.Search;
 import org.vandy.client.VandyApp;
 import org.vandy.client.packet.GuiMainPacket;
 
@@ -59,7 +60,10 @@ public class LoginLogin extends LoginState
 			if(Character.isAlphabetic((char) codepoint) || codepoint == 32 || codepoint == ',')
 			{
 				if(currentText.length() < 48)
+				{
 					currentText += (char) codepoint;
+					potentials = Search.doSearch(5, currentText);
+				}
 			}
 		}));
 		
@@ -130,6 +134,7 @@ public class LoginLogin extends LoginState
 			if(flag)
 			{
 				currentText = currentText.substring(0, currentText.length() - 1);
+				potentials = Search.doSearch(5, currentText);
 			}
 			else
 			{
@@ -139,9 +144,9 @@ public class LoginLogin extends LoginState
 			{
 				enterKey.removeQuickPress();
 				Customer customer = Bank.findCustomer(currentText);
-				if(customer == null)
+				if(customer != null)
 				{
-					//Bank.setCurrentCustomer(customer);
+					Bank.setCurrentCustomer(customer);
 					end = true;
 				}
 				else
@@ -151,7 +156,20 @@ public class LoginLogin extends LoginState
 			}
 			float shake = 0;
 			shake = 10 * (float) (1 - (shakeTicks % (1 / 16d) * 16));
-			font.draw(currentText, 1920 / 2 - font.getWidth(currentText, .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
+			String s = (potentials[0] != null && potentials[0].length() > currentText.length() ? potentials[0].substring(currentText.length() - 1) : "");
+			font.draw(currentText, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + shake, 1080 / 2 + 128 * .3f, 0, .3f);
+			GL11.glColor4f(.6f, .6f, .6f, 1);
+			font.draw(s, 1920 / 2 - font.getWidth(currentText + s, .3f) / 2 + font.getWidth(currentText, .3f), 1080 / 2 + 128 * .3f, 0, .3f);
+			
+			float y = 1080 / 2 + 388 * .3f;
+			for(int i = 0; i < potentials.length; i++)
+			{
+				s = potentials[i];
+				if(s == null)
+					break;
+				font.draw(s, 1920 / 2 - font.getWidth(s, .3f) / 2, y, 0, .3f);
+				y += 150 * .3f;
+			}
 		}
 		font.unbind();
 		

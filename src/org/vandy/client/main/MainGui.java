@@ -1,14 +1,10 @@
 package org.vandy.client.main;
 
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-
 import java.io.File;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
+import org.vandy.client.Customer;
 import org.vandy.client.GuiScreen;
 import org.vandy.client.VandyApp;
 
@@ -20,6 +16,8 @@ import com.polaris.engine.util.MathHelper;
 
 public class MainGui extends GuiScreen
 {
+	
+	private Customer customer;
 
 	private MainState prevState;
 	private MainState state;
@@ -38,13 +36,14 @@ public class MainGui extends GuiScreen
 	public MainGui(App app) 
 	{
 		super(app);
+		customer = Bank.getCurrentCustomer();
 	}
 
 	@Override
 	public void init()
 	{
 		super.init();
-		state = new MainAccounts(this);
+		state = new MainAccounts(this, customer.getAccounts());
 
 		accountsTexture = application.getTextureManager().genTexture("Accounts", new File("textures/bank.png"));
 		transfersTexture = application.getTextureManager().genTexture("Transfers", new File("textures/transfer.png"));
@@ -74,7 +73,7 @@ public class MainGui extends GuiScreen
 				prevState = state;
 				if(application.getMouseY() < 1080 * 4 / 7 - 40 - 200 && !(state instanceof MainAccounts))
 				{
-					state = new MainAccounts(this);
+					state = new MainAccounts(this, customer.getAccounts());
 				}
 				else if(application.getMouseY() < 1080 * 4 / 7 - 20 - 100 && !(state instanceof MainTransfers))
 				{
