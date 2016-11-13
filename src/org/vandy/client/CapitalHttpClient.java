@@ -588,16 +588,93 @@ public class CapitalHttpClient {
 	public static String[] getPurchasesByPayer(String payer_id) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/accounts/"+payer_id+"/purchases?key="+apiKey);
 		
+		int j = 0;
 		String payerID;
 		JSONArray arr = new JSONArray(result.toString());
 		String[] purchaseIDs = new String[arr.length()];
 		for (int i = 0; i<arr.length(); i++) {
 			payerID = arr.getJSONObject(i).getString("payer_id");
 			if(payerID.equals(payer_id))
-				purchaseIDs[i] = arr.getJSONObject(i).getString("_id");
+			{
+				purchaseIDs[j] = arr.getJSONObject(i).getString("_id");
+				j++;
+			}
 		}
 		
 		return purchaseIDs;
+	}
+	
+	public static String[] getPurchasesFromMerchant(String merchant_id) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants/"+merchant_id+"/purchases?key="+apiKey);
+		
+		int j = 0;
+		String merchantID;
+		JSONArray arr = new JSONArray(result.toString());
+		String[] purchaseIDs = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			merchantID = arr.getJSONObject(i).getString("merchant_id");
+			if(merchantID.equals(merchant_id))
+			{
+				purchaseIDs[j] = arr.getJSONObject(i).getString("_id");
+				j++;
+			}
+		}
+		
+		return purchaseIDs;
+	}
+	
+	public static String[] getPurchasesFromMerchantByPayer(String merchant_id, String payer_id) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/merchants/"+merchant_id+"/accounts/"+payer_id+"purchases?key="+apiKey);
+		
+		int j = 0;
+		String merchantID;
+		String payerID;
+		JSONArray arr = new JSONArray(result.toString());
+		String[] purchaseIDs = new String[arr.length()];
+		for (int i = 0; i<arr.length(); i++) {
+			merchantID = arr.getJSONObject(i).getString("merchant_id");
+			payerID = arr.getJSONObject(i).getString("payer_id");
+			if(merchantID.equals(merchant_id) && payerID.equals(payer_id))
+			{
+				purchaseIDs[j] = arr.getJSONObject(i).getString("_id");
+				j++;
+			}
+		}
+		
+		return purchaseIDs;
+	}
+	
+	public static String getPurchasesByID(String id, String parameter) throws Exception {
+		StringBuffer result = buffer("http://api.reimaginebanking.com/purchases/" + id+ "?key="+apiKey);
+
+		JSONObject obj = new JSONObject(result.toString());
+		if (parameter.equals("type")) {
+			return obj.getString("type");
+		}
+		if (parameter.equals("merchant_id")) {
+			return obj.getString("merchant_id");
+		}
+		if (parameter.equals("payer_id")) {
+			return obj.getString("payer_id");
+		}
+		if (parameter.equals("purchase_date")) {
+			return obj.getString("purchase_date");
+		}
+		if (parameter.equals("amount")) {
+			return obj.getString("amount");
+		}
+		if (parameter.equals("status")) {
+			return obj.getString("status");
+		}
+		if (parameter.equals("medium")) {
+			return obj.getString("medium");
+		}
+		if (parameter.equals("description")) {
+			return obj.getString("description");
+		}
+
+		return "error";
+
 	}
 	
 }
