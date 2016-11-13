@@ -26,6 +26,52 @@ public class Account {
 		customer_id = custID;
 	}
 	
+	public String getID()
+	{
+		return id;
+	}
+	
+	public String getType()
+	{
+		return type;
+	}
+	
+	public String getNickname()
+	{
+		return nickname;
+	}
+	
+	public String getAccountNumber()
+	{
+		return account_number;
+	}
+	
+	public String getCustomerID()
+	{
+		return customer_id;
+	}
+	
+	public int getRewards()
+	{
+		return rewards;
+	}
+	
+	public double getBalance()
+	{
+		return balance;
+	}
+	
+	public void setType(String accType) throws Exception
+	{
+		type = accType;
+		CapitalHttpClient.putAccountChanges(id, "type", accType);
+	}
+	
+	public void addBill(Bill cost)
+	{
+		billList.add(cost);
+	}
+	
 	public int deposit(Deposit transaction, String depID) throws Exception
 	{
 		double amount = Double.parseDouble(CapitalHttpClient.getDepositsByID(depID, "amount"));
