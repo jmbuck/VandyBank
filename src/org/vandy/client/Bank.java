@@ -295,8 +295,9 @@ public class Bank {
 				String accNum = "";
 				for(int i = 0; i < 16; i++) {
 					int num = (int)(Math.random()) * 10;
-					accNum += num;
+					accNum += Integer.toString(num);
 				}
+				
 				String custId = curr.getID();
 				String accId = CapitalHttpClient.postAccount(custId, accType, nickname, 0, 0, accNum);
 				Account acc = new Account(accId, custId, accType, nickname, 0, 0, accNum);

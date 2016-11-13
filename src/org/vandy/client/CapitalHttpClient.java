@@ -376,7 +376,7 @@ public class CapitalHttpClient {
 
 	public static String getCustomerByID(String id, String parameter) throws Exception {
 		StringBuffer result = buffer("http://api.reimaginebanking.com/customers/" + id+ "?key="+apiKey);
-
+		
 		JSONObject obj = new JSONObject(result.toString());
 		if (parameter.equals("first_name")) {
 			return obj.getString("first_name");
