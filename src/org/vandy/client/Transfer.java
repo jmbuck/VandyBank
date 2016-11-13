@@ -27,7 +27,7 @@ public class Transfer {
 	
 	public String getTransDate()
 	{
-		return transDate;;
+		return transDate;
 	}
 	
 	public String getDesc()
