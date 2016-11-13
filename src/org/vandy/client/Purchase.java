@@ -12,7 +12,7 @@ public class Purchase extends Withdrawal {
 	}
 	
 	public int getType() {
-		return 2; //purchase
+		return 2; //purchase//
 	}
 
 }

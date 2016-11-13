@@ -19,6 +19,10 @@ public class MainBills extends MainState
 	{
 		super.render(delta);
 		
+		boldFont.bind();
+		boldFont.draw("UNDER CONSTRUCTION!", 1920 / 2 - boldFont.getWidth("UNDER CONSTRUCTION!", .5f) / 2, 1080 / 2, 0, .5f);
+		boldFont.unbind();
+		
 		GL11.glPopMatrix();
 	}
 	

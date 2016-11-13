@@ -131,6 +131,7 @@ public class CapitalHttpClient {
 		juo.put("address", nestedJUO);
 
 		StringBuffer result = processInput(url, post, juo, client);
+		System.out.println(result);
 		return findID(result);
 	}
 

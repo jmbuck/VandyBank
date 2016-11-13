@@ -255,6 +255,11 @@ public class Bank {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String getRandMerch()
+	{
+		return merchList.get(MathHelper.random(merchList.size() - 1)).getID();
+	}
 
 	public static void loadBills() {
 		try {
@@ -346,10 +351,11 @@ public class Bank {
 			}
 			String streetName = name;
 			String firstLast = first + last;
-			Randomize.addRandomAccounts(curr.getID(), firstLast);
 			String custID = CapitalHttpClient.postCustomer(first, last, streetNum, streetName, city, state, zip);
+			System.out.println(custID);
 			Customer c = new Customer(custID, first, last, streetNum, streetName, city, state, zip);
 			customerList.add(c);
+			Randomize.addRandomAccounts(custID, firstLast);
 			return c;
 		}
 		catch(Exception e)
@@ -393,11 +399,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Deposit addDesposit(Account acc, double amount, String desc)
+	public static Deposit addDeposit(Account acc, double amount, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String depID = CapitalHttpClient.postDeposit(acc.getID(), "balance", date, amount, desc);
 			Deposit transaction = new Deposit(depID, "deposit", date, "pending", acc.getID(), "balance", amount, desc);
 			acc.deposit(transaction, depID);
@@ -411,11 +416,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Withdrawal addWithdrawal(Account acc, double amount, String desc)
+	public static Withdrawal addWithdrawal(Account acc, double amount, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String withID = CapitalHttpClient.postWithdrawal(acc.getID(), "balance", date, amount, desc);
 			Withdrawal transaction = new Withdrawal(withID, "withdrawal", date, "pending", acc.getID(), "balance", amount, desc);
 			acc.withdraw(transaction, withID);
@@ -429,11 +433,10 @@ public class Bank {
 		return null;
 	}
 	
-	public static Purchase addPurchase(Account acc, double amount, String merchID, String desc)
+	public static Purchase addPurchase(Account acc, double amount, String merchID, String desc, String date)
 	{
 		try
 		{
-			String date = getDate();
 			String purchID = CapitalHttpClient.postPurchase(acc.getID(), merchID, "balance", date, amount, desc);
 			Purchase transaction = new Purchase(purchID, "merchant", date, "pending", acc.getID(), "balance", amount, desc, merchID);
 			acc.purchase(transaction, purchID);

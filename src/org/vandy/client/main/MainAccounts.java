@@ -15,6 +15,7 @@ import org.vandy.client.VandyApp;
 import com.polaris.engine.options.Key;
 import com.polaris.engine.render.Draw;
 import com.polaris.engine.render.Texture;
+import com.polaris.engine.util.MathHelper;
 
 public class MainAccounts extends MainState
 {
@@ -259,6 +260,7 @@ public class MainAccounts extends MainState
 			yOffset += mainGui.getApplication().getScrollDeltaY() * 4;
 			boldFont.bind();
 			List<Transaction> list = currentAccount.getTransList();
+			yOffset = MathHelper.clamp(0, (3 * 128 * .45f + 40) * list.size(), yOffset);
 			Transaction t;
 			for(int i = 0; i < list.size(); i++)
 			{
@@ -284,7 +286,20 @@ public class MainAccounts extends MainState
 		GL11.glColor4f(VandyApp.darkest.x, VandyApp.darkest.y, VandyApp.darkest.z, 1f);
 		GL11.glBegin(GL11.GL_QUADS);
 		Draw.rect(1920 / 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
+		if(currentAccount != null)
+			Draw.rect(1920 * 2/ 3 - 2, 0, 1920 / 3 + 2, 1080, -10);
 		GL11.glEnd();
+		
+		if(currentAccount != null)
+		{
+			GL11.glPushMatrix();
+			GL11.glTranslatef(1920 * 5 / 6, 1080 / 2, 0);
+			GL11.glRotatef(90, 0, 0, 1);
+			boldFont.bind();
+			boldFont.draw("UNDER CONSTRUCTION!", 1920 / 2 - boldFont.getWidth("UNDER CONSTRUCTION!", .4f) / 2, 1080 / 2, 0, .4f);
+			boldFont.unbind();
+			GL11.glPopMatrix();
+		}
 
 		GL11.glPopMatrix();
 	}
